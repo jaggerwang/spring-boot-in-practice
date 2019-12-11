@@ -1,0 +1,77 @@
+debug: ${SBIP_DEBUG:false}
+
+logging:
+    file:
+        path: ${SBIP_LOGGING_FILE_PATH:/tmp}
+    level:
+        org:
+         springframework:
+            web:
+                filter:
+                    CommonsRequestLoggingFilter: ${SBIP_LOGGING_LEVEL_REQUEST:DEBUG}
+
+server:
+    address: 0.0.0.0
+    port: 8080
+
+spring:
+    application:
+        name: spring-boot-in-practice
+    servlet:
+        multipart:
+            file-size-threshold: 10MB
+            location: ${SBIP_SPRING_SERVLET_MULTIPART_LOCATION:/tmp}
+            max-file-size: 100MB
+            max-request-size: 100MB
+    datasource:
+        url: ${SBIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/sbip}
+        username: ${SBIP_SPRING_DATASOURCE_USERNAME:root}
+        password: ${SBIP_SPRING_DATASOURCE_PASSWORD:}
+    flyway:
+        enabled: true
+        clean-disabled: true
+        baseline-on-migrate: true
+    redis:
+        host: ${SBIP_SPRING_REDIS_HOST:localhost}
+        port: ${SBIP_SPRING_REDIS_PORT:6379}
+        password: ${SBIP_SPRING_REDIS_PASSWORD:}
+        timeout: 1s
+        lettuce:
+            pool:
+                max-wait: 1s
+    session:
+        timeout: 7d
+        store-type: redis
+        redis:
+            namespace: sbip:session
+    jpa:
+        open-in-view: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 
+        - health
+        - info
+        - metrics
+
+graphql:
+    servlet:
+        enabled: true
+        mapping: /graphql
+        exception-handlers-enabled: true
+        tracingEnabled: false
+        actuator-metrics: true
+
+graphiql:
+    enabled: true
+    mapping: /graphiql
+
+voyager:
+    enabled: true
+
+storage:
+    local:
+        upload-dir: ${SBIP_STORAGE_LOCAL_UPLOADDIR:/tmp}
+        url-base: ${SBIP_STORAGE_LOCAL_URLBASE:http://localhost:8080/files}

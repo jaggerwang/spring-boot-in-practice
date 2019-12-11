@@ -1,0 +1,39 @@
+version: '3'
+services:
+  server:
+    image: spring-boot-in-practice
+    environment:
+      TZ: Asia/Shanghai
+      SBIP_DEBUG: 'false'
+      SBIP_LOGGING_FILE_PATH: /data/log
+      SBIP_LOGGING_LEVEL_REQUEST: INFO
+      SBIP_SPRING_SERVLET_MULTIPART_LOCATION: /data/tmp
+      SBIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/sbip
+      SBIP_SPRING_DATASOURCE_USERNAME: sbip
+      SBIP_SPRING_DATASOURCE_PASSWORD: 123456
+      SBIP_SPRING_REDIS_HOST: redis
+      SBIP_SPRING_REDIS_PORT: 6379
+      SBIP_SPRING_REDIS_PASSWORD:
+      SBIP_STORAGE_LOCAL_UPLOADDIR: /data/upload
+      SBIP_STORAGE_LOCAL_URLBASE: http://localhost:8080/files
+    ports:
+      - 8080:8080
+    volumes:
+      - ~/data/spring-boot-in-practice/server:/data
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:8.0
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ~/data/spring-boot-in-practice/mysql:/var/lib/mysql
+  redis:
+    image: redis:5.0
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ~/data/spring-boot-in-practice/redis:/data
+    
