@@ -13,7 +13,7 @@ public class MutationResolver extends BaseResolver implements GraphQLMutationRes
     public UserEntity userRegister(UserEntity userInput) {
         var userEntity = userUsecases.register(userInput);
 
-        login(userInput.getUsername(), userInput.getPassword());
+        loginUser(userInput.getUsername(), userInput.getPassword());
 
         return userEntity;
     }
@@ -37,7 +37,7 @@ public class MutationResolver extends BaseResolver implements GraphQLMutationRes
             throw new UsecaseException("用户名或密码不能为空");
         }
 
-        login(username, password);
+        loginUser(username, password);
 
         return userEntity;
     }

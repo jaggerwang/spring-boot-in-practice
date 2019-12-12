@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.sbip.api.security.LoggedUser;
 import net.jaggerwang.sbip.usecase.AuthorityUsecases;
@@ -42,15 +39,15 @@ public abstract class BaseResolver {
     @Autowired
     protected UserUsecases userUsecases;
 
-    protected void login(String username, String password) {
+    protected void loginUser(String username, String password) {
         var auth = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(username, password));
         var sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
+    }
 
-        var requestAttrs =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        requestAttrs.getRequest().getSession().setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+    protected void logoutUser() {
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 
     protected Long loggedUserId() {

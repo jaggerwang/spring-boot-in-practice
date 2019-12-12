@@ -28,6 +28,9 @@ services:
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: sbip
+      MYSQL_USER: sbip
+      MYSQL_PASSWORD: 123456
     volumes:
       - ~/data/spring-boot-in-practice/mysql:/var/lib/mysql
   redis:

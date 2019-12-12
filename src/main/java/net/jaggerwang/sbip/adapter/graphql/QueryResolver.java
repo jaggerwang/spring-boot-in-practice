@@ -15,7 +15,8 @@ import net.jaggerwang.sbip.entity.UserEntity;
 public class QueryResolver extends BaseResolver implements GraphQLQueryResolver {
     public UserEntity userLogout() {
         var userEntity = userUsecases.info(loggedUserId());
-        SecurityContextHolder.getContext().setAuthentication(null);
+
+        logoutUser();
 
         return userEntity;
     }

@@ -1,6 +1,6 @@
 # Spring Boot in Practice
 
-This project can be used as a starter for spring boot api service development, supports both rest and graphql protocol. It is also a reference implementation of [Clean Architecture](https://blog.jaggerwang.net/clean-architecture-in-practice/). This api service can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice).
+This project can be used as a starter for spring boot api service development, supports both rest and graphql protocol. It is also a reference implementation of [Clean Architecture](https://blog.jaggerwang.net/clean-architecture-in-practice/). This api service can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is also an article [Spring Boot API 服务开发指南](https://blog.jaggerwang.net/spring-boot-api-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -85,7 +85,7 @@ This project need java v11+.
 
 ### By local environment
 
-#### Clone code
+#### Clone repository
 
 ```bash
 git clone https://github.com/jaggerwang/spring-boot-in-practice.git && cd spring-boot-in-practice
@@ -93,7 +93,7 @@ git clone https://github.com/jaggerwang/spring-boot-in-practice.git && cd spring
 
 #### Prepare mysql and redis service
 
-Install mysql and redis server, and start them. After mysql started, create a database for this project, and an account to access the created database.
+Install mysql and redis server, and start them. After mysql started, create a database for this project, and a user to access this database.
 
 ```sql
 CREATE DATABASE `sbip`;
@@ -107,7 +107,11 @@ Change configs in `src/main/resources/application.yml` as your need, especially 
 
 #### Start server
 
-Open previous cloned project in any IDE support maven, run application with main class `net.jaggerwang.sbip.api.SbipApplication`. It will auto create tables when they are not exist, we use flyway to migrate database changes. You can also disable auto create with argument `--spring.flyway.enabled=false`, and then run application with argument `--app.type=db_migration` to manually create tables.
+```bash
+mvn spring-boot:run
+```
+
+The running main class is `net.jaggerwang.sbip.api.SbipApplication`. When first start server, it will auto create tables, we use flyway to migrate database changes. You can disable auto create with argument `--spring.flyway.enabled=false`, and then run with argument `--app.type=db_migration` to manually create tables.
 
 After started, the api service's endpoint is `http://localhost:8080/`.
 
@@ -117,7 +121,7 @@ You need install [Docker](https://www.docker.com/) and [Docker Compose](https://
 
 #### Configure compose
 
-Change the content of `docker-compose.yml` as needed, especially the host path of mounted volumes.
+Change the content of `docker-compose.yml` as your need, especially the host path of mounted volumes.
 
 #### Start all services
 
@@ -125,17 +129,6 @@ Change the content of `docker-compose.yml` as needed, especially the host path o
 docker-compose up -d
 ```
 
-It will start server, mysql and redis services. If you need to stop and remove all services, you can execute command `docker-compose down`. The container port `8080` is mapping to the same port on local host, so the endpoint of api service is same as the local way.
+It will start server, mysql and redis services. If you need to stop and remove all services, you can execute command `docker-compose down`. The container port `8080` is mapping to the same port on local host, so the endpoint of api service is same as previous.
 
-> As the database are not ready, the first run will fail. You can run `docker-compose up -d` again to restart the failed server after the database are created.
-
-#### Create database
-
-Login to mysql container and create a database for this project. The password of mysql `root` account is `123456`.
-
-```bash
-docker container exec -it spring-boot-in-practice_mysql_1 bash
-mysql -u root -p
-```
-
-And then create database and user as previously said.
+When first start mysql, it will auto create a database `sbip` and a user `sbip` with password `123446` to access this database. The password of `root` user is also `123456`.

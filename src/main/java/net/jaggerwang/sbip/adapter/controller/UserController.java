@@ -22,7 +22,7 @@ public class UserController extends BaseController {
     public JsonDTO register(@RequestBody UserDTO userDTO) {
         var userEntity = userUsecases.register(userDTO.toEntity());
 
-        login(userDTO.getUsername(), userDTO.getPassword());
+        loginUser(userDTO.getUsername(), userDTO.getPassword());
 
         metricUsecases.increment("registerCount", 1L);
 
@@ -51,7 +51,7 @@ public class UserController extends BaseController {
             throw new UsecaseException("用户名或密码不能为空");
         }
 
-        login(username, password);
+        loginUser(username, password);
 
         return new JsonDTO().addDataEntry("user", UserDTO.fromEntity(userEntity));
     }
@@ -69,7 +69,8 @@ public class UserController extends BaseController {
     @GetMapping("/logout")
     public JsonDTO logout() {
         var userEntity = userUsecases.info(loggedUserId());
-        SecurityContextHolder.getContext().setAuthentication(null);
+
+        logoutUser();
 
         return new JsonDTO().addDataEntry("user", UserDTO.fromEntity(userEntity));
     }
