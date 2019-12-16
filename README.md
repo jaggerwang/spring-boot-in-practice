@@ -6,6 +6,7 @@ This project can be used as a starter for spring boot api service development, s
 
 1. [Spring Boot](https://spring.io/projects/spring-boot) Web framework and server
 1. [Spring Data JPA](https://spring.io/projects/spring-data-jpa) Access database
+1. [Querydsl JPA](https://github.com/querydsl/querydsl/tree/master/querydsl-jpa) Type safe dynamic sql builder
 1. [Spring Data Redis](https://spring.io/projects/spring-data-redis) Cache data
 1. [Spring Security](https://spring.io/projects/spring-security) Authenticate and authrorize
 1. [Spring Session](https://spring.io/projects/spring-session) Manage session

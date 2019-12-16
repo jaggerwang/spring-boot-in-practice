@@ -12,7 +12,7 @@ import net.jaggerwang.sbip.entity.UserEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserDto {
     private Long id;
 
     private String username;
@@ -31,14 +31,14 @@ public class UserDTO {
 
     private LocalDateTime updatedAt;
 
-    private FileDTO avatar;
+    private FileDto avatar;
 
-    private UserStatDTO stat;
+    private UserStatDto stat;
 
-    private boolean following;
+    private Boolean following;
 
-    public static UserDTO fromEntity(UserEntity userEntity) {
-        return UserDTO.builder().id(userEntity.getId()).username(userEntity.getUsername())
+    public static UserDto fromEntity(UserEntity userEntity) {
+        return UserDto.builder().id(userEntity.getId()).username(userEntity.getUsername())
                 .mobile(userEntity.getMobile()).email(userEntity.getEmail())
                 .avatarId(userEntity.getAvatarId()).intro(userEntity.getIntro())
                 .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt()).build();

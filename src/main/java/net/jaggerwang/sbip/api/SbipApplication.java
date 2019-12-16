@@ -9,17 +9,13 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication(
-		scanBasePackages = {"net.jaggerwang.sbip.api", "net.jaggerwang.sbip.adapter"},
-		exclude = {GraphQLWebsocketAutoConfiguration.class, MongoAutoConfiguration.class,
-				MongoDataAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = "net.jaggerwang.sbip",
+		exclude = {GraphQLWebsocketAutoConfiguration.class})
 @EntityScan("net.jaggerwang.sbip.adapter.repository.jpa.entity")
 @EnableJpaRepositories("net.jaggerwang.sbip.adapter.repository.jpa")
 @Slf4j

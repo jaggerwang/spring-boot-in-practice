@@ -20,7 +20,7 @@ import net.jaggerwang.sbip.entity.UserEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDO {
+public class UserDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,18 +44,16 @@ public class UserDO {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static UserDO fromEntity(UserEntity userEntity) {
-        return UserDO.builder().id(userEntity.getId()).username(userEntity.getUsername())
-                .password(userEntity.getPassword()).mobile(userEntity.getMobile())
-                .email(userEntity.getEmail()).avatarId(userEntity.getAvatarId())
-                .intro(userEntity.getIntro()).createdAt(userEntity.getCreatedAt())
+    public static UserDo fromEntity(UserEntity userEntity) {
+        return UserDo.builder().id(userEntity.getId()).username(userEntity.getUsername())
+                .password(userEntity.getPassword()).mobile(userEntity.getMobile()).email(userEntity.getEmail())
+                .avatarId(userEntity.getAvatarId()).intro(userEntity.getIntro()).createdAt(userEntity.getCreatedAt())
                 .updatedAt(userEntity.getUpdatedAt()).build();
     }
 
     public UserEntity toEntity() {
-        return UserEntity.builder().id(id).username(username).password(password).mobile(mobile)
-                .email(email).avatarId(avatarId).intro(intro).createdAt(createdAt)
-                .updatedAt(updatedAt).build();
+        return UserEntity.builder().id(id).username(username).password(password).mobile(mobile).email(email)
+                .avatarId(avatarId).intro(intro).createdAt(createdAt).updatedAt(updatedAt).build();
     }
 
     @PrePersist

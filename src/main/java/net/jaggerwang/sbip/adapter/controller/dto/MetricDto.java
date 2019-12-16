@@ -10,11 +10,11 @@ import net.jaggerwang.sbip.entity.MetricEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MetricDTO {
-    private long registerCount;
+public class MetricDto {
+    private Long registerCount;
 
-    public static MetricDTO fromEntity(MetricEntity userEntity) {
-        return MetricDTO.builder().registerCount(userEntity.getRegisterCount()).build();
+    public static MetricDto fromEntity(MetricEntity userEntity) {
+        return MetricDto.builder().registerCount(userEntity.getRegisterCount()).build();
     }
 
     public MetricEntity toEntity() {

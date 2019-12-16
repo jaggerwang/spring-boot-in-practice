@@ -28,5 +28,5 @@ public interface PostRepository {
 
     Long followingCount(Long userId);
 
-    boolean isLiked(Long userId, Long postId);
+    Boolean isLiked(Long userId, Long postId);
 }

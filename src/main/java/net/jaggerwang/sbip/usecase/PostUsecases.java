@@ -64,7 +64,7 @@ public class PostUsecases extends BaseUsecases {
         return postRepository.followingCount(userId);
     }
 
-    public boolean isLiked(Long userId, Long postId) {
+    public Boolean isLiked(Long userId, Long postId) {
         return postRepository.isLiked(userId, postId);
     }
 }

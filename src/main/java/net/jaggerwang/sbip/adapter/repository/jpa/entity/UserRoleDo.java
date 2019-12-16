@@ -13,13 +13,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "PostLike")
-@Table(name = "post_like")
+@Entity(name = "UserRole")
+@Table(name = "user_role")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostLikeDO {
+public class UserRoleDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,8 +27,8 @@ public class PostLikeDO {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "post_id")
-    private Long postId;
+    @Column(name = "role_id")
+    private Long roleId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

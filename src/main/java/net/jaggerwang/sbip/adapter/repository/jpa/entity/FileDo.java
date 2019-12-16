@@ -24,7 +24,7 @@ import net.jaggerwang.sbip.entity.FileEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileDO {
+public class FileDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,16 +48,15 @@ public class FileDO {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static FileDO fromEntity(FileEntity fileEntity) {
-        return FileDO.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
-                .region(fileEntity.getRegion()).bucket(fileEntity.getBucket())
-                .path(fileEntity.getPath()).meta(fileEntity.getMeta())
+    public static FileDo fromEntity(FileEntity fileEntity) {
+        return FileDo.builder().id(fileEntity.getId()).userId(fileEntity.getUserId()).region(fileEntity.getRegion())
+                .bucket(fileEntity.getBucket()).path(fileEntity.getPath()).meta(fileEntity.getMeta())
                 .createdAt(fileEntity.getCreatedAt()).updatedAt(fileEntity.getUpdatedAt()).build();
     }
 
     public FileEntity toEntity() {
-        return FileEntity.builder().id(id).userId(userId).region(region).bucket(bucket).path(path)
-                .meta(meta).createdAt(createdAt).updatedAt(updatedAt).build();
+        return FileEntity.builder().id(id).userId(userId).region(region).bucket(bucket).path(path).meta(meta)
+                .createdAt(createdAt).updatedAt(updatedAt).build();
     }
 
     @PrePersist

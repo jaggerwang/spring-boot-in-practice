@@ -11,21 +11,21 @@ import net.jaggerwang.sbip.entity.PostStatEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostStatDTO {
+public class PostStatDto {
     private Long id;
 
     private Long postId;
 
-    private long likeCount;
+    private Long likeCount;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    private PostDTO post;
+    private PostDto post;
 
-    public static PostStatDTO fromEntity(PostStatEntity postStatEntity) {
-        return PostStatDTO.builder().id(postStatEntity.getId()).postId(postStatEntity.getPostId())
+    public static PostStatDto fromEntity(PostStatEntity postStatEntity) {
+        return PostStatDto.builder().id(postStatEntity.getId()).postId(postStatEntity.getPostId())
                 .likeCount(postStatEntity.getLikeCount()).createdAt(postStatEntity.getCreatedAt())
                 .updatedAt(postStatEntity.getUpdatedAt()).build();
     }

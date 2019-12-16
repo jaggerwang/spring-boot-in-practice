@@ -22,7 +22,7 @@ public class UserResolver extends BaseResolver implements GraphQLResolver<UserEn
         return statUsecases.userStatInfoByUserId(userEntity.getId());
     }
 
-    public boolean following(UserEntity userEntity) {
+    public Boolean following(UserEntity userEntity) {
         return userUsecases.isFollowing(loggedUserId(), userEntity.getId());
     }
 }

@@ -28,5 +28,5 @@ public interface UserRepository {
 
     Long followerCount(Long followingId);
 
-    boolean isFollowing(Long followerId, Long followingId);
+    Boolean isFollowing(Long followerId, Long followingId);
 }

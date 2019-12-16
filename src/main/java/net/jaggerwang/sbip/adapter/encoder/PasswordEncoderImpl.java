@@ -12,7 +12,7 @@ public class PasswordEncoderImpl implements PasswordEncoder {
     }
 
     @Override
-    public boolean matches(String rawPassword, String encodedPassword) {
+    public Boolean matches(String rawPassword, String encodedPassword) {
         return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
     }
 }

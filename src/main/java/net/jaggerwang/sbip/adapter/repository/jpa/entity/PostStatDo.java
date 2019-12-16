@@ -12,29 +12,41 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.jaggerwang.sbip.entity.PostStatEntity;
 
-@Entity(name = "UserFollow")
-@Table(name = "user_follow")
+@Entity(name = "PostStat")
+@Table(name = "post_stat")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFollowDO {
+public class PostStatDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "following_id")
-    private Long followingId;
+    @Column(name = "post_id")
+    private Long postId;
 
-    @Column(name = "follower_id")
-    private Long followerId;
+    @Column(name = "like_count")
+    private Long likeCount;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public static PostStatDo fromEntity(PostStatEntity fileEntity) {
+        return PostStatDo.builder().id(fileEntity.getId()).postId(fileEntity.getPostId())
+                .likeCount(fileEntity.getLikeCount()).createdAt(fileEntity.getCreatedAt())
+                .updatedAt(fileEntity.getUpdatedAt()).build();
+    }
+
+    public PostStatEntity toEntity() {
+        return PostStatEntity.builder().id(id).postId(postId).likeCount(likeCount)
+                .createdAt(createdAt).updatedAt(updatedAt).build();
+    }
 
     @PrePersist
     public void prePersist() {

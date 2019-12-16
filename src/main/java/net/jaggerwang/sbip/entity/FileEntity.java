@@ -26,7 +26,7 @@ public class FileEntity {
     public static class Meta {
         private String name;
 
-        private long size;
+        private Long size;
 
         private String type;
     }

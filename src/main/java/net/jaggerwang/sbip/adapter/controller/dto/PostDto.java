@@ -12,7 +12,7 @@ import net.jaggerwang.sbip.entity.PostEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDTO {
+public class PostDto {
     private Long id;
 
     private Long userId;
@@ -29,18 +29,18 @@ public class PostDTO {
 
     private LocalDateTime updatedAt;
 
-    private UserDTO user;
+    private UserDto user;
 
-    private List<FileDTO> images;
+    private List<FileDto> images;
 
-    private FileDTO video;
+    private FileDto video;
 
-    private PostStatDTO stat;
+    private PostStatDto stat;
 
-    private boolean liked;
+    private Boolean liked;
 
-    public static PostDTO fromEntity(PostEntity postEntity) {
-        return PostDTO.builder().id(postEntity.getId()).userId(postEntity.getUserId())
+    public static PostDto fromEntity(PostEntity postEntity) {
+        return PostDto.builder().id(postEntity.getId()).userId(postEntity.getUserId())
                 .type(postEntity.getType()).text(postEntity.getText())
                 .imageIds(postEntity.getImageIds()).videoId(postEntity.getVideoId())
                 .createdAt(postEntity.getCreatedAt()).updatedAt(postEntity.getUpdatedAt()).build();

@@ -12,36 +12,29 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.sbip.entity.RoleEntity;
 
-@Entity(name = "Role")
-@Table(name = "role")
+@Entity(name = "PostLike")
+@Table(name = "post_like")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDO {
+public class PostLikeDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "post_id")
+    private Long postId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    public static RoleDO fromEntity(RoleEntity roleEntity) {
-        return RoleDO.builder().id(roleEntity.getId()).name(roleEntity.getName())
-                .createdAt(roleEntity.getCreatedAt()).updatedAt(roleEntity.getUpdatedAt()).build();
-    }
-
-    public RoleEntity toEntity() {
-        return RoleEntity.builder().id(id).name(name).createdAt(createdAt).updatedAt(updatedAt)
-                .build();
-    }
 
     @PrePersist
     public void prePersist() {

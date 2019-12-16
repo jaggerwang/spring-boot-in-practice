@@ -12,7 +12,7 @@ import net.jaggerwang.sbip.entity.FileEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileDTO {
+public class FileDto {
     private Long id;
 
     private Long userId;
@@ -29,21 +29,20 @@ public class FileDTO {
 
     private LocalDateTime updatedAt;
 
-    private UserDTO user;
+    private UserDto user;
 
     private String url;
 
     private Map<FileEntity.ThumbType, String> thumbs;
 
-    public static FileDTO fromEntity(FileEntity fileEntity) {
-        return FileDTO.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
-                .region(fileEntity.getRegion()).bucket(fileEntity.getBucket())
-                .path(fileEntity.getPath()).meta(fileEntity.getMeta())
+    public static FileDto fromEntity(FileEntity fileEntity) {
+        return FileDto.builder().id(fileEntity.getId()).userId(fileEntity.getUserId()).region(fileEntity.getRegion())
+                .bucket(fileEntity.getBucket()).path(fileEntity.getPath()).meta(fileEntity.getMeta())
                 .createdAt(fileEntity.getCreatedAt()).updatedAt(fileEntity.getUpdatedAt()).build();
     }
 
     public FileEntity toEntity() {
-        return FileEntity.builder().id(id).userId(userId).region(region).bucket(bucket).path(path)
-                .meta(meta).createdAt(createdAt).updatedAt(updatedAt).build();
+        return FileEntity.builder().id(id).userId(userId).region(region).bucket(bucket).path(path).meta(meta)
+                .createdAt(createdAt).updatedAt(updatedAt).build();
     }
 }

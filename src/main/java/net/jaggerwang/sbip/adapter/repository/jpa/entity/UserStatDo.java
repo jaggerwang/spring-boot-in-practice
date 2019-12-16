@@ -20,7 +20,7 @@ import net.jaggerwang.sbip.entity.UserStatEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserStatDO {
+public class UserStatDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,16 +29,16 @@ public class UserStatDO {
     private Long userId;
 
     @Column(name = "post_count")
-    private long postCount;
+    private Long postCount;
 
     @Column(name = "like_count")
-    private long likeCount;
+    private Long likeCount;
 
     @Column(name = "following_count")
-    private long followingCount;
+    private Long followingCount;
 
     @Column(name = "follower_count")
-    private long followerCount;
+    private Long followerCount;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -46,17 +46,18 @@ public class UserStatDO {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static UserStatDO fromEntity(UserStatEntity fileEntity) {
-        return UserStatDO.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
+    public static UserStatDo fromEntity(UserStatEntity fileEntity) {
+        return UserStatDo.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
                 .postCount(fileEntity.getPostCount()).likeCount(fileEntity.getLikeCount())
-                .followingCount(fileEntity.getFollowingCount()).followerCount(fileEntity.getFollowerCount())
-                .createdAt(fileEntity.getCreatedAt()).updatedAt(fileEntity.getUpdatedAt()).build();
+                .followingCount(fileEntity.getFollowingCount())
+                .followerCount(fileEntity.getFollowerCount()).createdAt(fileEntity.getCreatedAt())
+                .updatedAt(fileEntity.getUpdatedAt()).build();
     }
 
     public UserStatEntity toEntity() {
-        return UserStatEntity.builder().id(id).userId(userId).postCount(postCount).likeCount(likeCount)
-                .followingCount(followingCount).followerCount(followerCount).createdAt(createdAt).updatedAt(updatedAt)
-                .build();
+        return UserStatEntity.builder().id(id).userId(userId).postCount(postCount)
+                .likeCount(likeCount).followingCount(followingCount).followerCount(followerCount)
+                .createdAt(createdAt).updatedAt(updatedAt).build();
     }
 
     @PrePersist

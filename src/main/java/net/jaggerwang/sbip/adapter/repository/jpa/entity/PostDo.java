@@ -25,7 +25,7 @@ import net.jaggerwang.sbip.entity.PostEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDO {
+public class PostDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,16 +51,15 @@ public class PostDO {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static PostDO fromEntity(PostEntity userEntity) {
-        return PostDO.builder().id(userEntity.getId()).userId(userEntity.getUserId())
-                .type(userEntity.getType()).text(userEntity.getText())
-                .imageIds(userEntity.getImageIds()).videoId(userEntity.getVideoId())
+    public static PostDo fromEntity(PostEntity userEntity) {
+        return PostDo.builder().id(userEntity.getId()).userId(userEntity.getUserId()).type(userEntity.getType())
+                .text(userEntity.getText()).imageIds(userEntity.getImageIds()).videoId(userEntity.getVideoId())
                 .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt()).build();
     }
 
     public PostEntity toEntity() {
-        return PostEntity.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds)
-                .videoId(videoId).createdAt(createdAt).updatedAt(updatedAt).build();
+        return PostEntity.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds).videoId(videoId)
+                .createdAt(createdAt).updatedAt(updatedAt).build();
     }
 
     @PrePersist

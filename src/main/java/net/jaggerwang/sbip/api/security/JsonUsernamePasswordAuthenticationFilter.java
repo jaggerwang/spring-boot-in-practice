@@ -12,33 +12,32 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import net.jaggerwang.sbip.adapter.controller.dto.UserDTO;
+import net.jaggerwang.sbip.adapter.controller.dto.UserDto;
 
 public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Autowired
     private ObjectMapper objectMapper;
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-            HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
         if (!request.getMethod().equals("POST")) {
-            throw new AuthenticationServiceException(
-                    "Authentication method not supported: " + request.getMethod());
+            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
 
         String username, password;
         try {
-            UserDTO userDTO = objectMapper.readValue(request.getInputStream(), UserDTO.class);
-            if (userDTO.getUsername() != null) {
-                username = userDTO.getUsername();
-            } else if (userDTO.getMobile() != null) {
-                username = userDTO.getMobile();
-            } else if (userDTO.getEmail() != null) {
-                username = userDTO.getEmail();
+            UserDto userDto = objectMapper.readValue(request.getInputStream(), UserDto.class);
+            if (userDto.getUsername() != null) {
+                username = userDto.getUsername();
+            } else if (userDto.getMobile() != null) {
+                username = userDto.getMobile();
+            } else if (userDto.getEmail() != null) {
+                username = userDto.getEmail();
             } else {
                 username = null;
             }
-            password = userDTO.getPassword();
+            password = userDto.getPassword();
         } catch (IOException e) {
             throw new AuthenticationServiceException(e.getMessage());
         }

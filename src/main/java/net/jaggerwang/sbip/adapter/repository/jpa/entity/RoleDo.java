@@ -12,24 +12,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.sbip.entity.PostStatEntity;
+import net.jaggerwang.sbip.entity.RoleEntity;
 
-@Entity(name = "PostStat")
-@Table(name = "post_stat")
+@Entity(name = "Role")
+@Table(name = "role")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostStatDO {
+public class RoleDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "post_id")
-    private Long postId;
-
-    @Column(name = "like_count")
-    private long likeCount;
+    private String name;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -37,15 +33,13 @@ public class PostStatDO {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static PostStatDO fromEntity(PostStatEntity fileEntity) {
-        return PostStatDO.builder().id(fileEntity.getId()).postId(fileEntity.getPostId())
-                .likeCount(fileEntity.getLikeCount()).createdAt(fileEntity.getCreatedAt())
-                .updatedAt(fileEntity.getUpdatedAt()).build();
+    public static RoleDo fromEntity(RoleEntity roleEntity) {
+        return RoleDo.builder().id(roleEntity.getId()).name(roleEntity.getName()).createdAt(roleEntity.getCreatedAt())
+                .updatedAt(roleEntity.getUpdatedAt()).build();
     }
 
-    public PostStatEntity toEntity() {
-        return PostStatEntity.builder().id(id).postId(postId).likeCount(likeCount).createdAt(createdAt)
-                .updatedAt(updatedAt).build();
+    public RoleEntity toEntity() {
+        return RoleEntity.builder().id(id).name(name).createdAt(createdAt).updatedAt(updatedAt).build();
     }
 
     @PrePersist

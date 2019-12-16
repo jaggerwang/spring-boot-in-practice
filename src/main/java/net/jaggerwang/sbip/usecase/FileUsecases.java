@@ -42,7 +42,7 @@ public class FileUsecases extends BaseUsecases {
         return fileEntity.get();
     }
 
-    public List<FileEntity> infos(List<Long> ids, boolean keepNull) {
+    public List<FileEntity> infos(List<Long> ids, Boolean keepNull) {
         var fileEntities = fileRepository.findAllById(ids);
 
         if (!keepNull) {

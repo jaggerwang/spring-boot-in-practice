@@ -57,12 +57,12 @@ public class MutationResolver extends BaseResolver implements GraphQLMutationRes
         return userUsecases.sendMobileVerifyCode(type, mobile);
     }
 
-    public boolean userFollow(Long userId) {
+    public Boolean userFollow(Long userId) {
         userUsecases.follow(loggedUserId(), userId);
         return true;
     }
 
-    public boolean userUnfollow(Long userId) {
+    public Boolean userUnfollow(Long userId) {
         userUsecases.unfollow(loggedUserId(), userId);
         return true;
     }
@@ -72,7 +72,7 @@ public class MutationResolver extends BaseResolver implements GraphQLMutationRes
         return postUsecases.publish(postInput);
     }
 
-    public boolean postDelete(Long id) {
+    public Boolean postDelete(Long id) {
         var postEntity = postUsecases.info(id);
         if (!loggedUserId().equals(postEntity.getUserId())) {
             throw new UsecaseException("无权删除");
@@ -82,12 +82,12 @@ public class MutationResolver extends BaseResolver implements GraphQLMutationRes
         return true;
     }
 
-    public boolean postLike(Long postId) {
+    public Boolean postLike(Long postId) {
         postUsecases.like(loggedUserId(), postId);
         return true;
     }
 
-    public boolean postUnlike(Long postId) {
+    public Boolean postUnlike(Long postId) {
         postUsecases.unlike(loggedUserId(), postId);
         return true;
     }

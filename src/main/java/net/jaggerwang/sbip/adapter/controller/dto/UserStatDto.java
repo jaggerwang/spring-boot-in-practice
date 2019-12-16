@@ -11,27 +11,27 @@ import net.jaggerwang.sbip.entity.UserStatEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserStatDTO {
+public class UserStatDto {
     private Long id;
 
     private Long userId;
 
-    private long postCount;
+    private Long postCount;
 
-    private long likeCount;
+    private Long likeCount;
 
-    private long followingCount;
+    private Long followingCount;
 
-    private long followerCount;
+    private Long followerCount;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    private UserDTO user;
+    private UserDto user;
 
-    public static UserStatDTO fromEntity(UserStatEntity userStatEntity) {
-        return UserStatDTO.builder().id(userStatEntity.getId()).userId(userStatEntity.getUserId())
+    public static UserStatDto fromEntity(UserStatEntity userStatEntity) {
+        return UserStatDto.builder().id(userStatEntity.getId()).userId(userStatEntity.getUserId())
                 .postCount(userStatEntity.getPostCount()).likeCount(userStatEntity.getLikeCount())
                 .followingCount(userStatEntity.getFollowingCount())
                 .followerCount(userStatEntity.getFollowerCount())

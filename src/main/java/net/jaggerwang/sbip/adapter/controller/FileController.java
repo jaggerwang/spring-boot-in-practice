@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.jaggerwang.sbip.adapter.controller.dto.JsonDTO;
+import net.jaggerwang.sbip.adapter.controller.dto.JsonDto;
 import net.jaggerwang.sbip.entity.FileEntity;
 
 import java.io.IOException;
@@ -19,8 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/file")
 public class FileController extends BaseController {
     @PostMapping("/upload")
-    public JsonDTO upload(
-            @RequestParam(required = false, defaultValue = "LOCAL") FileEntity.Region region,
+    public JsonDto upload(@RequestParam(required = false, defaultValue = "LOCAL") FileEntity.Region region,
             @RequestParam(required = false, defaultValue = "") String bucket,
             @RequestParam(required = false, defaultValue = "") String path,
             @RequestParam("file") List<MultipartFile> files) throws IOException {
@@ -28,24 +27,24 @@ public class FileController extends BaseController {
         for (var file : files) {
             var content = file.getBytes();
 
-            var meta = FileEntity.Meta.builder().name(file.getOriginalFilename())
-                    .size(file.getSize()).type(file.getContentType()).build();
-            var fileEntity = FileEntity.builder().userId(loggedUserId()).region(region)
-                    .bucket(bucket).meta(meta).build();
+            var meta = FileEntity.Meta.builder().name(file.getOriginalFilename()).size(file.getSize())
+                    .type(file.getContentType()).build();
+            var fileEntity = FileEntity.builder().userId(loggedUserId()).region(region).bucket(bucket).meta(meta)
+                    .build();
 
             fileEntity = fileUsecases.upload(path, content, fileEntity);
 
             fileEntities.add(fileEntity);
         }
 
-        return new JsonDTO().addDataEntry("files", fileEntities.stream()
-                .map(fileEntity -> fullFileDTO(fileEntity)).collect(Collectors.toList()));
+        return new JsonDto().addDataEntry("files",
+                fileEntities.stream().map(fileEntity -> fullFileDto(fileEntity)).collect(Collectors.toList()));
     }
 
     @GetMapping("/info")
-    public JsonDTO info(@RequestParam Long id) {
+    public JsonDto info(@RequestParam Long id) {
         var fileEntity = fileUsecases.info(id);
 
-        return new JsonDTO().addDataEntry("file", fullFileDTO(fileEntity));
+        return new JsonDto().addDataEntry("file", fullFileDto(fileEntity));
     }
 }

@@ -15,7 +15,7 @@ public class PostStatEntity {
 
     private Long postId;
 
-    private long likeCount;
+    private Long likeCount;
 
     private LocalDateTime createdAt;
 

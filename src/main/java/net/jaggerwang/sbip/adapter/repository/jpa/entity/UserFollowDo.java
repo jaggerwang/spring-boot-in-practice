@@ -13,22 +13,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "UserRole")
-@Table(name = "user_role")
+@Entity(name = "UserFollow")
+@Table(name = "user_follow")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRoleDO {
+public class UserFollowDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "following_id")
+    private Long followingId;
 
-    @Column(name = "role_id")
-    private Long roleId;
+    @Column(name = "follower_id")
+    private Long followerId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

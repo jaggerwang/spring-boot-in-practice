@@ -3,83 +3,125 @@ package net.jaggerwang.sbip.adapter.repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.querydsl.jpa.impl.JPAQuery;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import net.jaggerwang.sbip.adapter.repository.jpa.UserRepo;
-import net.jaggerwang.sbip.adapter.repository.jpa.entity.UserDO;
-import net.jaggerwang.sbip.adapter.repository.jpa.entity.UserFollowDO;
-import net.jaggerwang.sbip.adapter.repository.jpa.UserFollowRepo;
+import net.jaggerwang.sbip.adapter.repository.jpa.UserJpaRepository;
+import net.jaggerwang.sbip.adapter.repository.jpa.entity.QUserDo;
+import net.jaggerwang.sbip.adapter.repository.jpa.entity.QUserFollowDo;
+import net.jaggerwang.sbip.adapter.repository.jpa.entity.UserDo;
+import net.jaggerwang.sbip.adapter.repository.jpa.entity.UserFollowDo;
+import net.jaggerwang.sbip.adapter.repository.jpa.UserFollowJpaRepository;
 import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
 
 @Component
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl extends BaseRepositoryImpl implements UserRepository {
     @Autowired
-    private UserRepo userRepo;
+    private UserJpaRepository userJpaRepo;
 
     @Autowired
-    private UserFollowRepo userFollowRepo;
+    private UserFollowJpaRepository userFollowJpaRepo;
 
     @Override
     public UserEntity save(UserEntity userEntity) {
-        return userRepo.save(UserDO.fromEntity(userEntity)).toEntity();
+        return userJpaRepo.save(UserDo.fromEntity(userEntity)).toEntity();
     }
 
     @Override
     public Optional<UserEntity> findById(Long id) {
-        return userRepo.findById(id).map(userDO -> userDO.toEntity());
+        return userJpaRepo.findById(id).map(userDo -> userDo.toEntity());
     }
 
     @Override
     public Optional<UserEntity> findByUsername(String username) {
-        return userRepo.findByUsername(username).map(userDO -> userDO.toEntity());
+        return userJpaRepo.findByUsername(username).map(userDo -> userDo.toEntity());
     }
 
     @Override
     public Optional<UserEntity> findByEmail(String email) {
-        return userRepo.findByEmail(email).map(userDO -> userDO.toEntity());
+        return userJpaRepo.findByEmail(email).map(userDo -> userDo.toEntity());
     }
 
     @Override
     public Optional<UserEntity> findByMobile(String mobile) {
-        return userRepo.findByMobile(mobile).map(userDO -> userDO.toEntity());
+        return userJpaRepo.findByMobile(mobile).map(userDo -> userDo.toEntity());
     }
 
     @Override
     public void follow(Long followerId, Long followingId) {
-        userFollowRepo.save(
-                UserFollowDO.builder().followerId(followerId).followingId(followingId).build());
+        userFollowJpaRepo.save(UserFollowDo.builder().followerId(followerId).followingId(followingId).build());
     }
 
     @Override
     public void unfollow(Long followerId, Long followingId) {
-        userFollowRepo.deleteByFollowerIdAndFollowingId(followerId, followerId);
+        userFollowJpaRepo.deleteByFollowerIdAndFollowingId(followerId, followingId);
+    }
+
+    private JPAQuery<UserDo> followingQuery(Long followerId) {
+        var user = QUserDo.userDo;
+        var userFollow = QUserFollowDo.userFollowDo;
+        var query = jpaQueryFactory.selectFrom(user).join(userFollow).on(user.id.eq(userFollow.followingId));
+        if (followerId != null) {
+            query.where(userFollow.followerId.eq(followerId));
+        }
+        return query;
     }
 
     @Override
     public List<UserEntity> following(Long followerId, Long limit, Long offset) {
-        return userRepo.following(followerId, limit, offset).stream()
-                .map(userDO -> userDO.toEntity()).collect(Collectors.toList());
+        var query = followingQuery(followerId);
+        var userFollow = QUserFollowDo.userFollowDo;
+        query.orderBy(userFollow.createdAt.desc());
+        if (limit != null) {
+            query.limit(limit);
+        }
+        if (offset != null) {
+            query.offset(offset);
+        }
+
+        return query.fetch().stream().map(userDo -> userDo.toEntity()).collect(Collectors.toList());
     }
 
     @Override
     public Long followingCount(Long followerId) {
-        return userRepo.followingCount(followerId);
+        return followingQuery(followerId).fetchCount();
+    }
+
+    private JPAQuery<UserDo> followerQuery(Long followingId) {
+        var user = QUserDo.userDo;
+        var userFollow = QUserFollowDo.userFollowDo;
+        var query = jpaQueryFactory.selectFrom(user).join(userFollow).on(user.id.eq(userFollow.followerId));
+        if (followingId != null) {
+            query.where(userFollow.followingId.eq(followingId));
+        }
+        return query;
     }
 
     @Override
     public List<UserEntity> follower(Long followingId, Long limit, Long offset) {
-        return userRepo.follower(followingId, limit, offset).stream()
-                .map(userDO -> userDO.toEntity()).collect(Collectors.toList());
+        var query = followerQuery(followingId);
+        var userFollow = QUserFollowDo.userFollowDo;
+        query.orderBy(userFollow.createdAt.desc());
+        if (limit != null) {
+            query.limit(limit);
+        }
+        if (offset != null) {
+            query.offset(offset);
+        }
+
+        return query.fetch().stream().map(userDo -> userDo.toEntity()).collect(Collectors.toList());
     }
 
     @Override
     public Long followerCount(Long followingId) {
-        return userRepo.followerCount(followingId);
+        return followerQuery(followingId).fetchCount();
     }
 
     @Override
-    public boolean isFollowing(Long followerId, Long followingId) {
-        return userFollowRepo.isFollowing(followerId, followingId);
+    public Boolean isFollowing(Long followerId, Long followingId) {
+        return userFollowJpaRepo.existsByFollowerIdAndFollowingId(followerId, followingId);
     }
 }

@@ -32,7 +32,7 @@ public class PostResolver extends BaseResolver implements GraphQLResolver<PostEn
         return statUsecases.postStatInfoByPostId(postEntity.getId());
     }
 
-    public boolean liked(PostEntity postEntity) {
+    public Boolean liked(PostEntity postEntity) {
         return postUsecases.isLiked(loggedUserId(), postEntity.getId());
     }
 }

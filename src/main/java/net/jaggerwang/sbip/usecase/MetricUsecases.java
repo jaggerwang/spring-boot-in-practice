@@ -10,7 +10,7 @@ public class MetricUsecases extends BaseUsecases {
         this.metricRepository = metricRepository;
     }
 
-    public long increment(String name, long amount) {
+    public Long increment(String name, Long amount) {
         return metricRepository.increment(name, amount);
     }
 

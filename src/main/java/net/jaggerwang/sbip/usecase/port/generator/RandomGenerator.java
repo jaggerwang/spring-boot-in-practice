@@ -1,13 +1,13 @@
 package net.jaggerwang.sbip.usecase.port.generator;
 
 public interface RandomGenerator {
-    String randomString(int len, String chars);
+    String randomString(Integer len, String chars);
 
-    String letterString(int len, Boolean upper);
+    String letterString(Integer len, Boolean upper);
 
-    String letterNumberString(int len, Boolean upper);
+    String letterNumberString(Integer len, Boolean upper);
 
-    String numberString(int len);
+    String numberString(Integer len);
 
-    String hexString(int len, boolean upper);
+    String hexString(Integer len, Boolean upper);
 }

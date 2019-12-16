@@ -80,7 +80,7 @@ public class UserUsecases extends BaseUsecases {
         return mobileVerifyCodes.get(key);
     }
 
-    public boolean checkMobileVerifyCode(String type, String mobile, String code) {
+    public Boolean checkMobileVerifyCode(String type, String mobile, String code) {
         var key = String.format("%s_%s", type, mobile);
         if (code != null && code.equals(mobileVerifyCodes.get(key))) {
             mobileVerifyCodes.remove(key);
@@ -99,7 +99,7 @@ public class UserUsecases extends BaseUsecases {
         return emailVerifyCodes.get(key);
     }
 
-    public boolean checkEmailVerifyCode(String type, String email, String code) {
+    public Boolean checkEmailVerifyCode(String type, String email, String code) {
         var key = String.format("%s_%s", type, email);
         if (code != null && code == emailVerifyCodes.get(key)) {
             emailVerifyCodes.remove(key);
@@ -169,7 +169,7 @@ public class UserUsecases extends BaseUsecases {
         return userRepository.followerCount(followingId);
     }
 
-    public boolean isFollowing(Long followerId, Long followingId) {
+    public Boolean isFollowing(Long followerId, Long followingId) {
         return userRepository.isFollowing(followerId, followingId);
     }
 }

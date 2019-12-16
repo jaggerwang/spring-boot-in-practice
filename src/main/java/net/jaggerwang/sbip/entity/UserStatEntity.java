@@ -15,13 +15,13 @@ public class UserStatEntity {
 
     private Long userId;
 
-    private long postCount;
+    private Long postCount;
 
-    private long likeCount;
+    private Long likeCount;
 
-    private long followingCount;
+    private Long followingCount;
 
-    private long followerCount;
+    private Long followerCount;
 
     private LocalDateTime createdAt;
 

@@ -9,7 +9,7 @@ import net.jaggerwang.sbip.entity.MetricEntity;
 import net.jaggerwang.sbip.usecase.port.repository.MetricRepository;
 
 @Component
-public class MetricRepositoryImpl implements MetricRepository {
+public class MetricRepositoryImpl extends BaseRepositoryImpl implements MetricRepository {
     private static final String key = "sbip:metric";
 
     @Autowired
@@ -19,7 +19,7 @@ public class MetricRepositoryImpl implements MetricRepository {
     private RedisTemplate<String, Serializable> redisTemplate;
 
     @Override
-    public long increment(String hashKey, long delta) {
+    public Long increment(String hashKey, Long delta) {
         return redisTemplate.opsForHash().increment(key, hashKey, delta);
     }
 
