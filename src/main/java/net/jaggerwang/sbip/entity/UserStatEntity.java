@@ -15,13 +15,17 @@ public class UserStatEntity {
 
     private Long userId;
 
-    private Long postCount;
+    @Builder.Default
+    private Long postCount = 0L;
 
-    private Long likeCount;
+    @Builder.Default
+    private Long likeCount = 0L;
 
-    private Long followingCount;
+    @Builder.Default
+    private Long followingCount = 0L;
 
-    private Long followerCount;
+    @Builder.Default
+    private Long followerCount = 0L;
 
     private LocalDateTime createdAt;
 

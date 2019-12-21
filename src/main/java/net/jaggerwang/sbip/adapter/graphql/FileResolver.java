@@ -2,8 +2,8 @@ package net.jaggerwang.sbip.adapter.graphql;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 import com.coxautodev.graphql.tools.GraphQLResolver;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.entity.FileEntity;
@@ -27,7 +27,7 @@ public class FileResolver extends BaseResolver implements GraphQLResolver<FileEn
         }
     }
 
-    public String thumbs(FileEntity fileEntity) {
+    public Map<FileEntity.ThumbType, String> thumbs(FileEntity fileEntity) {
         if (fileEntity.getMeta().getType().startsWith("image/")) {
             var thumbs = new HashMap<FileEntity.ThumbType, String>();
             var u = url(fileEntity);
@@ -38,12 +38,7 @@ public class FileResolver extends BaseResolver implements GraphQLResolver<FileEn
             thumbs.put(FileEntity.ThumbType.LARGE,
                     String.format("%s?process=%s", u, "thumb-large"));
             thumbs.put(FileEntity.ThumbType.HUGE, String.format("%s?process=%s", u, "thumb-huge"));
-
-            try {
-                return objectMapper.writeValueAsString(thumbs);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
+            return thumbs;
         } else {
             return null;
         }

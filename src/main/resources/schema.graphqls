@@ -1,3 +1,5 @@
+scalar JSON
+
 type Query {
     userLogout: User!
     userLogged: User
@@ -79,7 +81,7 @@ type File {
     updatedAt: String
     user: User!
     url: String!
-    thumbs: String
+    thumbs: JSON
 }
 
 type FileMeta {
