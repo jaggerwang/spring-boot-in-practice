@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.jaggerwang.sbip.adapter.controller.dto.JsonDto;
+import net.jaggerwang.sbip.adapter.controller.dto.RootDto;
 import net.jaggerwang.sbip.entity.FileEntity;
 
 import java.io.IOException;
@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/file")
-public class FileController extends BaseController {
+public class FileController extends AbstractController {
     @PostMapping("/upload")
-    public JsonDto upload(@RequestParam(required = false, defaultValue = "LOCAL") FileEntity.Region region,
+    public RootDto upload(@RequestParam(required = false, defaultValue = "LOCAL") FileEntity.Region region,
             @RequestParam(required = false, defaultValue = "") String bucket,
             @RequestParam(required = false, defaultValue = "") String path,
             @RequestParam("file") List<MultipartFile> files) throws IOException {
@@ -37,14 +37,14 @@ public class FileController extends BaseController {
             fileEntities.add(fileEntity);
         }
 
-        return new JsonDto().addDataEntry("files",
+        return new RootDto().addDataEntry("files",
                 fileEntities.stream().map(fileEntity -> fullFileDto(fileEntity)).collect(Collectors.toList()));
     }
 
     @GetMapping("/info")
-    public JsonDto info(@RequestParam Long id) {
+    public RootDto info(@RequestParam Long id) {
         var fileEntity = fileUsecases.info(id);
 
-        return new JsonDto().addDataEntry("file", fullFileDto(fileEntity));
+        return new RootDto().addDataEntry("file", fullFileDto(fileEntity));
     }
 }

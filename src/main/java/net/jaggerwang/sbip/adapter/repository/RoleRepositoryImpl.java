@@ -3,8 +3,7 @@ package net.jaggerwang.sbip.adapter.repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.adapter.repository.jpa.RoleJpaRepository;
 import net.jaggerwang.sbip.adapter.repository.jpa.entity.QRoleDo;
@@ -15,9 +14,14 @@ import net.jaggerwang.sbip.entity.RoleEntity;
 import net.jaggerwang.sbip.usecase.port.repository.RoleRepository;
 
 @Component
-public class RoleRepositoryImpl extends BaseRepositoryImpl implements RoleRepository {
-    @Autowired
+public class RoleRepositoryImpl implements RoleRepository {
+    private JPAQueryFactory jpaQueryFactory;
     private RoleJpaRepository roleJpaRepo;
+
+    public RoleRepositoryImpl(JPAQueryFactory jpaQueryFactory, RoleJpaRepository roleJpaRepo) {
+        this.jpaQueryFactory = jpaQueryFactory;
+        this.roleJpaRepo = roleJpaRepo;
+    }
 
     @Override
     public RoleEntity save(RoleEntity roleEntity) {
@@ -48,8 +52,8 @@ public class RoleRepositoryImpl extends BaseRepositoryImpl implements RoleReposi
         var role = QRoleDo.roleDo;
         var userRole = QUserRoleDo.userRoleDo;
         var user = QUserDo.userDo;
-        var query = jpaQueryFactory.selectFrom(role).join(userRole).on(role.id.eq(userRole.roleId)).join(user)
-                .on(user.id.eq(userRole.userId)).where(user.username.eq(username));
+        var query = jpaQueryFactory.selectFrom(role).join(userRole).on(role.id.eq(userRole.roleId))
+                .join(user).on(user.id.eq(userRole.userId)).where(user.username.eq(username));
         return query.fetch().stream().map(roleDo -> roleDo.toEntity()).collect(Collectors.toList());
     }
 }

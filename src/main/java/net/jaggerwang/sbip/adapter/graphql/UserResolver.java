@@ -8,7 +8,7 @@ import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.entity.UserStatEntity;
 
 @Component
-public class UserResolver extends BaseResolver implements GraphQLResolver<UserEntity> {
+public class UserResolver extends AbstractResolver implements GraphQLResolver<UserEntity> {
     public Optional<FileEntity> avatar(UserEntity userEntity) {
         if (userEntity.getAvatarId() == null) {
             return Optional.empty();

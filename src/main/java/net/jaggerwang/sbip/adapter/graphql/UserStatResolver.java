@@ -6,7 +6,7 @@ import net.jaggerwang.sbip.entity.UserStatEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 
 @Component
-public class UserStatResolver extends BaseResolver implements GraphQLResolver<UserStatEntity> {
+public class UserStatResolver extends AbstractResolver implements GraphQLResolver<UserStatEntity> {
     public UserEntity user(UserStatEntity userStatEntity) {
         return userUsecases.info(userStatEntity.getUserId());
     }

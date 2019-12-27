@@ -109,10 +109,10 @@ Change configs in `src/main/resources/application.yml` as your need, especially 
 #### Start server
 
 ```bash
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
-The running main class is `net.jaggerwang.sbip.api.SbipApplication`. When first start server, it will auto create tables, we use flyway to migrate database changes. You can disable auto create with argument `--spring.flyway.enabled=false`, and then run with argument `--app.type=db_migration` to manually create tables.
+The running main class is `net.jaggerwang.sbip.api.SbipApplication`. When first start server, it will auto create tables, we use flyway to migrate database changes.
 
 After started, the api service's endpoint is `http://localhost:8080/`.
 
@@ -132,4 +132,54 @@ docker-compose up -d
 
 It will start server, mysql and redis services. If you need to stop and remove all services, you can execute command `docker-compose down`. The container port `8080` is mapping to the same port on local host, so the endpoint of api service is same as previous.
 
-When first start mysql, it will auto create a database `sbip` and a user `sbip` with password `123446` to access this database. The password of `root` user is also `123456`.
+When first start mysql, it will auto create a database `sbip` and a user `sbip` with password `123456` to access this database. The password of `root` user is also `123456`.
+
+## How to test
+
+By default it will not run any tests when run maven `test` or `package` task. You can specify corresponding system property to enable each test.
+
+### By local environment
+
+#### Test usecases
+
+```bash
+./mvnw -Dtest.usecase.enabled=true test
+```
+
+Usecase tests are unit tests, it not dependent on outside mysql or redis service.
+
+#### Test repositories
+
+```bash
+./mvnw -Dtest.repository.enabled=true test
+```
+
+Repository tests are integration tests, but it use an embedded H2 database, so there is no need to start a mysql service.
+
+#### Test apis
+
+```bash
+./mvnw -Dtest.api.enabled=true test
+```
+
+Api tests are integration tests, it do need mysql and redis service. You can config the services for testing in `application-test.yml`.
+                                                                    
+> Be careful, api integration tests will init and clean data in database, do not connect to the real using database.
+
+### By docker compose
+
+To reduce the work of preparing test environment, especilly api integration tests, we can use docker container to run tests. You can use the following commands to run corresponding tests in docker container.
+
+```bash
+docker-compose -p spring-boot-in-practice-usecase-test -f docker-compose.usecase-test.yml up
+docker-compose -p spring-boot-in-practice-repository-test -f docker-compose.repository-test.yml up
+docker-compose -p spring-boot-in-practice-api-test -f docker-compose.api-test.yml up
+```
+
+After running tests, you can run the following commands to get the corresponding test result. The result of `0` means success, others means failure. 
+
+```bash
+docker inspect spring-boot-in-practice-usecase-test_server_1 --format='{{.State.ExitCode}}'
+docker inspect spring-boot-in-practice-repository-test_server_1 --format='{{.State.ExitCode}}'
+docker inspect spring-boot-in-practice-api-test_server_1 --format='{{.State.ExitCode}}'
+```

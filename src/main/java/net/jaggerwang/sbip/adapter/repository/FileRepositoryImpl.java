@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.adapter.repository.jpa.FileJpaRepository;
 import net.jaggerwang.sbip.adapter.repository.jpa.entity.FileDo;
@@ -13,9 +12,12 @@ import net.jaggerwang.sbip.entity.FileEntity;
 import net.jaggerwang.sbip.usecase.port.repository.FileRepository;
 
 @Component
-public class FileRepositoryImpl extends BaseRepositoryImpl implements FileRepository {
-    @Autowired
+public class FileRepositoryImpl implements FileRepository {
     private FileJpaRepository fileJpaRepo;
+
+    public FileRepositoryImpl(FileJpaRepository fileJpaRepo) {
+        this.fileJpaRepo = fileJpaRepo;
+    }
 
     @Override
     public FileEntity save(FileEntity fileEntity) {

@@ -5,8 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.querydsl.jpa.impl.JPAQuery;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.adapter.repository.jpa.UserJpaRepository;
 import net.jaggerwang.sbip.adapter.repository.jpa.entity.QUserDo;
@@ -18,12 +17,17 @@ import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
 
 @Component
-public class UserRepositoryImpl extends BaseRepositoryImpl implements UserRepository {
-    @Autowired
+public class UserRepositoryImpl implements UserRepository {
+    private JPAQueryFactory jpaQueryFactory;
     private UserJpaRepository userJpaRepo;
-
-    @Autowired
     private UserFollowJpaRepository userFollowJpaRepo;
+
+    public UserRepositoryImpl(JPAQueryFactory jpaQueryFactory, UserJpaRepository userJpaRepo,
+            UserFollowJpaRepository userFollowJpaRepo) {
+        this.jpaQueryFactory = jpaQueryFactory;
+        this.userJpaRepo = userJpaRepo;
+        this.userFollowJpaRepo = userFollowJpaRepo;
+    }
 
     @Override
     public UserEntity save(UserEntity userEntity) {
@@ -52,7 +56,8 @@ public class UserRepositoryImpl extends BaseRepositoryImpl implements UserReposi
 
     @Override
     public void follow(Long followerId, Long followingId) {
-        userFollowJpaRepo.save(UserFollowDo.builder().followerId(followerId).followingId(followingId).build());
+        userFollowJpaRepo.save(
+                UserFollowDo.builder().followerId(followerId).followingId(followingId).build());
     }
 
     @Override
@@ -63,7 +68,8 @@ public class UserRepositoryImpl extends BaseRepositoryImpl implements UserReposi
     private JPAQuery<UserDo> followingQuery(Long followerId) {
         var user = QUserDo.userDo;
         var userFollow = QUserFollowDo.userFollowDo;
-        var query = jpaQueryFactory.selectFrom(user).join(userFollow).on(user.id.eq(userFollow.followingId));
+        var query = jpaQueryFactory.selectFrom(user).join(userFollow)
+                .on(user.id.eq(userFollow.followingId));
         if (followerId != null) {
             query.where(userFollow.followerId.eq(followerId));
         }
@@ -93,7 +99,8 @@ public class UserRepositoryImpl extends BaseRepositoryImpl implements UserReposi
     private JPAQuery<UserDo> followerQuery(Long followingId) {
         var user = QUserDo.userDo;
         var userFollow = QUserFollowDo.userFollowDo;
-        var query = jpaQueryFactory.selectFrom(user).join(userFollow).on(user.id.eq(userFollow.followerId));
+        var query = jpaQueryFactory.selectFrom(user).join(userFollow)
+                .on(user.id.eq(userFollow.followerId));
         if (followingId != null) {
             query.where(userFollow.followingId.eq(followingId));
         }

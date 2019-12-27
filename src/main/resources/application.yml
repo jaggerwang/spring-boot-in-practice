@@ -29,6 +29,7 @@ spring:
         password: ${SBIP_SPRING_DATASOURCE_PASSWORD:}
     flyway:
         enabled: true
+        locations: classpath:db/migration/{vendor}
         clean-disabled: true
         baseline-on-migrate: true
     redis:
@@ -63,6 +64,8 @@ graphql:
         exception-handlers-enabled: true
         tracingEnabled: false
         actuator-metrics: true
+        websocket:
+            enabled: false
 
 graphiql:
     enabled: true

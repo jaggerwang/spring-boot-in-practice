@@ -1,0 +1,1 @@
+INSERT INTO `user` (`id`, `username`, `password`) VALUES (1, 'jaggerwang', '$2a$10$UOCgLxghU78h4UvlZcjvIup9YrETv6tGmRjPPpMTQ.EjSRUsJzJJS');

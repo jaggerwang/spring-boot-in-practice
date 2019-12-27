@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: ${SBIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/sbip_test}
+    username: ${SBIP_SPRING_DATASOURCE_USERNAME:root}
+    password: ${SBIP_SPRING_DATASOURCE_PASSWORD:}
+  redis:
+    host: ${SBIP_SPRING_REDIS_HOST:localhost}
+    port: ${SBIP_SPRING_REDIS_PORT:6379}
+    password: ${SBIP_SPRING_REDIS_PASSWORD:}
+    database: 1

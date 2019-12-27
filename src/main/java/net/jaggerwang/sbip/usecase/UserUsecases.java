@@ -9,13 +9,13 @@ import net.jaggerwang.sbip.usecase.port.encoder.PasswordEncoder;
 import net.jaggerwang.sbip.usecase.port.generator.RandomGenerator;
 import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
 
-public class UserUsecases extends BaseUsecases {
-    private static HashMap<String, String> mobileVerifyCodes = new HashMap<>();
-    private static HashMap<String, String> emailVerifyCodes = new HashMap<>();
+public class UserUsecases {
+    private final static HashMap<String, String> mobileVerifyCodes = new HashMap<>();
+    private final static HashMap<String, String> emailVerifyCodes = new HashMap<>();
 
-    private UserRepository userRepository;
-    private RandomGenerator randomGenerator;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RandomGenerator randomGenerator;
+    private final PasswordEncoder passwordEncoder;
 
     public UserUsecases(UserRepository userRepository, RandomGenerator randomGenerator,
             PasswordEncoder passwordEncoder) {

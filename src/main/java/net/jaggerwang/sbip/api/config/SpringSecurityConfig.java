@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import net.jaggerwang.sbip.adapter.controller.dto.JsonDto;
+import net.jaggerwang.sbip.adapter.controller.dto.RootDto;
 import net.jaggerwang.sbip.adapter.controller.dto.UserDto;
 import net.jaggerwang.sbip.api.security.JsonUsernamePasswordAuthenticationFilter;
 import net.jaggerwang.sbip.api.security.LoggedUser;
@@ -36,7 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    private void responseJson(HttpServletResponse response, HttpStatus status, JsonDto data) throws IOException {
+    private void responseJson(HttpServletResponse response, HttpStatus status, RootDto data) throws IOException {
         response.setStatus(status.value());
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(data));
@@ -47,13 +47,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
 
                 .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-                    responseJson(response, HttpStatus.UNAUTHORIZED, new JsonDto("unauthenticated", "未认证"));
+                    responseJson(response, HttpStatus.UNAUTHORIZED, new RootDto("unauthenticated", "未认证"));
                 }).accessDeniedHandler((request, response, accessDeniedException) -> {
-                    responseJson(response, HttpStatus.FORBIDDEN, new JsonDto("unauthorized", "未授权"));
+                    responseJson(response, HttpStatus.FORBIDDEN, new RootDto("unauthorized", "未授权"));
                 })
 
                 .and().logout().logoutSuccessHandler((request, response, authentication) -> {
-                    responseJson(response, HttpStatus.OK, new JsonDto());
+                    responseJson(response, HttpStatus.OK, new RootDto());
                 })
 
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -72,13 +72,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             var loggedUser = (LoggedUser) authentication.getPrincipal();
             var userEntity = userUsecases.info(loggedUser.getId());
 
-            responseJson(response, HttpStatus.OK, new JsonDto().addDataEntry("user", UserDto.fromEntity(userEntity)));
+            responseJson(response, HttpStatus.OK, new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity)));
         });
         authFilter.setAuthenticationFailureHandler((request, response, exception) -> {
             if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
-                responseJson(response, HttpStatus.OK, new JsonDto("fail", "用户名或密码错误"));
+                responseJson(response, HttpStatus.OK, new RootDto("fail", "用户名或密码错误"));
             } else {
-                responseJson(response, HttpStatus.INTERNAL_SERVER_ERROR, new JsonDto("fail", exception.toString()));
+                responseJson(response, HttpStatus.INTERNAL_SERVER_ERROR, new RootDto("fail", exception.toString()));
             }
         });
         return authFilter;

@@ -7,10 +7,9 @@ import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.port.repository.PostStatRepository;
 import net.jaggerwang.sbip.usecase.port.repository.UserStatRepository;
 
-public class StatUsecases extends BaseUsecases {
-    private UserStatRepository userStatRepository;
-
-    private PostStatRepository postStatRepository;
+public class StatUsecases {
+    private final UserStatRepository userStatRepository;
+    private final PostStatRepository postStatRepository;
 
     public StatUsecases(UserStatRepository userStatRepository,
             PostStatRepository postStatRepository) {

@@ -8,7 +8,7 @@ import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 
 @Component
-public class MutationResolver extends BaseResolver implements GraphQLMutationResolver {
+public class MutationResolver extends AbstractResolver implements GraphQLMutationResolver {
     @PermitALL
     public UserEntity userRegister(UserEntity userInput) {
         var userEntity = userUsecases.register(userInput);

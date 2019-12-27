@@ -5,8 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.querydsl.jpa.impl.JPAQuery;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.adapter.repository.jpa.PostJpaRepository;
 import net.jaggerwang.sbip.adapter.repository.jpa.entity.PostDo;
@@ -19,12 +18,17 @@ import net.jaggerwang.sbip.entity.PostEntity;
 import net.jaggerwang.sbip.usecase.port.repository.PostRepository;
 
 @Component
-public class PostRepositoryImpl extends BaseRepositoryImpl implements PostRepository {
-    @Autowired
+public class PostRepositoryImpl implements PostRepository {
+    private JPAQueryFactory jpaQueryFactory;
     private PostJpaRepository postJpaRepo;
-
-    @Autowired
     private PostLikeJpaRepository postLikeJpaRepo;
+
+    public PostRepositoryImpl(JPAQueryFactory jpaQueryFactory, PostJpaRepository postJpaRepo,
+            PostLikeJpaRepository postLikeJpaRepo) {
+        this.jpaQueryFactory = jpaQueryFactory;
+        this.postJpaRepo = postJpaRepo;
+        this.postLikeJpaRepo = postLikeJpaRepo;
+    }
 
     @Override
     public PostEntity save(PostEntity postEntity) {

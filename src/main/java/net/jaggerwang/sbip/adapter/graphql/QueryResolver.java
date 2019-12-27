@@ -12,7 +12,7 @@ import net.jaggerwang.sbip.entity.PostEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 
 @Component
-public class QueryResolver extends BaseResolver implements GraphQLQueryResolver {
+public class QueryResolver extends AbstractResolver implements GraphQLQueryResolver {
     public UserEntity userLogout() {
         var userEntity = userUsecases.info(loggedUserId());
 

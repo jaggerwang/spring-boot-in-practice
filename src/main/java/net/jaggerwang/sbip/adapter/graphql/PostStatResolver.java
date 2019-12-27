@@ -6,7 +6,7 @@ import net.jaggerwang.sbip.entity.PostStatEntity;
 import net.jaggerwang.sbip.entity.PostEntity;
 
 @Component
-public class PostStatResolver extends BaseResolver implements GraphQLResolver<PostStatEntity> {
+public class PostStatResolver extends AbstractResolver implements GraphQLResolver<PostStatEntity> {
     public PostEntity post(PostStatEntity postStatEntity) {
         return postUsecases.info(postStatEntity.getPostId());
     }

@@ -27,7 +27,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
 
         String username, password;
         try {
-            UserDto userDto = objectMapper.readValue(request.getInputStream(), UserDto.class);
+            var userDto = objectMapper.readValue(request.getInputStream(), UserDto.class);
             if (userDto.getUsername() != null) {
                 username = userDto.getUsername();
             } else if (userDto.getMobile() != null) {

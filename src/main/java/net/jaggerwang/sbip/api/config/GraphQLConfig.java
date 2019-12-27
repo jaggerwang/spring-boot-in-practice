@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import com.coxautodev.graphql.tools.SchemaParserOptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import graphql.Assert;
@@ -26,6 +27,8 @@ import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
 @Configuration
+@ConditionalOnProperty(name = "graphql.servlet.enabled", havingValue = "true",
+        matchIfMissing = true)
 public class GraphQLConfig {
     @Bean
     public SchemaParserOptions schemaParserOptions(ObjectMapper objectMapper) {

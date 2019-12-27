@@ -27,7 +27,7 @@ import net.jaggerwang.sbip.entity.PostStatEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.entity.UserStatEntity;
 
-abstract public class BaseController {
+abstract public class AbstractController {
     @Value("${storage.local.url-base}")
     protected String urlBase;
 
@@ -56,7 +56,8 @@ abstract public class BaseController {
     protected UserUsecases userUsecases;
 
     protected void loginUser(String username, String password) {
-        var auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        var auth = authManager
+                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
         var sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
     }
@@ -66,7 +67,8 @@ abstract public class BaseController {
     }
 
     protected Long loggedUserId() {
-        var loggedFile = (LoggedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var loggedFile =
+                (LoggedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return loggedFile.getId();
     }
 
@@ -120,10 +122,14 @@ abstract public class BaseController {
 
         if (fileDto.getMeta().getType().startsWith("image/")) {
             var thumbs = new HashMap<FileEntity.ThumbType, String>();
-            thumbs.put(FileEntity.ThumbType.SMALL, String.format("%s?process=%s", url, "thumb-small"));
-            thumbs.put(FileEntity.ThumbType.MIDDLE, String.format("%s?process=%s", url, "thumb-middle"));
-            thumbs.put(FileEntity.ThumbType.LARGE, String.format("%s?process=%s", url, "thumb-large"));
-            thumbs.put(FileEntity.ThumbType.HUGE, String.format("%s?process=%s", url, "thumb-huge"));
+            thumbs.put(FileEntity.ThumbType.SMALL,
+                    String.format("%s?process=%s", url, "thumb-small"));
+            thumbs.put(FileEntity.ThumbType.MIDDLE,
+                    String.format("%s?process=%s", url, "thumb-middle"));
+            thumbs.put(FileEntity.ThumbType.LARGE,
+                    String.format("%s?process=%s", url, "thumb-large"));
+            thumbs.put(FileEntity.ThumbType.HUGE,
+                    String.format("%s?process=%s", url, "thumb-huge"));
             fileDto.setThumbs(thumbs);
         }
 

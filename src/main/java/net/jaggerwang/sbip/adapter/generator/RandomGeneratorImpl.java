@@ -15,7 +15,7 @@ public class RandomGeneratorImpl implements RandomGenerator {
     static final SecureRandom random = new SecureRandom();
 
     @Override
-    public String randomString(Integer len, String chars) {
+    public String randomString(int len, String chars) {
         var sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
             sb.append(chars.charAt(random.nextInt(chars.length())));
@@ -24,7 +24,7 @@ public class RandomGeneratorImpl implements RandomGenerator {
     }
 
     @Override
-    public String letterString(Integer len, Boolean upper) {
+    public String letterString(int len, Boolean upper) {
         var chars = upperLetters + lowerLetters;
         if (upper != null) {
             chars = upper ? upperLetters : lowerLetters;
@@ -33,7 +33,7 @@ public class RandomGeneratorImpl implements RandomGenerator {
     }
 
     @Override
-    public String letterNumberString(Integer len, Boolean upper) {
+    public String letterNumberString(int len, Boolean upper) {
         var chars = upperLetters + lowerLetters;
         if (upper != null) {
             chars = upper ? upperLetters : lowerLetters;
@@ -43,12 +43,12 @@ public class RandomGeneratorImpl implements RandomGenerator {
     }
 
     @Override
-    public String numberString(Integer len) {
+    public String numberString(int len) {
         return randomString(len, numbers);
     }
 
     @Override
-    public String hexString(Integer len, Boolean upper) {
+    public String hexString(int len, Boolean upper) {
         var chars = upper ? upperHexChars : lowerHexChars;
         return randomString(len, chars);
     }

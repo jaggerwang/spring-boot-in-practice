@@ -10,7 +10,7 @@ import net.jaggerwang.sbip.entity.FileEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 
 @Component
-public class FileResolver extends BaseResolver implements GraphQLResolver<FileEntity> {
+public class FileResolver extends AbstractResolver implements GraphQLResolver<FileEntity> {
     @Value("${storage.local.url-base}")
     private String urlBase;
 

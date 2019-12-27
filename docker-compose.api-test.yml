@@ -1,0 +1,34 @@
+version: '3'
+services:
+  server:
+    image: maven:3-jdk-11
+    command: bash -c "cd /app && cp sources.list /etc/apt/ && cp settings.xml /root/.m2/ && mvn -Dtest.api.enabled=true test"
+    environment:
+      TZ: Asia/Shanghai
+      SBIP_DEBUG: 'false'
+      SBIP_LOGGING_LEVEL_REQUEST: INFO
+      SBIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/sbip
+      SBIP_SPRING_DATASOURCE_USERNAME: sbip
+      SBIP_SPRING_DATASOURCE_PASSWORD: 123456
+      SBIP_SPRING_REDIS_HOST: redis
+      SBIP_SPRING_REDIS_PORT: 6379
+      SBIP_SPRING_REDIS_PASSWORD:
+    volumes:
+      - ~/.m2:/root/.m2
+      - ./:/app
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:8.0
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: sbip
+      MYSQL_USER: sbip
+      MYSQL_PASSWORD: 123456
+  redis:
+    image: redis:5.0
+    environment:
+      TZ: Asia/Shanghai
+    

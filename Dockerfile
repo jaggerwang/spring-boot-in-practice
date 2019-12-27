@@ -8,7 +8,7 @@ COPY pom.xml .
 RUN mvn dependency:go-offline
 
 COPY . .
-RUN mvn -DskipTests package
+RUN mvn package
 
 FROM openjdk:11-jre
 COPY --from=build /app/target/spring-boot-in-practice-1.0.0-SNAPSHOT.jar /app.jar
