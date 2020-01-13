@@ -1,13 +1,13 @@
 package net.jaggerwang.sbip.adapter.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
-import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.entity.UserStatEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserStatResolver extends AbstractResolver implements GraphQLResolver<UserStatEntity> {
     public UserEntity user(UserStatEntity userStatEntity) {
-        return userUsecases.info(userStatEntity.getUserId());
+        return userUsecases.info(userStatEntity.getUserId()).get();
     }
 }

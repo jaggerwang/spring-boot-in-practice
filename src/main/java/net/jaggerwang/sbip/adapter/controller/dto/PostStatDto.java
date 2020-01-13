@@ -22,8 +22,6 @@ public class PostStatDto {
 
     private LocalDateTime updatedAt;
 
-    private PostDto post;
-
     public static PostStatDto fromEntity(PostStatEntity postStatEntity) {
         return PostStatDto.builder().id(postStatEntity.getId()).postId(postStatEntity.getPostId())
                 .likeCount(postStatEntity.getLikeCount()).createdAt(postStatEntity.getCreatedAt())

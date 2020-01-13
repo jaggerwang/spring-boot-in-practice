@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class CommonConfig {
 	@Bean
 	public ObjectMapper objectMapper() {

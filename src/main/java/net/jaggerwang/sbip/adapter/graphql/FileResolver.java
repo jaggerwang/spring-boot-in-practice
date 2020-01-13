@@ -4,18 +4,18 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import com.coxautodev.graphql.tools.GraphQLResolver;
+import net.jaggerwang.sbip.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.entity.FileEntity;
-import net.jaggerwang.sbip.entity.UserEntity;
 
 @Component
 public class FileResolver extends AbstractResolver implements GraphQLResolver<FileEntity> {
-    @Value("${storage.local.url-base}")
+    @Value("${file.base-url}")
     private String urlBase;
 
     public UserEntity user(FileEntity fileEntity) {
-        return userUsecases.info(fileEntity.getUserId());
+        return userUsecases.info(fileEntity.getUserId()).get();
     }
 
     public String url(FileEntity fileEntity) {

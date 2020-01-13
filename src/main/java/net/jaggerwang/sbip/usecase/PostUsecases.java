@@ -1,8 +1,9 @@
 package net.jaggerwang.sbip.usecase;
 
 import java.util.List;
+import java.util.Optional;
+
 import net.jaggerwang.sbip.entity.PostEntity;
-import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.port.repository.PostRepository;
 
 public class PostUsecases {
@@ -23,13 +24,8 @@ public class PostUsecases {
         postRepository.delete(id);
     }
 
-    public PostEntity info(Long id) {
-        var postEntity = postRepository.findById(id);
-        if (!postEntity.isPresent()) {
-            throw new NotFoundException("动态未找到");
-        }
-
-        return postEntity.get();
+    public Optional<PostEntity> info(Long id) {
+        return postRepository.findById(id);
     }
 
     public List<PostEntity> published(Long userId, Long limit, Long offset) {
@@ -48,6 +44,10 @@ public class PostUsecases {
         postRepository.unlike(userId, postId);
     }
 
+    public Boolean isLiked(Long userId, Long postId) {
+        return postRepository.isLiked(userId, postId);
+    }
+
     public List<PostEntity> liked(Long userId, Long limit, Long offset) {
         return postRepository.liked(userId, limit, offset);
     }
@@ -62,9 +62,5 @@ public class PostUsecases {
 
     public Long followingCount(Long userId) {
         return postRepository.followingCount(userId);
-    }
-
-    public Boolean isLiked(Long userId, Long postId) {
-        return postRepository.isLiked(userId, postId);
     }
 }

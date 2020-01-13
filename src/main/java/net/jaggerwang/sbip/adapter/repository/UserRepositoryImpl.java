@@ -80,7 +80,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<UserEntity> following(Long followerId, Long limit, Long offset) {
         var query = followingQuery(followerId);
         var userFollow = QUserFollowDo.userFollowDo;
-        query.orderBy(userFollow.createdAt.desc());
+        query.orderBy(userFollow.id.desc());
         if (limit != null) {
             query.limit(limit);
         }
@@ -111,7 +111,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<UserEntity> follower(Long followingId, Long limit, Long offset) {
         var query = followerQuery(followingId);
         var userFollow = QUserFollowDo.userFollowDo;
-        query.orderBy(userFollow.createdAt.desc());
+        query.orderBy(userFollow.id.desc());
         if (limit != null) {
             query.limit(limit);
         }

@@ -14,8 +14,6 @@ public class RootDto {
     private Map<String, Object> data;
 
     public RootDto(String code, String message, Map<String, Object> data) {
-        assert data != null;
-
         this.code = code;
         this.message = message;
         this.data = data;

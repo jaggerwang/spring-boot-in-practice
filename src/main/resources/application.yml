@@ -52,10 +52,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: 
-        - health
-        - info
-        - metrics
+        include: "*"
 
 graphql:
     servlet:
@@ -74,7 +71,6 @@ graphiql:
 voyager:
     enabled: true
 
-storage:
-    local:
-        upload-dir: ${SBIP_STORAGE_LOCAL_UPLOADDIR:/tmp}
-        url-base: ${SBIP_STORAGE_LOCAL_URLBASE:http://localhost:8080/files}
+file:
+    upload-dir: ${SBIP_FILE_UPLOAD_DIR:/tmp}
+    base-url: ${SBIP_FILE_BASE_URL:http://localhost:8080/files}

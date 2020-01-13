@@ -1,15 +1,18 @@
 package net.jaggerwang.sbip.adapter.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import org.springframework.stereotype.Component;
-import net.jaggerwang.sbip.api.security.annotation.PermitALL;
+import net.jaggerwang.sbip.api.security.annotation.PermitAll;
 import net.jaggerwang.sbip.entity.PostEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 
+import java.util.Optional;
+
 @Component
 public class MutationResolver extends AbstractResolver implements GraphQLMutationResolver {
-    @PermitALL
+    @PermitAll
     public UserEntity userRegister(UserEntity userInput) {
         var userEntity = userUsecases.register(userInput);
 
@@ -18,28 +21,30 @@ public class MutationResolver extends AbstractResolver implements GraphQLMutatio
         return userEntity;
     }
 
-    @PermitALL
+    @PermitAll
     public UserEntity userLogin(UserEntity userInput) {
-        String username = null;
-        UserEntity userEntity = null;
+        Optional<UserEntity> userEntity;
         if (userInput.getUsername() != null) {
-            username = userInput.getUsername();
-            userEntity = userUsecases.infoByUsername(username);
+            userEntity = userUsecases.infoByUsername(userInput.getUsername());
         } else if (userInput.getMobile() != null) {
-            username = userInput.getMobile();
-            userEntity = userUsecases.infoByMobile(username);
+            userEntity = userUsecases.infoByMobile(userInput.getMobile());
         } else if (userInput.getEmail() != null) {
-            username = userInput.getEmail();
-            userEntity = userUsecases.infoByEmail(username);
+            userEntity = userUsecases.infoByEmail(userInput.getEmail());
+        } else {
+            throw new UsecaseException("用户名、手机或邮箱不能都为空");
         }
+        if (userEntity.isEmpty()) {
+            throw new UsecaseException("用户名或密码错误");
+        }
+
         var password = userInput.getPassword();
-        if (username == null || password == null) {
-            throw new UsecaseException("用户名或密码不能为空");
+        if (password == null) {
+            throw new UsecaseException("密码不能为空");
         }
 
-        loginUser(username, password);
+        loginUser(userEntity.get().getUsername(), password);
 
-        return userEntity;
+        return userEntity.get();
     }
 
     public UserEntity userModify(UserEntity userInput, String code) {
@@ -74,7 +79,10 @@ public class MutationResolver extends AbstractResolver implements GraphQLMutatio
 
     public Boolean postDelete(Long id) {
         var postEntity = postUsecases.info(id);
-        if (!loggedUserId().equals(postEntity.getUserId())) {
+        if (postEntity.isEmpty()) {
+            throw new NotFoundException("动态未找到");
+        }
+        if (!loggedUserId().equals(postEntity.get().getUserId())) {
             throw new UsecaseException("无权删除");
         }
 

@@ -2,6 +2,8 @@ package net.jaggerwang.sbip.adapter.controller.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +23,8 @@ public class PostDto {
 
     private String text;
 
-    private List<Long> imageIds;
+    @Builder.Default
+    private List<Long> imageIds = List.of();
 
     private Long videoId;
 
@@ -31,7 +34,8 @@ public class PostDto {
 
     private UserDto user;
 
-    private List<FileDto> images;
+    @Builder.Default
+    private List<FileDto> images = List.of();
 
     private FileDto video;
 

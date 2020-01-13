@@ -5,18 +5,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import net.jaggerwang.sbip.adapter.controller.dto.RootDto;
-import net.jaggerwang.sbip.api.exception.UnauthenticatedException;
-import net.jaggerwang.sbip.api.exception.UnauthorizedException;
+import net.jaggerwang.sbip.usecase.exception.UnauthenticatedException;
+import net.jaggerwang.sbip.usecase.exception.UnauthorizedException;
 import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 
 @ControllerAdvice
-public class RestExceptionHandlers {
+public class RestExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RootDto> handle(Exception exception) {
         exception.printStackTrace();
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RootDto("fail", exception.toString()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new RootDto("fail", exception.toString()));
     }
 
     @ExceptionHandler(UsecaseException.class)
@@ -26,7 +27,8 @@ public class RestExceptionHandlers {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<RootDto> handle(NotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RootDto("not_found", exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new RootDto("not_found", exception.getMessage()));
     }
 
     @ExceptionHandler(UnauthenticatedException.class)
@@ -37,6 +39,7 @@ public class RestExceptionHandlers {
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<RootDto> handle(UnauthorizedException exception) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new RootDto("unauthorized", exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new RootDto("unauthorized", exception.getMessage()));
     }
 }

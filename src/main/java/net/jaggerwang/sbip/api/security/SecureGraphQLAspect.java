@@ -1,4 +1,4 @@
-package net.jaggerwang.sbip.api.security.aspect;
+package net.jaggerwang.sbip.api.security;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import net.jaggerwang.sbip.api.exception.UnauthenticatedException;
+import net.jaggerwang.sbip.usecase.exception.UnauthenticatedException;
 
 @Component
 @Aspect
@@ -16,7 +16,7 @@ public class SecureGraphQLAspect {
     @Before("allGraphQLResolverMethods() && isInApplication() && !isPermitAllMethod()")
     public void doSecurityCheck() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
             throw new UnauthenticatedException("未认证");
         }
     }
@@ -29,7 +29,7 @@ public class SecureGraphQLAspect {
     private void isInApplication() {
     }
 
-    @Pointcut("@annotation(net.jaggerwang.sbip.api.security.annotation.PermitALL)")
+    @Pointcut("@annotation(net.jaggerwang.sbip.api.security.annotation.PermitAll)")
     private void isPermitAllMethod() {
     }
 }

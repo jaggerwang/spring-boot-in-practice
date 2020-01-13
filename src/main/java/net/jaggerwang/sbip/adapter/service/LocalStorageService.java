@@ -13,7 +13,7 @@ import net.jaggerwang.sbip.usecase.port.service.StorageService;
 
 @Component
 public class LocalStorageService implements StorageService {
-    @Value("${storage.local.upload-dir}")
+    @Value("${file.upload-dir}")
     private String uploadDir;
 
     @Autowired

@@ -2,6 +2,7 @@ version: '3'
 services:
   server:
     image: spring-boot-in-practice
+    build: .
     environment:
       TZ: Asia/Shanghai
       SBIP_DEBUG: 'false'
@@ -14,8 +15,8 @@ services:
       SBIP_SPRING_REDIS_HOST: redis
       SBIP_SPRING_REDIS_PORT: 6379
       SBIP_SPRING_REDIS_PASSWORD:
-      SBIP_STORAGE_LOCAL_UPLOADDIR: /data/upload
-      SBIP_STORAGE_LOCAL_URLBASE: http://localhost:8080/files
+      SBIP_FILE_UPLOAD_DIR: /data/upload
+      SBIP_FILE_BASE_URL: http://localhost:8080/files
     ports:
       - 8080:8080
     volumes:

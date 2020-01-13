@@ -1,6 +1,8 @@
 package net.jaggerwang.sbip.adapter.generator;
 
 import java.security.SecureRandom;
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.usecase.port.generator.RandomGenerator;
 
@@ -24,19 +26,19 @@ public class RandomGeneratorImpl implements RandomGenerator {
     }
 
     @Override
-    public String letterString(int len, Boolean upper) {
+    public String letterString(int len, Optional<Boolean> upper) {
         var chars = upperLetters + lowerLetters;
-        if (upper != null) {
-            chars = upper ? upperLetters : lowerLetters;
+        if (upper.isPresent()) {
+            chars = upper.get() ? upperLetters : lowerLetters;
         }
         return randomString(len, chars);
     }
 
     @Override
-    public String letterNumberString(int len, Boolean upper) {
+    public String letterNumberString(int len, Optional<Boolean> upper) {
         var chars = upperLetters + lowerLetters;
-        if (upper != null) {
-            chars = upper ? upperLetters : lowerLetters;
+        if (upper.isPresent()) {
+            chars = upper.get() ? upperLetters : lowerLetters;
         }
         chars += numbers;
         return randomString(len, chars);

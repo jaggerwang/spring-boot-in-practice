@@ -13,6 +13,7 @@ This project can be used as a starter for spring boot api service development, s
 1. [GraphQL Java](https://github.com/graphql-java/graphql-java) Graphql for java
 1. [GraphQL Spring Boot Starters](https://github.com/graphql-java-kickstart/graphql-spring-boot) Graphql for spring boot
 1. [Flyway](https://flywaydb.org/) Database migration
+1. [Swagger](https://swagger.io/) Api documentation
 
 ## APIs
 
@@ -41,6 +42,8 @@ This project can be used as a starter for spring boot api service development, s
 | /post/following | GET | Posts of following users of someone |
 | /file/upload | POST | Upload file |
 | /file/info | GET | Get file meta info |
+
+This project uses [Swagger](https://swagger.io/) to auto generate api documentation. After started the api service, you can browse all apis at `http://localhost:8080/swagger-ui.html`.
 
 ### GraphQL
 
@@ -112,7 +115,7 @@ Change configs in `src/main/resources/application.yml` as your need, especially 
 ./mvnw spring-boot:run
 ```
 
-The running main class is `net.jaggerwang.sbip.api.SbipApplication`. When first start server, it will auto create tables, we use flyway to migrate database changes.
+The running main class is `net.jaggerwang.sbip.api.Application`. When first start server, it will auto create tables, we use flyway to migrate database changes.
 
 After started, the api service's endpoint is `http://localhost:8080/`.
 

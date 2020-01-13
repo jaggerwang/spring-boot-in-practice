@@ -14,8 +14,7 @@ public class UserResolver extends AbstractResolver implements GraphQLResolver<Us
             return Optional.empty();
         }
 
-        var fileEntity = fileUsecases.info(userEntity.getAvatarId());
-        return Optional.of(fileEntity);
+        return fileUsecases.info(userEntity.getAvatarId());
     }
 
     public UserStatEntity stat(UserEntity userEntity) {

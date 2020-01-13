@@ -3,36 +3,39 @@ package net.jaggerwang.sbip.adapter.graphql;
 import java.util.List;
 import java.util.Optional;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import org.springframework.stereotype.Component;
-import net.jaggerwang.sbip.api.security.annotation.PermitALL;
+import net.jaggerwang.sbip.api.security.annotation.PermitAll;
 import net.jaggerwang.sbip.entity.FileEntity;
 import net.jaggerwang.sbip.entity.PostEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 
 @Component
 public class QueryResolver extends AbstractResolver implements GraphQLQueryResolver {
+    @PermitAll
+    public Optional<UserEntity> userLogged() {
+        if (loggedUserId() == null) {
+            return null;
+        }
+
+        return userUsecases.info(loggedUserId());
+    }
+
     public UserEntity userLogout() {
         var userEntity = userUsecases.info(loggedUserId());
 
         logoutUser();
 
-        return userEntity;
-    }
-
-    @PermitALL
-    public Optional<UserEntity> userLogged() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(userUsecases.info(loggedUserId()));
+        return userEntity.get();
     }
 
     public UserEntity userInfo(Long id) {
-        return userUsecases.info(id);
+        var userEntity = userUsecases.info(id);
+        if (userEntity.isEmpty()) {
+            throw new NotFoundException("用户未找到");
+        }
+
+        return userEntity.get();
     }
 
     public List<UserEntity> userFollowing(Long userId, Long limit, Long offset) {
@@ -60,7 +63,12 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
     }
 
     public PostEntity postInfo(Long id) {
-        return postUsecases.info(id);
+        var postEntity = postUsecases.info(id);
+        if (postEntity.isEmpty()) {
+            throw new NotFoundException("动态未找到");
+        }
+
+        return postEntity.get();
     }
 
     public List<PostEntity> postPublished(Long userId, Long limit, Long offset) {
@@ -100,6 +108,11 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
     }
 
     public FileEntity fileInfo(Long id) {
-        return fileUsecases.info(id);
+        var fileEntity = fileUsecases.info(id);
+        if (fileEntity.isEmpty()) {
+            throw new NotFoundException("文件未找到");
+        }
+
+        return fileEntity.get();
     }
 }

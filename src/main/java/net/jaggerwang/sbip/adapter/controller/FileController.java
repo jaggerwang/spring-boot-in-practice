@@ -1,5 +1,8 @@
 package net.jaggerwang.sbip.adapter.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,23 +16,33 @@ import net.jaggerwang.sbip.entity.FileEntity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/file")
+@Api(tags = "File Apis")
 public class FileController extends AbstractController {
     @PostMapping("/upload")
-    public RootDto upload(@RequestParam(required = false, defaultValue = "LOCAL") FileEntity.Region region,
-            @RequestParam(required = false, defaultValue = "") String bucket,
-            @RequestParam(required = false, defaultValue = "") String path,
-            @RequestParam("file") List<MultipartFile> files) throws IOException {
+    @ApiOperation("Upload file")
+    public RootDto upload(@RequestParam(defaultValue = "LOCAL") FileEntity.Region region,
+                          @RequestParam(defaultValue = "") String bucket,
+                          @RequestParam(defaultValue = "") String path,
+                          @RequestParam("file") List<MultipartFile> files) throws IOException {
         var fileEntities = new ArrayList<FileEntity>();
         for (var file : files) {
             var content = file.getBytes();
 
-            var meta = FileEntity.Meta.builder().name(file.getOriginalFilename()).size(file.getSize())
-                    .type(file.getContentType()).build();
-            var fileEntity = FileEntity.builder().userId(loggedUserId()).region(region).bucket(bucket).meta(meta)
+            var meta = FileEntity.Meta.builder()
+                    .name(file.getOriginalFilename())
+                    .size(file.getSize())
+                    .type(file.getContentType())
+                    .build();
+            var fileEntity = FileEntity.builder()
+                    .userId(loggedUserId())
+                    .region(region)
+                    .bucket(bucket)
+                    .meta(meta)
                     .build();
 
             fileEntity = fileUsecases.upload(path, content, fileEntity);
@@ -38,13 +51,17 @@ public class FileController extends AbstractController {
         }
 
         return new RootDto().addDataEntry("files",
-                fileEntities.stream().map(fileEntity -> fullFileDto(fileEntity)).collect(Collectors.toList()));
+                fileEntities.stream().map(this::fullFileDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/info")
+    @ApiOperation("Get file info")
     public RootDto info(@RequestParam Long id) {
         var fileEntity = fileUsecases.info(id);
+        if (fileEntity.isEmpty()) {
+            throw new NotFoundException("文件未找到");
+        }
 
-        return new RootDto().addDataEntry("file", fullFileDto(fileEntity));
+        return new RootDto().addDataEntry("file", fullFileDto(fileEntity.get()));
     }
 }

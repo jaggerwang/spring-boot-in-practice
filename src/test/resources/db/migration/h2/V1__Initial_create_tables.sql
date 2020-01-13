@@ -1,102 +1,111 @@
-CREATE TABLE `file` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` bigint(20) NOT NULL COMMENT '上传者 ID',
-  `region` varchar(20) NOT NULL COMMENT '区域',
-  `bucket` varchar(20) NOT NULL COMMENT '桶',
-  `path` varchar(100) NOT NULL COMMENT '路径',
-  `meta` json NOT NULL COMMENT '元信息',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `file`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `user_id` bigint(20) NOT NULL COMMENT '上传者 ID',
+    `region` varchar(20) NOT NULL COMMENT '区域',
+    `bucket` varchar(20) NOT NULL COMMENT '桶',
+    `path` varchar(100) NOT NULL COMMENT '路径',
+    `meta` json NOT NULL COMMENT '元信息',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `file` IS '文件';
 
-CREATE TABLE `post` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` bigint(20) NOT NULL COMMENT '发布者 ID',
-  `type` varchar(20) NOT NULL COMMENT '类型',
-  `text` varchar(100) NOT NULL DEFAULT '' COMMENT '文本内容',
-  `image_ids` json DEFAULT NULL COMMENT '图片文件 ID 列表',
-  `video_id` bigint(20) DEFAULT NULL COMMENT '视频文件 ID',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `post`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `user_id` bigint(20) NOT NULL COMMENT '发布者 ID',
+    `type` varchar(20) NOT NULL COMMENT '类型',
+    `text` varchar(100) NOT NULL DEFAULT '' COMMENT '文本内容',
+    `image_ids` json DEFAULT NULL COMMENT '图片文件 ID 列表',
+    `video_id` bigint(20) DEFAULT NULL COMMENT '视频文件 ID',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `post` IS '动态';
 
-CREATE TABLE `post_like` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `post_id` bigint(20) NOT NULL COMMENT '动态 ID',
-  `user_id` bigint(20) NOT NULL COMMENT '点赞用户 ID',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `post_like`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `post_id` bigint(20) NOT NULL COMMENT '动态 ID',
+    `user_id` bigint(20) NOT NULL COMMENT '点赞用户 ID',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `post_like` IS '动态点赞';
 
-CREATE TABLE `post_stat` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `post_id` bigint(20) NOT NULL COMMENT '动态 ID',
-  `like_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '被喜欢次数',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `post_stat`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `post_id` bigint(20) NOT NULL COMMENT '动态 ID',
+    `like_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '被喜欢次数',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `post_stat` IS '动态统计';
 
-CREATE TABLE `role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(20) NOT NULL COMMENT '角色名',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `role`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `name` varchar(20) NOT NULL COMMENT '角色名',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `role` IS '角色';
 
-CREATE TABLE `user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `username` varchar(20) NOT NULL COMMENT '用户名',
-  `password` varchar(64) NOT NULL COMMENT '已加密的密码',
-  `mobile` char(11) DEFAULT NULL COMMENT '手机号',
-  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
-  `avatar_id` bigint(20) DEFAULT NULL COMMENT '头像文件 ID',
-  `intro` varchar(100) NOT NULL DEFAULT '' COMMENT '自我介绍',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `user`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `username` varchar(20) NOT NULL COMMENT '用户名',
+    `password` varchar(64) NOT NULL COMMENT '已加密的密码',
+    `mobile` char(11) DEFAULT NULL COMMENT '手机号',
+    `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+    `avatar_id` bigint(20) DEFAULT NULL COMMENT '头像文件 ID',
+    `intro` varchar(100) NOT NULL DEFAULT '' COMMENT '自我介绍',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `user` IS '用户';
 
-CREATE TABLE `user_follow` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `following_id` bigint(20) NOT NULL COMMENT '被关注用户 ID',
-  `follower_id` bigint(20) NOT NULL COMMENT '粉丝用户 ID',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `user_follow`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `following_id` bigint(20) NOT NULL COMMENT '被关注用户 ID',
+    `follower_id` bigint(20) NOT NULL COMMENT '粉丝用户 ID',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `user_follow` IS '用户关注';
 
-CREATE TABLE `user_role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
-  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `user_role`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
+    `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `user_role` IS '用户角色';
 
-CREATE TABLE `user_stat` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
-  `post_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '发布动态数',
-  `like_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '喜欢动态数',
-  `following_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '关注人数',
-  `follower_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '粉丝人数',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+CREATE TABLE `user_stat`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
+    `post_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '发布动态数',
+    `like_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '喜欢动态数',
+    `following_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '关注人数',
+    `follower_count` bigint(20) NOT NULL DEFAULT '0' COMMENT '粉丝人数',
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
 );
 COMMENT ON TABLE `user_stat` IS '用户统计';
 

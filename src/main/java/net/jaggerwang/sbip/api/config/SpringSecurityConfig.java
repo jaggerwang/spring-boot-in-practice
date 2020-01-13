@@ -3,7 +3,6 @@ package net.jaggerwang.sbip.api.config;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -25,11 +24,13 @@ import net.jaggerwang.sbip.usecase.UserUsecases;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
     private UserUsecases userUsecases;
+
+    public SpringSecurityConfig(ObjectMapper objectMapper, UserUsecases userUsecases) {
+        this.objectMapper = objectMapper;
+        this.userUsecases = userUsecases;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,24 +45,28 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-
-                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-                    responseJson(response, HttpStatus.UNAUTHORIZED, new RootDto("unauthenticated", "未认证"));
-                }).accessDeniedHandler((request, response, accessDeniedException) -> {
-                    responseJson(response, HttpStatus.FORBIDDEN, new RootDto("unauthorized", "未授权"));
-                })
-
-                .and().logout().logoutSuccessHandler((request, response, authentication) -> {
-                    responseJson(response, HttpStatus.OK, new RootDto());
-                })
-
-                .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
-
+        http
+                .csrf()
+                .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) ->
+                        responseJson(response, HttpStatus.UNAUTHORIZED, new RootDto("unauthenticated", "未认证")))
+                .accessDeniedHandler((request, response, accessDeniedException) ->
+                        responseJson(response, HttpStatus.FORBIDDEN, new RootDto("unauthorized", "未授权")))
+                .and()
+                .logout()
+                .logoutSuccessHandler((request, response, authentication) ->
+                        responseJson(response, HttpStatus.OK, new RootDto()))
+                .and()
+                .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/graphql", "/subscriptions", "/graphiql", "/voyager", "/vendor/**", "/actuator/**",
-                        "/files/**", "/user/register", "/user/login", "/user/logged")
-                .permitAll().anyRequest().authenticated();
+                .antMatchers("/", "/favicon.ico", "/csrf", "/vendor/**", "/webjars/**", "/actuator/**",
+                        "/graphql", "/subscriptions", "/graphiql", "/voyager", "/v2/api-docs",
+                        "/swagger-ui.html", "/swagger-resources/**", "/files/**", "/user/register",
+                        "/user/login", "/user/logged")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
     }
 
     @Bean
@@ -72,7 +77,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             var loggedUser = (LoggedUser) authentication.getPrincipal();
             var userEntity = userUsecases.info(loggedUser.getId());
 
-            responseJson(response, HttpStatus.OK, new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity)));
+            responseJson(response, HttpStatus.OK, new RootDto().addDataEntry("user", userEntity.map(UserDto::fromEntity).get()));
         });
         authFilter.setAuthenticationFailureHandler((request, response, exception) -> {
             if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {

@@ -2,6 +2,8 @@ package net.jaggerwang.sbip.usecase;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+
 import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
@@ -30,8 +32,12 @@ public class UserUsecases {
         }
 
         var user = UserEntity.builder().username(userEntity.getUsername())
-                .password(passwordEncoder.encode(userEntity.getPassword())).build();
+                .password(encodePassword(userEntity.getPassword())).build();
         return userRepository.save(user);
+    }
+
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
     public UserEntity modify(Long id, UserEntity userEntity) {
@@ -47,7 +53,7 @@ public class UserUsecases {
             user.setUsername(userEntity.getUsername());
         }
         if (userEntity.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+            user.setPassword(encodePassword(userEntity.getPassword()));
         }
         if (userEntity.getMobile() != null) {
             if (userRepository.findByMobile(userEntity.getMobile()).isPresent()) {
@@ -101,7 +107,7 @@ public class UserUsecases {
 
     public Boolean checkEmailVerifyCode(String type, String email, String code) {
         var key = String.format("%s_%s", type, email);
-        if (code != null && code == emailVerifyCodes.get(key)) {
+        if (code != null && code.equals(emailVerifyCodes.get(key))) {
             emailVerifyCodes.remove(key);
             return true;
         } else {
@@ -109,40 +115,20 @@ public class UserUsecases {
         }
     }
 
-    public UserEntity info(Long id) {
-        var userEntity = userRepository.findById(id);
-        if (!userEntity.isPresent()) {
-            throw new NotFoundException("用户未找到");
-        }
-
-        return userEntity.get();
+    public Optional<UserEntity> info(Long id) {
+        return userRepository.findById(id);
     }
 
-    public UserEntity infoByUsername(String username) {
-        var userEntity = userRepository.findByUsername(username);
-        if (!userEntity.isPresent()) {
-            throw new NotFoundException("用户未找到");
-        }
-
-        return userEntity.get();
+    public Optional<UserEntity> infoByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public UserEntity infoByMobile(String mobile) {
-        var userEntity = userRepository.findByMobile(mobile);
-        if (!userEntity.isPresent()) {
-            throw new NotFoundException("用户未找到");
-        }
-
-        return userEntity.get();
+    public Optional<UserEntity> infoByMobile(String mobile) {
+        return userRepository.findByMobile(mobile);
     }
 
-    public UserEntity infoByEmail(String email) {
-        var userEntity = userRepository.findByEmail(email);
-        if (!userEntity.isPresent()) {
-            throw new NotFoundException("用户未找到");
-        }
-
-        return userEntity.get();
+    public Optional<UserEntity> infoByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public void follow(Long followerId, Long followingId) {
@@ -151,6 +137,10 @@ public class UserUsecases {
 
     public void unfollow(Long followerId, Long followingId) {
         userRepository.unfollow(followerId, followingId);
+    }
+
+    public Boolean isFollowing(Long followerId, Long followingId) {
+        return userRepository.isFollowing(followerId, followingId);
     }
 
     public List<UserEntity> following(Long followerId, Long limit, Long offset) {
@@ -167,9 +157,5 @@ public class UserUsecases {
 
     public Long followerCount(Long followingId) {
         return userRepository.followerCount(followingId);
-    }
-
-    public Boolean isFollowing(Long followerId, Long followingId) {
-        return userRepository.isFollowing(followerId, followingId);
     }
 }

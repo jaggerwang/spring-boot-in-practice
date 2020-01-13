@@ -4,16 +4,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.sbip.adapter.controller.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import net.jaggerwang.sbip.adapter.controller.dto.FileDto;
-import net.jaggerwang.sbip.adapter.controller.dto.PostDto;
-import net.jaggerwang.sbip.adapter.controller.dto.PostStatDto;
-import net.jaggerwang.sbip.adapter.controller.dto.UserDto;
-import net.jaggerwang.sbip.adapter.controller.dto.UserStatDto;
 import net.jaggerwang.sbip.api.security.LoggedUser;
 import net.jaggerwang.sbip.usecase.AuthorityUsecases;
 import net.jaggerwang.sbip.usecase.FileUsecases;
@@ -23,12 +20,10 @@ import net.jaggerwang.sbip.usecase.StatUsecases;
 import net.jaggerwang.sbip.usecase.UserUsecases;
 import net.jaggerwang.sbip.entity.FileEntity;
 import net.jaggerwang.sbip.entity.PostEntity;
-import net.jaggerwang.sbip.entity.PostStatEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
-import net.jaggerwang.sbip.entity.UserStatEntity;
 
 abstract public class AbstractController {
-    @Value("${storage.local.url-base}")
+    @Value("${file.base-url}")
     protected String urlBase;
 
     @Autowired
@@ -67,16 +62,21 @@ abstract public class AbstractController {
     }
 
     protected Long loggedUserId() {
-        var loggedFile =
-                (LoggedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return loggedFile.getId();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+            return null;
+        }
+
+        var loggedUser = (LoggedUser) auth.getPrincipal();
+        return loggedUser.getId();
     }
 
     protected UserDto fullUserDto(UserEntity userEntity) {
         var userDto = UserDto.fromEntity(userEntity);
 
         if (userDto.getAvatarId() != null) {
-            userDto.setAvatar(fullFileDto(fileUsecases.info(userDto.getAvatarId())));
+            var avatar = fileUsecases.info(userDto.getAvatarId());
+            avatar.ifPresent(fileEntity -> userDto.setAvatar(fullFileDto(fileEntity)));
         }
 
         userDto.setStat(UserStatDto.fromEntity(statUsecases.userStatInfoByUserId(userDto.getId())));
@@ -91,15 +91,17 @@ abstract public class AbstractController {
     protected PostDto fullPostDto(PostEntity postEntity) {
         var postDto = PostDto.fromEntity(postEntity);
 
-        postDto.setUser(fullUserDto(userUsecases.info(postDto.getUserId())));
+        var user = userUsecases.info(postDto.getUserId());
+        user.ifPresent(userEntity -> postDto.setUser(fullUserDto(userEntity)));
 
-        if (postDto.getImageIds() != null && postDto.getImageIds().size() > 0) {
+        if (postDto.getImageIds().size() > 0) {
             postDto.setImages(fileUsecases.infos(postDto.getImageIds(), false).stream()
-                    .map(fileEntity -> fullFileDto(fileEntity)).collect(Collectors.toList()));
+                    .map(this::fullFileDto).collect(Collectors.toList()));
         }
 
         if (postDto.getVideoId() != null) {
-            postDto.setVideo(fullFileDto(fileUsecases.info(postDto.getVideoId())));
+            var video = fileUsecases.info(postDto.getVideoId());
+            video.ifPresent(fileEntity -> postDto.setVideo(fullFileDto(fileEntity)));
         }
 
         postDto.setStat(PostStatDto.fromEntity(statUsecases.postStatInfoByPostId(postDto.getId())));
@@ -134,21 +136,5 @@ abstract public class AbstractController {
         }
 
         return fileDto;
-    }
-
-    protected UserStatDto fullUserStatDto(UserStatEntity userStatEntity) {
-        var userStatDto = UserStatDto.fromEntity(userStatEntity);
-
-        userStatDto.setUser(fullUserDto(userUsecases.info(userStatDto.getUserId())));
-
-        return userStatDto;
-    }
-
-    protected PostStatDto fullPostStatDto(PostStatEntity postStatEntity) {
-        var postStatDto = PostStatDto.fromEntity(postStatEntity);
-
-        postStatDto.setPost(PostDto.fromEntity(postUsecases.info(postStatDto.getPostId())));
-
-        return postStatDto;
     }
 }

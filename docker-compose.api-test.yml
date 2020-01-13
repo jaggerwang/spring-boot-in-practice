@@ -1,6 +1,6 @@
 version: '3'
 services:
-  server:
+  test:
     image: maven:3-jdk-11
     command: bash -c "cd /app && cp sources.list /etc/apt/ && cp settings.xml /root/.m2/ && mvn -Dtest.api.enabled=true test"
     environment:

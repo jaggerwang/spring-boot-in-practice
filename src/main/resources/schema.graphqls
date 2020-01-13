@@ -1,8 +1,8 @@
 scalar JSON
 
 type Query {
-    userLogout: User!
     userLogged: User
+    userLogout: User!
     userInfo(id: Int!): User!
     userFollowing(userId: Int, limit: Int, offset: Int): [User!]!
     userFollowingCount(userId: Int): Int!
@@ -46,7 +46,7 @@ type User {
     avatar: File
     stat: UserStat!
     following: Boolean!
-} 
+}
 
 type Post {
     id: Int!

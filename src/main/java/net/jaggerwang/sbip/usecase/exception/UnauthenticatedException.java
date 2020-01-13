@@ -1,4 +1,4 @@
-package net.jaggerwang.sbip.api.exception;
+package net.jaggerwang.sbip.usecase.exception;
 
 
 public class UnauthenticatedException extends RuntimeException {

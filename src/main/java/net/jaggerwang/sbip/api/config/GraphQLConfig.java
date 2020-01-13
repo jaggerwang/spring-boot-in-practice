@@ -26,7 +26,7 @@ import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "graphql.servlet.enabled", havingValue = "true",
         matchIfMissing = true)
 public class GraphQLConfig {

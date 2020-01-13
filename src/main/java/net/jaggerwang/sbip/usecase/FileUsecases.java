@@ -2,9 +2,10 @@ package net.jaggerwang.sbip.usecase;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import net.jaggerwang.sbip.entity.FileEntity;
-import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 import net.jaggerwang.sbip.usecase.port.repository.FileRepository;
 import net.jaggerwang.sbip.usecase.port.service.StorageService;
@@ -32,20 +33,15 @@ public class FileUsecases {
         return fileRepository.save(file);
     }
 
-    public FileEntity info(Long id) {
-        var fileEntity = fileRepository.findById(id);
-        if (!fileEntity.isPresent()) {
-            throw new NotFoundException("文件未找到");
-        }
-
-        return fileEntity.get();
+    public Optional<FileEntity> info(Long id) {
+        return fileRepository.findById(id);
     }
 
     public List<FileEntity> infos(List<Long> ids, Boolean keepNull) {
         var fileEntities = fileRepository.findAllById(ids);
 
         if (!keepNull) {
-            fileEntities.removeIf(fileEntity -> fileEntity == null);
+            fileEntities.removeIf(Objects::isNull);
         }
 
         return fileEntities;

@@ -3,13 +3,13 @@ package net.jaggerwang.sbip.adapter.graphql;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import net.jaggerwang.sbip.api.exception.UnauthenticatedException;
-import net.jaggerwang.sbip.api.exception.UnauthorizedException;
+import net.jaggerwang.sbip.usecase.exception.UnauthenticatedException;
+import net.jaggerwang.sbip.usecase.exception.UnauthorizedException;
 import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 
 @Component
-public class GraphQLExceptionHandlers {
+public class GraphQLExceptionHandler {
     @ExceptionHandler(Exception.class)
     public CustomGraphQLError handle(Exception exception) {
         exception.printStackTrace();

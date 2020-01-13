@@ -1,6 +1,7 @@
 package net.jaggerwang.sbip.adapter.graphql;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,8 +52,12 @@ abstract public class AbstractResolver {
     }
 
     protected Long loggedUserId() {
-        var loggedFile =
-                (LoggedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return loggedFile.getId();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+            return null;
+        }
+
+        var loggedUser = (LoggedUser) auth.getPrincipal();
+        return loggedUser.getId();
     }
 }

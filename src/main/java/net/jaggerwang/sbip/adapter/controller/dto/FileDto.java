@@ -29,8 +29,6 @@ public class FileDto {
 
     private LocalDateTime updatedAt;
 
-    private UserDto user;
-
     private String url;
 
     private Map<FileEntity.ThumbType, String> thumbs;

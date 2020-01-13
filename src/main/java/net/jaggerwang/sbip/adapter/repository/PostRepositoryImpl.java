@@ -58,7 +58,7 @@ public class PostRepositoryImpl implements PostRepository {
     public List<PostEntity> published(Long userId, Long limit, Long offset) {
         var query = publishedQuery(userId);
         var post = QPostDo.postDo;
-        query.orderBy(post.createdAt.desc());
+        query.orderBy(post.id.desc());
         if (limit != null) {
             query.limit(limit);
         }
@@ -98,7 +98,7 @@ public class PostRepositoryImpl implements PostRepository {
     public List<PostEntity> liked(Long userId, Long limit, Long offset) {
         var query = likedQuery(userId);
         var postLike = QPostLikeDo.postLikeDo;
-        query.orderBy(postLike.createdAt.desc());
+        query.orderBy(postLike.id.desc());
         if (limit != null) {
             query.limit(limit);
         }
@@ -125,9 +125,8 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<PostEntity> following(Long userId, Long limit, Long beforeId, Long afterId) {
         var query = followingQuery(userId);
-        var userFollow = QUserFollowDo.userFollowDo;
-        query.orderBy(userFollow.createdAt.desc());
         var post = QPostDo.postDo;
+        query.orderBy(post.id.desc());
         if (limit != null) {
             query.limit(limit);
         }

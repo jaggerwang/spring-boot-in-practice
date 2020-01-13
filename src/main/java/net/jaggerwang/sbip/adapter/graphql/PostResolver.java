@@ -12,7 +12,7 @@ import net.jaggerwang.sbip.entity.UserEntity;
 @Component
 public class PostResolver extends AbstractResolver implements GraphQLResolver<PostEntity> {
     public UserEntity user(PostEntity postEntity) {
-        return userUsecases.info(postEntity.getUserId());
+        return userUsecases.info(postEntity.getUserId()).get();
     }
 
     public List<FileEntity> images(PostEntity postEntity) {
@@ -24,8 +24,7 @@ public class PostResolver extends AbstractResolver implements GraphQLResolver<Po
             return Optional.empty();
         }
 
-        var fileEntity = fileUsecases.info(postEntity.getVideoId());
-        return Optional.of(fileEntity);
+        return fileUsecases.info(postEntity.getVideoId());
     }
 
     public PostStatEntity stat(PostEntity postEntity) {

@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = "net.jaggerwang.sbip")
-public class SbipApplication {
+public class Application {
 	public static void main(String[] args) {
-		SpringApplication.run(SbipApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }

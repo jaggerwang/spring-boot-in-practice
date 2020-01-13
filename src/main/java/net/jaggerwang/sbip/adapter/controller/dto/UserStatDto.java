@@ -28,8 +28,6 @@ public class UserStatDto {
 
     private LocalDateTime updatedAt;
 
-    private UserDto user;
-
     public static UserStatDto fromEntity(UserStatEntity userStatEntity) {
         return UserStatDto.builder().id(userStatEntity.getId()).userId(userStatEntity.getUserId())
                 .postCount(userStatEntity.getPostCount()).likeCount(userStatEntity.getLikeCount())
