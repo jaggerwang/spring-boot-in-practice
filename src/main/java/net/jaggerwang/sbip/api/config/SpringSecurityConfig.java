@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import net.jaggerwang.sbip.adapter.controller.dto.RootDto;
 import net.jaggerwang.sbip.adapter.controller.dto.UserDto;
 import net.jaggerwang.sbip.api.security.JsonUsernamePasswordAuthenticationFilter;
@@ -46,52 +45,57 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) ->
-                        responseJson(response, HttpStatus.UNAUTHORIZED, new RootDto("unauthenticated", "未认证")))
-                .accessDeniedHandler((request, response, accessDeniedException) ->
-                        responseJson(response, HttpStatus.FORBIDDEN, new RootDto("unauthorized", "未授权")))
-                .and()
-                .logout()
-                .logoutSuccessHandler((request, response, authentication) ->
-                        responseJson(response, HttpStatus.OK, new RootDto()))
-                .and()
-                .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
-                .antMatchers("/", "/favicon.ico", "/csrf", "/vendor/**", "/webjars/**", "/actuator/**",
-                        "/graphql", "/subscriptions", "/graphiql", "/voyager", "/v2/api-docs",
-                        "/swagger-ui.html", "/swagger-resources/**", "/files/**", "/user/register",
-                        "/user/login", "/user/logged")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
+                .csrf(csrf -> csrf.disable())
+                .addFilter(authFilter())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) ->
+                                responseJson(response, HttpStatus.UNAUTHORIZED,
+                                        new RootDto("unauthenticated", "未认证")))
+                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                                responseJson(response, HttpStatus.FORBIDDEN,
+                                        new RootDto("unauthorized", "未授权")))
+                )
+                .logout(logout -> logout
+                        .logoutSuccessHandler((request, response, authentication) ->
+                                responseJson(response, HttpStatus.OK, new RootDto()))
+                )
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .antMatchers("/", "/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
+                                "/actuator/**", "/graphql", "/subscriptions", "/graphiql",
+                                "/voyager", "/v2/api-docs", "/swagger-ui.html", "/swagger-resources/**",
+                                "/files/**", "/user/register", "/user/login", "/user/logged")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                );
+    }
+
+    // Avoid to using `authenticationManager` as method name, as it is already defined in super class.
+    @Bean
+    public AuthenticationManager authManager() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
     public JsonUsernamePasswordAuthenticationFilter authFilter() throws Exception {
         var authFilter = new JsonUsernamePasswordAuthenticationFilter();
-        authFilter.setAuthenticationManager(authenticationManagerBean());
+        authFilter.setAuthenticationManager(authManager());
         authFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
             var loggedUser = (LoggedUser) authentication.getPrincipal();
             var userEntity = userUsecases.info(loggedUser.getId());
 
-            responseJson(response, HttpStatus.OK, new RootDto().addDataEntry("user", userEntity.map(UserDto::fromEntity).get()));
+            responseJson(response, HttpStatus.OK,
+                    new RootDto().addDataEntry("user", userEntity.map(UserDto::fromEntity).get()));
         });
         authFilter.setAuthenticationFailureHandler((request, response, exception) -> {
-            if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
+            if (exception instanceof UsernameNotFoundException
+                    || exception instanceof BadCredentialsException) {
                 responseJson(response, HttpStatus.OK, new RootDto("fail", "用户名或密码错误"));
             } else {
-                responseJson(response, HttpStatus.INTERNAL_SERVER_ERROR, new RootDto("fail", exception.toString()));
+                responseJson(response, HttpStatus.INTERNAL_SERVER_ERROR,
+                        new RootDto("fail", exception.toString()));
             }
         });
         return authFilter;
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 }
