@@ -55,21 +55,7 @@ management:
         include: "*"
 
 graphql:
-    servlet:
-        enabled: true
-        mapping: /graphql
-        exception-handlers-enabled: true
-        tracingEnabled: false
-        actuator-metrics: true
-        websocket:
-            enabled: false
-
-graphiql:
-    enabled: true
-    mapping: /graphiql
-
-voyager:
-    enabled: true
+  url: /graphql
 
 file:
     upload-dir: ${SBIP_FILE_UPLOAD_DIR:/tmp}

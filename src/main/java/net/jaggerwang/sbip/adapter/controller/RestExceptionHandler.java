@@ -12,12 +12,12 @@ import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<RootDto> handle(Exception exception) {
-        exception.printStackTrace();
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<RootDto> handle(Throwable throwable) {
+        throwable.printStackTrace();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new RootDto("fail", exception.toString()));
+                .body(new RootDto("fail", throwable.toString()));
     }
 
     @ExceptionHandler(UsecaseException.class)

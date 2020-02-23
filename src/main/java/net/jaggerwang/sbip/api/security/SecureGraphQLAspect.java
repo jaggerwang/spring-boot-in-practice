@@ -13,7 +13,7 @@ import net.jaggerwang.sbip.usecase.exception.UnauthenticatedException;
 @Aspect
 @Order(1)
 public class SecureGraphQLAspect {
-    @Before("allGraphQLResolverMethods() && isInApplication() && !isPermitAllMethod()")
+    @Before("allDataFetchers() && isInApplication() && !isPermitAll()")
     public void doSecurityCheck() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
@@ -21,8 +21,8 @@ public class SecureGraphQLAspect {
         }
     }
 
-    @Pointcut("target(com.coxautodev.graphql.tools.GraphQLResolver)")
-    private void allGraphQLResolverMethods() {
+    @Pointcut("target(graphql.schema.DataFetcher)")
+    private void allDataFetchers() {
     }
 
     @Pointcut("within(net.jaggerwang.sbip.adapter.graphql..*)")
@@ -30,6 +30,6 @@ public class SecureGraphQLAspect {
     }
 
     @Pointcut("@annotation(net.jaggerwang.sbip.api.security.annotation.PermitAll)")
-    private void isPermitAllMethod() {
+    private void isPermitAll() {
     }
 }

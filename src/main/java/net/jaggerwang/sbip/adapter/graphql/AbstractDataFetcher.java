@@ -1,5 +1,6 @@
 package net.jaggerwang.sbip.adapter.graphql;
 
+import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,8 +15,12 @@ import net.jaggerwang.sbip.usecase.PostUsecase;
 import net.jaggerwang.sbip.usecase.StatUsecase;
 import net.jaggerwang.sbip.usecase.UserUsecase;
 
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
-abstract public class AbstractResolver {
+
+abstract public class AbstractDataFetcher {
     @Autowired
     protected ObjectMapper objectMapper;
 
@@ -59,5 +64,21 @@ abstract public class AbstractResolver {
 
         var loggedUser = (LoggedUser) auth.getPrincipal();
         return loggedUser.getId();
+    }
+
+    public Map<String, DataFetcher> toMap() {
+        var dataFetchers = new HashMap<String, DataFetcher>();
+        var methods = this.getClass().getDeclaredMethods();
+        for (var method: methods) {
+            if (Modifier.isPublic(method.getModifiers()) &&
+                    method.getReturnType().equals(DataFetcher.class)) {
+                try {
+                    dataFetchers.put(method.getName(), (DataFetcher) method.invoke(this));
+                } catch (ReflectiveOperationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return dataFetchers;
     }
 }
