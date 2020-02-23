@@ -5,10 +5,10 @@ import java.util.List;
 import net.jaggerwang.sbip.entity.RoleEntity;
 import net.jaggerwang.sbip.usecase.port.repository.RoleRepository;
 
-public class AuthorityUsecases {
+public class AuthorityUsecase {
     private final RoleRepository roleRepository;
 
-    public AuthorityUsecases(RoleRepository roleRepository) {
+    public AuthorityUsecase(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 

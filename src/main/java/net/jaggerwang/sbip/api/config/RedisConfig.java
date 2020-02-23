@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 @Configuration(proxyBeanMethods = false)
-public class SpringDataRedisConfig {
+public class RedisConfig {
     @Bean
     public RedisTemplate<String, Serializable> redisTemplate(
             LettuceConnectionFactory connectionFactory) {

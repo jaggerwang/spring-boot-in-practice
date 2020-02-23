@@ -16,7 +16,6 @@ import net.jaggerwang.sbip.entity.FileEntity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -45,7 +44,7 @@ public class FileController extends AbstractController {
                     .meta(meta)
                     .build();
 
-            fileEntity = fileUsecases.upload(path, content, fileEntity);
+            fileEntity = fileUsecase.upload(path, content, fileEntity);
 
             fileEntities.add(fileEntity);
         }
@@ -57,7 +56,7 @@ public class FileController extends AbstractController {
     @GetMapping("/info")
     @ApiOperation("Get file info")
     public RootDto info(@RequestParam Long id) {
-        var fileEntity = fileUsecases.info(id);
+        var fileEntity = fileUsecase.info(id);
         if (fileEntity.isEmpty()) {
             throw new NotFoundException("文件未找到");
         }

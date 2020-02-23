@@ -17,7 +17,7 @@ import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
 @ExtendWith(SpringExtension.class)
 @EnabledIfSystemProperty(named = "test.usecase.enabled", matches = "true")
 public class UserUsecaseTests {
-    private UserUsecases userUsecases;
+    private UserUsecase userUsecase;
 
     @MockBean
     private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class UserUsecaseTests {
 
     @BeforeEach
     void setUp() {
-        userUsecases = new UserUsecases(userRepository, randomGenerator, passwordEncoder);
+        userUsecase = new UserUsecase(userRepository, randomGenerator, passwordEncoder);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class UserUsecaseTests {
                 .password(passwordEncoder.encode(userEntity.getPassword())).build();
         given(userRepository.save(any(UserEntity.class))).willReturn(savedUser);
 
-        var registeredUser = userUsecases.register(userEntity);
+        var registeredUser = userUsecase.register(userEntity);
         assertThat(registeredUser).hasFieldOrPropertyWithValue("username", userEntity.getUsername())
                 .hasFieldOrPropertyWithValue("password",
                         passwordEncoder.encode(userEntity.getPassword()));

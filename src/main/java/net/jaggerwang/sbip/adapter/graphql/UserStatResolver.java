@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserStatResolver extends AbstractResolver implements GraphQLResolver<UserStatEntity> {
     public UserEntity user(UserStatEntity userStatEntity) {
-        return userUsecases.info(userStatEntity.getUserId()).get();
+        return userUsecase.info(userStatEntity.getUserId()).get();
     }
 }

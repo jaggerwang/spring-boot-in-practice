@@ -15,7 +15,7 @@ public class MetricController extends AbstractController {
     @GetMapping("/info")
     @ApiOperation("Get metric info")
     public RootDto info() {
-        var metric = metricUsecases.info();
+        var metric = metricUsecase.info();
 
         return new RootDto().addDataEntry("metric", MetricDto.fromEntity(metric));
     }

@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration(proxyBeanMethods = false)
 @EntityScan("net.jaggerwang.sbip.adapter.repository.jpa.entity")
 @EnableJpaRepositories("net.jaggerwang.sbip.adapter.repository.jpa")
-public class SpringDataJpaConfig {
+public class JpaConfig {
     @PersistenceContext
     private EntityManager entityManager;
 

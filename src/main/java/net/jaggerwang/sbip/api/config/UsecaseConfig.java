@@ -2,12 +2,12 @@ package net.jaggerwang.sbip.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import net.jaggerwang.sbip.usecase.UserUsecases;
-import net.jaggerwang.sbip.usecase.AuthorityUsecases;
-import net.jaggerwang.sbip.usecase.FileUsecases;
-import net.jaggerwang.sbip.usecase.MetricUsecases;
-import net.jaggerwang.sbip.usecase.PostUsecases;
-import net.jaggerwang.sbip.usecase.StatUsecases;
+import net.jaggerwang.sbip.usecase.UserUsecase;
+import net.jaggerwang.sbip.usecase.AuthorityUsecase;
+import net.jaggerwang.sbip.usecase.FileUsecase;
+import net.jaggerwang.sbip.usecase.MetricUsecase;
+import net.jaggerwang.sbip.usecase.PostUsecase;
+import net.jaggerwang.sbip.usecase.StatUsecase;
 import net.jaggerwang.sbip.usecase.port.encoder.PasswordEncoder;
 import net.jaggerwang.sbip.usecase.port.generator.RandomGenerator;
 import net.jaggerwang.sbip.usecase.port.repository.RoleRepository;
@@ -22,34 +22,34 @@ import net.jaggerwang.sbip.usecase.port.service.StorageService;
 @Configuration
 public class UsecaseConfig {
 	@Bean
-	public UserUsecases userUsecases(UserRepository userRepository, RandomGenerator randomGenerator,
-			PasswordEncoder digestEncoder) {
-		return new UserUsecases(userRepository, randomGenerator, digestEncoder);
+	public UserUsecase userUsecase(UserRepository userRepository, RandomGenerator randomGenerator,
+								   PasswordEncoder digestEncoder) {
+		return new UserUsecase(userRepository, randomGenerator, digestEncoder);
 	}
 
 	@Bean
-	public PostUsecases postUsecases(PostRepository postRepository) {
-		return new PostUsecases(postRepository);
+	public PostUsecase postUsecase(PostRepository postRepository) {
+		return new PostUsecase(postRepository);
 	}
 
 	@Bean
-	public FileUsecases fileUsecases(FileRepository fileRepository, StorageService storageService) {
-		return new FileUsecases(fileRepository, storageService);
+	public FileUsecase fileUsecase(FileRepository fileRepository, StorageService storageService) {
+		return new FileUsecase(fileRepository, storageService);
 	}
 
 	@Bean
-	public StatUsecases statUsecases(UserStatRepository userStatRepository,
-			PostStatRepository postStatRepository) {
-		return new StatUsecases(userStatRepository, postStatRepository);
+	public StatUsecase statUsecase(UserStatRepository userStatRepository,
+								   PostStatRepository postStatRepository) {
+		return new StatUsecase(userStatRepository, postStatRepository);
 	}
 
 	@Bean
-	public AuthorityUsecases authorityUsecases(RoleRepository roleRepository) {
-		return new AuthorityUsecases(roleRepository);
+	public AuthorityUsecase authorityUsecase(RoleRepository roleRepository) {
+		return new AuthorityUsecase(roleRepository);
 	}
 
 	@Bean
-	public MetricUsecases metricUsecases(MetricRepository metricRepository) {
-		return new MetricUsecases(metricRepository);
+	public MetricUsecase metricUsecase(MetricRepository metricRepository) {
+		return new MetricUsecase(metricRepository);
 	}
 }

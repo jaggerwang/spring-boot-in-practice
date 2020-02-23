@@ -18,17 +18,17 @@ import net.jaggerwang.sbip.adapter.controller.dto.RootDto;
 import net.jaggerwang.sbip.adapter.controller.dto.UserDto;
 import net.jaggerwang.sbip.api.security.JsonUsernamePasswordAuthenticationFilter;
 import net.jaggerwang.sbip.api.security.LoggedUser;
-import net.jaggerwang.sbip.usecase.UserUsecases;
+import net.jaggerwang.sbip.usecase.UserUsecase;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
-public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private ObjectMapper objectMapper;
-    private UserUsecases userUsecases;
+    private UserUsecase userUsecase;
 
-    public SpringSecurityConfig(ObjectMapper objectMapper, UserUsecases userUsecases) {
+    public SecurityConfig(ObjectMapper objectMapper, UserUsecase userUsecase) {
         this.objectMapper = objectMapper;
-        this.userUsecases = userUsecases;
+        this.userUsecase = userUsecase;
     }
 
     @Bean
@@ -82,7 +82,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         authFilter.setAuthenticationManager(authManager());
         authFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
             var loggedUser = (LoggedUser) authentication.getPrincipal();
-            var userEntity = userUsecases.info(loggedUser.getId());
+            var userEntity = userUsecase.info(loggedUser.getId());
 
             responseJson(response, HttpStatus.OK,
                     new RootDto().addDataEntry("user", userEntity.map(UserDto::fromEntity).get()));

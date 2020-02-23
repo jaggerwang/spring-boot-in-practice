@@ -7,12 +7,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.sbip.api.security.LoggedUser;
-import net.jaggerwang.sbip.usecase.AuthorityUsecases;
-import net.jaggerwang.sbip.usecase.FileUsecases;
-import net.jaggerwang.sbip.usecase.MetricUsecases;
-import net.jaggerwang.sbip.usecase.PostUsecases;
-import net.jaggerwang.sbip.usecase.StatUsecases;
-import net.jaggerwang.sbip.usecase.UserUsecases;
+import net.jaggerwang.sbip.usecase.AuthorityUsecase;
+import net.jaggerwang.sbip.usecase.FileUsecase;
+import net.jaggerwang.sbip.usecase.MetricUsecase;
+import net.jaggerwang.sbip.usecase.PostUsecase;
+import net.jaggerwang.sbip.usecase.StatUsecase;
+import net.jaggerwang.sbip.usecase.UserUsecase;
 
 
 abstract public class AbstractResolver {
@@ -23,22 +23,22 @@ abstract public class AbstractResolver {
     protected AuthenticationManager authManager;
 
     @Autowired
-    protected AuthorityUsecases authorityUsecases;
+    protected AuthorityUsecase authorityUsecase;
 
     @Autowired
-    protected FileUsecases fileUsecases;
+    protected FileUsecase fileUsecase;
 
     @Autowired
-    protected MetricUsecases metricUsecases;
+    protected MetricUsecase metricUsecase;
 
     @Autowired
-    protected PostUsecases postUsecases;
+    protected PostUsecase postUsecase;
 
     @Autowired
-    protected StatUsecases statUsecases;
+    protected StatUsecase statUsecase;
 
     @Autowired
-    protected UserUsecases userUsecases;
+    protected UserUsecase userUsecase;
 
     protected void loginUser(String username, String password) {
         var auth = authManager

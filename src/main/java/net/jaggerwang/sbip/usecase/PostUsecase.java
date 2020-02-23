@@ -6,10 +6,10 @@ import java.util.Optional;
 import net.jaggerwang.sbip.entity.PostEntity;
 import net.jaggerwang.sbip.usecase.port.repository.PostRepository;
 
-public class PostUsecases {
+public class PostUsecase {
     private final PostRepository postRepository;
 
-    public PostUsecases(PostRepository postRepository) {
+    public PostUsecase(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

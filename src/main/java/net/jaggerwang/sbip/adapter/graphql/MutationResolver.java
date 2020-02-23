@@ -14,7 +14,7 @@ import java.util.Optional;
 public class MutationResolver extends AbstractResolver implements GraphQLMutationResolver {
     @PermitAll
     public UserEntity userRegister(UserEntity userInput) {
-        var userEntity = userUsecases.register(userInput);
+        var userEntity = userUsecase.register(userInput);
 
         loginUser(userInput.getUsername(), userInput.getPassword());
 
@@ -25,11 +25,11 @@ public class MutationResolver extends AbstractResolver implements GraphQLMutatio
     public UserEntity userLogin(UserEntity userInput) {
         Optional<UserEntity> userEntity;
         if (userInput.getUsername() != null) {
-            userEntity = userUsecases.infoByUsername(userInput.getUsername());
+            userEntity = userUsecase.infoByUsername(userInput.getUsername());
         } else if (userInput.getMobile() != null) {
-            userEntity = userUsecases.infoByMobile(userInput.getMobile());
+            userEntity = userUsecase.infoByMobile(userInput.getMobile());
         } else if (userInput.getEmail() != null) {
-            userEntity = userUsecases.infoByEmail(userInput.getEmail());
+            userEntity = userUsecase.infoByEmail(userInput.getEmail());
         } else {
             throw new UsecaseException("用户名、手机或邮箱不能都为空");
         }
@@ -49,36 +49,36 @@ public class MutationResolver extends AbstractResolver implements GraphQLMutatio
 
     public UserEntity userModify(UserEntity userInput, String code) {
         if ((userInput.getMobile() != null
-                && !userUsecases.checkMobileVerifyCode("modify", userInput.getMobile(), code))
-                || userInput.getEmail() != null && !userUsecases.checkEmailVerifyCode("modify",
+                && !userUsecase.checkMobileVerifyCode("modify", userInput.getMobile(), code))
+                || userInput.getEmail() != null && !userUsecase.checkEmailVerifyCode("modify",
                         userInput.getEmail(), code)) {
             throw new UsecaseException("验证码错误");
         }
 
-        return userUsecases.modify(loggedUserId(), userInput);
+        return userUsecase.modify(loggedUserId(), userInput);
     }
 
     public String userSendMobileVerifyCode(String type, String mobile) {
-        return userUsecases.sendMobileVerifyCode(type, mobile);
+        return userUsecase.sendMobileVerifyCode(type, mobile);
     }
 
     public Boolean userFollow(Long userId) {
-        userUsecases.follow(loggedUserId(), userId);
+        userUsecase.follow(loggedUserId(), userId);
         return true;
     }
 
     public Boolean userUnfollow(Long userId) {
-        userUsecases.unfollow(loggedUserId(), userId);
+        userUsecase.unfollow(loggedUserId(), userId);
         return true;
     }
 
     public PostEntity postPublish(PostEntity postInput) {
         postInput.setUserId(loggedUserId());
-        return postUsecases.publish(postInput);
+        return postUsecase.publish(postInput);
     }
 
     public Boolean postDelete(Long id) {
-        var postEntity = postUsecases.info(id);
+        var postEntity = postUsecase.info(id);
         if (postEntity.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
@@ -86,17 +86,17 @@ public class MutationResolver extends AbstractResolver implements GraphQLMutatio
             throw new UsecaseException("无权删除");
         }
 
-        postUsecases.delete(id);
+        postUsecase.delete(id);
         return true;
     }
 
     public Boolean postLike(Long postId) {
-        postUsecases.like(loggedUserId(), postId);
+        postUsecase.like(loggedUserId(), postId);
         return true;
     }
 
     public Boolean postUnlike(Long postId) {
-        postUsecases.unlike(loggedUserId(), postId);
+        postUsecase.unlike(loggedUserId(), postId);
         return true;
     }
 }

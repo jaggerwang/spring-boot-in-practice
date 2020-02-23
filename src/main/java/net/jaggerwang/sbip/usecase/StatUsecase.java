@@ -6,12 +6,12 @@ import net.jaggerwang.sbip.entity.UserStatEntity;
 import net.jaggerwang.sbip.usecase.port.repository.PostStatRepository;
 import net.jaggerwang.sbip.usecase.port.repository.UserStatRepository;
 
-public class StatUsecases {
+public class StatUsecase {
     private final UserStatRepository userStatRepository;
     private final PostStatRepository postStatRepository;
 
-    public StatUsecases(UserStatRepository userStatRepository,
-            PostStatRepository postStatRepository) {
+    public StatUsecase(UserStatRepository userStatRepository,
+                       PostStatRepository postStatRepository) {
         this.userStatRepository = userStatRepository;
         this.postStatRepository = postStatRepository;
     }

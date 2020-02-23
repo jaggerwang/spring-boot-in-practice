@@ -14,14 +14,14 @@ public class UserResolver extends AbstractResolver implements GraphQLResolver<Us
             return Optional.empty();
         }
 
-        return fileUsecases.info(userEntity.getAvatarId());
+        return fileUsecase.info(userEntity.getAvatarId());
     }
 
     public UserStatEntity stat(UserEntity userEntity) {
-        return statUsecases.userStatInfoByUserId(userEntity.getId());
+        return statUsecase.userStatInfoByUserId(userEntity.getId());
     }
 
     public Boolean following(UserEntity userEntity) {
-        return userUsecases.isFollowing(loggedUserId(), userEntity.getId());
+        return userUsecase.isFollowing(loggedUserId(), userEntity.getId());
     }
 }

@@ -25,11 +25,11 @@ public class UserController extends AbstractController {
     @PostMapping("/register")
     @ApiOperation("Register user")
     public RootDto register(@RequestBody UserDto userDto) {
-        var userEntity = userUsecases.register(userDto.toEntity());
+        var userEntity = userUsecase.register(userDto.toEntity());
 
         loginUser(userDto.getUsername(), userDto.getPassword());
 
-        metricUsecases.increment("registerCount", 1L);
+        metricUsecase.increment("registerCount", 1L);
 
         return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity));
     }
@@ -39,11 +39,11 @@ public class UserController extends AbstractController {
     public RootDto login(@RequestBody UserDto userDto) {
         Optional<UserEntity> userEntity;
         if (userDto.getUsername() != null) {
-            userEntity = userUsecases.infoByUsername(userDto.getUsername());
+            userEntity = userUsecase.infoByUsername(userDto.getUsername());
         } else if (userDto.getMobile() != null) {
-            userEntity = userUsecases.infoByMobile(userDto.getMobile());
+            userEntity = userUsecase.infoByMobile(userDto.getMobile());
         } else if (userDto.getEmail() != null) {
-            userEntity = userUsecases.infoByEmail(userDto.getEmail());
+            userEntity = userUsecase.infoByEmail(userDto.getEmail());
         } else {
             throw new UsecaseException("用户名、手机或邮箱不能都为空");
         }
@@ -68,14 +68,14 @@ public class UserController extends AbstractController {
             return new RootDto().addDataEntry("user", null);
         }
 
-        var userEntity = userUsecases.info(loggedUserId());
+        var userEntity = userUsecase.info(loggedUserId());
         return new RootDto().addDataEntry("user", userEntity.map(this::fullUserDto).get());
     }
 
     @GetMapping("/logout")
     @ApiOperation("Logout")
     public RootDto logout() {
-        var userEntity = userUsecases.info(loggedUserId());
+        var userEntity = userUsecase.info(loggedUserId());
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
@@ -91,13 +91,13 @@ public class UserController extends AbstractController {
         var userDto = objectMapper.convertValue(input.get("user"), UserDto.class);
         var code = objectMapper.convertValue(input.get("code"), String.class);
 
-        if ((userDto.getMobile() != null && !userUsecases.checkMobileVerifyCode("modify", userDto.getMobile(), code))
+        if ((userDto.getMobile() != null && !userUsecase.checkMobileVerifyCode("modify", userDto.getMobile(), code))
                 || userDto.getEmail() != null
-                        && !userUsecases.checkEmailVerifyCode("modify", userDto.getEmail(), code)) {
+                        && !userUsecase.checkEmailVerifyCode("modify", userDto.getEmail(), code)) {
             throw new UsecaseException("验证码错误");
         }
 
-        var userEntity = userUsecases.modify(loggedUserId(), userDto.toEntity());
+        var userEntity = userUsecase.modify(loggedUserId(), userDto.toEntity());
 
         return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity));
     }
@@ -105,7 +105,7 @@ public class UserController extends AbstractController {
     @GetMapping("/info")
     @ApiOperation("Get user info")
     public RootDto info(@RequestParam Long id) {
-        var userEntity = userUsecases.info(id);
+        var userEntity = userUsecase.info(id);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
@@ -118,7 +118,7 @@ public class UserController extends AbstractController {
     public RootDto follow(@RequestBody Map<String, Object> input) {
         var userId = objectMapper.convertValue(input.get("userId"), Long.class);
 
-        userUsecases.follow(loggedUserId(), userId);
+        userUsecase.follow(loggedUserId(), userId);
 
         return new RootDto();
     }
@@ -128,7 +128,7 @@ public class UserController extends AbstractController {
     public RootDto unfollow(@RequestBody Map<String, Object> input) {
         var userId = objectMapper.convertValue(input.get("userId"), Long.class);
 
-        userUsecases.unfollow(loggedUserId(), userId);
+        userUsecase.unfollow(loggedUserId(), userId);
 
         return new RootDto();
     }
@@ -138,7 +138,7 @@ public class UserController extends AbstractController {
     public RootDto following(@RequestParam(required = false) Long userId,
                              @RequestParam(defaultValue = "20") Long limit,
                              @RequestParam(defaultValue = "0") Long offset) {
-        var userEntities = userUsecases.following(userId, limit, offset);
+        var userEntities = userUsecase.following(userId, limit, offset);
 
         return new RootDto().addDataEntry("users",
                 userEntities.stream().map(this::fullUserDto).collect(Collectors.toList()));
@@ -149,7 +149,7 @@ public class UserController extends AbstractController {
     public RootDto follower(@RequestParam(required = false) Long userId,
                             @RequestParam(defaultValue = "20") Long limit,
                             @RequestParam(defaultValue = "0") Long offset) {
-        var userEntities = userUsecases.follower(userId, limit, offset);
+        var userEntities = userUsecase.follower(userId, limit, offset);
 
         return new RootDto().addDataEntry("users",
                 userEntities.stream().map(this::fullUserDto).collect(Collectors.toList()));
@@ -161,7 +161,7 @@ public class UserController extends AbstractController {
         var type = objectMapper.convertValue(input.get("type"), String.class);
         var mobile = objectMapper.convertValue(input.get("mobile"), String.class);
 
-        var verifyCode = userUsecases.sendMobileVerifyCode(type, mobile);
+        var verifyCode = userUsecase.sendMobileVerifyCode(type, mobile);
 
         return new RootDto().addDataEntry("verifyCode", verifyCode);
     }
@@ -172,7 +172,7 @@ public class UserController extends AbstractController {
         var type = objectMapper.convertValue(input.get("type"), String.class);
         var email = objectMapper.convertValue(input.get("email"), String.class);
 
-        var verifyCode = userUsecases.sendEmailVerifyCode(type, email);
+        var verifyCode = userUsecase.sendEmailVerifyCode(type, email);
 
         return new RootDto().addDataEntry("verifyCode", verifyCode);
     }

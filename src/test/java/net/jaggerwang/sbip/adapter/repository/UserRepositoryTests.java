@@ -11,12 +11,12 @@ import org.springframework.test.context.ContextConfiguration;
 import net.jaggerwang.sbip.adapter.repository.jpa.UserFollowJpaRepository;
 import net.jaggerwang.sbip.adapter.repository.jpa.UserJpaRepository;
 import net.jaggerwang.sbip.api.config.CommonConfig;
-import net.jaggerwang.sbip.api.config.SpringDataJpaConfig;
+import net.jaggerwang.sbip.api.config.JpaConfig;
 import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
 
 @DataJpaTest
-@ContextConfiguration(classes = {CommonConfig.class, SpringDataJpaConfig.class})
+@ContextConfiguration(classes = {CommonConfig.class, JpaConfig.class})
 @EnabledIfSystemProperty(named = "test.repository.enabled", matches = "true")
 public class UserRepositoryTests {
     @Autowired

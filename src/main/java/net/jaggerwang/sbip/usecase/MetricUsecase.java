@@ -3,10 +3,10 @@ package net.jaggerwang.sbip.usecase;
 import net.jaggerwang.sbip.entity.MetricEntity;
 import net.jaggerwang.sbip.usecase.port.repository.MetricRepository;
 
-public class MetricUsecases {
+public class MetricUsecase {
     private final MetricRepository metricRepository;
 
-    public MetricUsecases(MetricRepository metricRepository) {
+    public MetricUsecase(MetricRepository metricRepository) {
         this.metricRepository = metricRepository;
     }
 

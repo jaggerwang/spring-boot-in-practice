@@ -26,7 +26,7 @@ public class PostController extends AbstractController {
     @ApiOperation("Publish post")
     public RootDto publish(@RequestBody PostEntity postInput) {
         postInput.setUserId(loggedUserId());
-        var postEntity = postUsecases.publish(postInput);
+        var postEntity = postUsecase.publish(postInput);
 
         return new RootDto().addDataEntry("post", PostDto.fromEntity(postEntity));
     }
@@ -36,7 +36,7 @@ public class PostController extends AbstractController {
     public RootDto delete(@RequestBody Map<String, Object> input) {
         var id = objectMapper.convertValue(input.get("id"), Long.class);
 
-        var postEntity = postUsecases.info(id);
+        var postEntity = postUsecase.info(id);
         if (postEntity.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
@@ -44,7 +44,7 @@ public class PostController extends AbstractController {
             throw new UsecaseException("无权删除");
         }
 
-        postUsecases.delete(id);
+        postUsecase.delete(id);
 
         return new RootDto();
     }
@@ -52,7 +52,7 @@ public class PostController extends AbstractController {
     @GetMapping("/info")
     @ApiOperation("Get post info")
     public RootDto info(@RequestParam Long id) {
-        var postEntity = postUsecases.info(id);
+        var postEntity = postUsecase.info(id);
         if (postEntity.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
@@ -65,7 +65,7 @@ public class PostController extends AbstractController {
     public RootDto published(@RequestParam(required = false) Long userId,
                              @RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(defaultValue = "0") Long offset) {
-        var postEntities = postUsecases.published(userId, limit, offset);
+        var postEntities = postUsecase.published(userId, limit, offset);
 
         return new RootDto().addDataEntry("posts",
                 postEntities.stream().map(this::fullPostDto).collect(Collectors.toList()));
@@ -76,7 +76,7 @@ public class PostController extends AbstractController {
     public RootDto like(@RequestBody Map<String, Object> input) {
         var postId = objectMapper.convertValue(input.get("postId"), Long.class);
 
-        postUsecases.like(loggedUserId(), postId);
+        postUsecase.like(loggedUserId(), postId);
 
         return new RootDto();
     }
@@ -86,7 +86,7 @@ public class PostController extends AbstractController {
     public RootDto unlike(@RequestBody Map<String, Object> input) {
         var postId = objectMapper.convertValue(input.get("postId"), Long.class);
 
-        postUsecases.unlike(loggedUserId(), postId);
+        postUsecase.unlike(loggedUserId(), postId);
 
         return new RootDto();
     }
@@ -96,7 +96,7 @@ public class PostController extends AbstractController {
     public RootDto liked(@RequestParam(required = false) Long userId,
                          @RequestParam(defaultValue = "10") Long limit,
                          @RequestParam(defaultValue = "0") Long offset) {
-        var postEntities = postUsecases.liked(userId, limit, offset);
+        var postEntities = postUsecase.liked(userId, limit, offset);
 
         return new RootDto().addDataEntry("posts",
                 postEntities.stream().map(this::fullPostDto).collect(Collectors.toList()));
@@ -107,7 +107,7 @@ public class PostController extends AbstractController {
     public RootDto following(@RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(required = false) Long beforeId,
                              @RequestParam(required = false) Long afterId) {
-        var postEntities = postUsecases.following(loggedUserId(), limit, beforeId, afterId);
+        var postEntities = postUsecase.following(loggedUserId(), limit, beforeId, afterId);
 
         return new RootDto().addDataEntry("posts",
                 postEntities.stream().map(this::fullPostDto).collect(Collectors.toList()));

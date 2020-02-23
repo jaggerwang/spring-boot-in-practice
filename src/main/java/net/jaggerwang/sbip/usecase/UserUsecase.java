@@ -11,7 +11,7 @@ import net.jaggerwang.sbip.usecase.port.encoder.PasswordEncoder;
 import net.jaggerwang.sbip.usecase.port.generator.RandomGenerator;
 import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
 
-public class UserUsecases {
+public class UserUsecase {
     private final static HashMap<String, String> mobileVerifyCodes = new HashMap<>();
     private final static HashMap<String, String> emailVerifyCodes = new HashMap<>();
 
@@ -19,8 +19,8 @@ public class UserUsecases {
     private final RandomGenerator randomGenerator;
     private final PasswordEncoder passwordEncoder;
 
-    public UserUsecases(UserRepository userRepository, RandomGenerator randomGenerator,
-            PasswordEncoder passwordEncoder) {
+    public UserUsecase(UserRepository userRepository, RandomGenerator randomGenerator,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.randomGenerator = randomGenerator;
         this.passwordEncoder = passwordEncoder;

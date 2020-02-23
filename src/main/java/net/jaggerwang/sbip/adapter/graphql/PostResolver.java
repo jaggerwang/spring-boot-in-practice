@@ -12,11 +12,11 @@ import net.jaggerwang.sbip.entity.UserEntity;
 @Component
 public class PostResolver extends AbstractResolver implements GraphQLResolver<PostEntity> {
     public UserEntity user(PostEntity postEntity) {
-        return userUsecases.info(postEntity.getUserId()).get();
+        return userUsecase.info(postEntity.getUserId()).get();
     }
 
     public List<FileEntity> images(PostEntity postEntity) {
-        return fileUsecases.infos(postEntity.getImageIds(), false);
+        return fileUsecase.infos(postEntity.getImageIds(), false);
     }
 
     public Optional<FileEntity> video(PostEntity postEntity) {
@@ -24,14 +24,14 @@ public class PostResolver extends AbstractResolver implements GraphQLResolver<Po
             return Optional.empty();
         }
 
-        return fileUsecases.info(postEntity.getVideoId());
+        return fileUsecase.info(postEntity.getVideoId());
     }
 
     public PostStatEntity stat(PostEntity postEntity) {
-        return statUsecases.postStatInfoByPostId(postEntity.getId());
+        return statUsecase.postStatInfoByPostId(postEntity.getId());
     }
 
     public Boolean liked(PostEntity postEntity) {
-        return postUsecases.isLiked(loggedUserId(), postEntity.getId());
+        return postUsecase.isLiked(loggedUserId(), postEntity.getId());
     }
 }

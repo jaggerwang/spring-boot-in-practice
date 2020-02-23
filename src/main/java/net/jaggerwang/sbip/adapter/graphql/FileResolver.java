@@ -15,7 +15,7 @@ public class FileResolver extends AbstractResolver implements GraphQLResolver<Fi
     private String urlBase;
 
     public UserEntity user(FileEntity fileEntity) {
-        return userUsecases.info(fileEntity.getUserId()).get();
+        return userUsecase.info(fileEntity.getUserId()).get();
     }
 
     public String url(FileEntity fileEntity) {

@@ -10,11 +10,11 @@ import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 import net.jaggerwang.sbip.usecase.port.repository.FileRepository;
 import net.jaggerwang.sbip.usecase.port.service.StorageService;
 
-public class FileUsecases {
+public class FileUsecase {
     private final FileRepository fileRepository;
     private final StorageService storageService;
 
-    public FileUsecases(FileRepository fileRepository, StorageService storageService) {
+    public FileUsecase(FileRepository fileRepository, StorageService storageService) {
         this.fileRepository = fileRepository;
         this.storageService = storageService;
     }

@@ -18,11 +18,11 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
             return null;
         }
 
-        return userUsecases.info(loggedUserId());
+        return userUsecase.info(loggedUserId());
     }
 
     public UserEntity userLogout() {
-        var userEntity = userUsecases.info(loggedUserId());
+        var userEntity = userUsecase.info(loggedUserId());
 
         logoutUser();
 
@@ -30,7 +30,7 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
     }
 
     public UserEntity userInfo(Long id) {
-        var userEntity = userUsecases.info(id);
+        var userEntity = userUsecase.info(id);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
@@ -43,11 +43,11 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
             limit = 20L;
         }
 
-        return userUsecases.following(userId, limit, offset);
+        return userUsecase.following(userId, limit, offset);
     }
 
     public Long userFollowingCount(Long userId) {
-        return userUsecases.followingCount(userId);
+        return userUsecase.followingCount(userId);
     }
 
     public List<UserEntity> userFollower(Long userId, Long limit, Long offset) {
@@ -55,15 +55,15 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
             limit = 20L;
         }
 
-        return userUsecases.follower(userId, limit, offset);
+        return userUsecase.follower(userId, limit, offset);
     }
 
     public Long userFollowerCount(Long userId) {
-        return userUsecases.followerCount(userId);
+        return userUsecase.followerCount(userId);
     }
 
     public PostEntity postInfo(Long id) {
-        var postEntity = postUsecases.info(id);
+        var postEntity = postUsecase.info(id);
         if (postEntity.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
@@ -76,11 +76,11 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
             limit = 10L;
         }
 
-        return postUsecases.published(userId, limit, offset);
+        return postUsecase.published(userId, limit, offset);
     }
 
     public Long postPublishedCount(Long userId) {
-        return postUsecases.publishedCount(userId);
+        return postUsecase.publishedCount(userId);
     }
 
     public List<PostEntity> postLiked(Long userId, Long limit, Long offset) {
@@ -88,11 +88,11 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
             limit = 10L;
         }
 
-        return postUsecases.liked(userId, limit, offset);
+        return postUsecase.liked(userId, limit, offset);
     }
 
     public Long postLikedCount(Long userId) {
-        return postUsecases.likedCount(userId);
+        return postUsecase.likedCount(userId);
     }
 
     public List<PostEntity> postFollowing(Long limit, Long beforeId, Long afterId) {
@@ -100,15 +100,15 @@ public class QueryResolver extends AbstractResolver implements GraphQLQueryResol
             limit = 10L;
         }
 
-        return postUsecases.following(loggedUserId(), limit, beforeId, afterId);
+        return postUsecase.following(loggedUserId(), limit, beforeId, afterId);
     }
 
     public Long postFollowingCount() {
-        return postUsecases.followingCount(loggedUserId());
+        return postUsecase.followingCount(loggedUserId());
     }
 
     public FileEntity fileInfo(Long id) {
-        var fileEntity = fileUsecases.info(id);
+        var fileEntity = fileUsecase.info(id);
         if (fileEntity.isEmpty()) {
             throw new NotFoundException("文件未找到");
         }
