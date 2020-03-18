@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import net.jaggerwang.sbip.entity.RoleEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 import net.jaggerwang.sbip.usecase.port.encoder.PasswordEncoder;
 import net.jaggerwang.sbip.usecase.port.generator.RandomGenerator;
+import net.jaggerwang.sbip.usecase.port.repository.RoleRepository;
 import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
 
 public class UserUsecase {
@@ -16,12 +18,14 @@ public class UserUsecase {
     private final static HashMap<String, String> emailVerifyCodes = new HashMap<>();
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final RandomGenerator randomGenerator;
     private final PasswordEncoder passwordEncoder;
 
-    public UserUsecase(UserRepository userRepository, RandomGenerator randomGenerator,
-                       PasswordEncoder passwordEncoder) {
+    public UserUsecase(UserRepository userRepository, RoleRepository roleRepository,
+                       RandomGenerator randomGenerator, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.randomGenerator = randomGenerator;
         this.passwordEncoder = passwordEncoder;
     }
@@ -129,6 +133,10 @@ public class UserUsecase {
 
     public Optional<UserEntity> infoByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public List<RoleEntity> roles(String username) {
+        return roleRepository.rolesOfUser(username);
     }
 
     public void follow(Long followerId, Long followingId) {

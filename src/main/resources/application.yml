@@ -1,52 +1,46 @@
 debug: ${SBIP_DEBUG:false}
 
 logging:
-    file:
-        path: ${SBIP_LOGGING_FILE_PATH:/tmp}
-    level:
-        org:
-         springframework:
-            web:
-                filter:
-                    CommonsRequestLoggingFilter: ${SBIP_LOGGING_LEVEL_REQUEST:DEBUG}
+  file:
+    path: ${SBIP_LOGGING_FILE_PATH:/tmp}
 
 server:
-    address: 0.0.0.0
-    port: 8080
+  address: 0.0.0.0
+  port: 8080
 
 spring:
-    application:
-        name: spring-boot-in-practice
-    servlet:
-        multipart:
-            file-size-threshold: 10MB
-            location: ${SBIP_SPRING_SERVLET_MULTIPART_LOCATION:/tmp}
-            max-file-size: 100MB
-            max-request-size: 100MB
-    datasource:
-        url: ${SBIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/sbip}
-        username: ${SBIP_SPRING_DATASOURCE_USERNAME:root}
-        password: ${SBIP_SPRING_DATASOURCE_PASSWORD:}
-    flyway:
-        enabled: true
-        locations: classpath:db/migration/{vendor}
-        clean-disabled: true
-        baseline-on-migrate: true
+  application:
+    name: spring-boot-in-practice
+  servlet:
+    multipart:
+      file-size-threshold: 10MB
+      location: ${SBIP_SPRING_SERVLET_MULTIPART_LOCATION:/tmp}
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+    url: ${SBIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/sbip}
+    username: ${SBIP_SPRING_DATASOURCE_USERNAME:root}
+    password: ${SBIP_SPRING_DATASOURCE_PASSWORD:}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/{vendor}
+    clean-disabled: true
+    baseline-on-migrate: true
+  redis:
+    host: ${SBIP_SPRING_REDIS_HOST:localhost}
+    port: ${SBIP_SPRING_REDIS_PORT:6379}
+    password: ${SBIP_SPRING_REDIS_PASSWORD:}
+    timeout: 1s
+    lettuce:
+      pool:
+        max-wait: 1s
+  session:
+    timeout: 7d
+    store-type: redis
     redis:
-        host: ${SBIP_SPRING_REDIS_HOST:localhost}
-        port: ${SBIP_SPRING_REDIS_PORT:6379}
-        password: ${SBIP_SPRING_REDIS_PASSWORD:}
-        timeout: 1s
-        lettuce:
-            pool:
-                max-wait: 1s
-    session:
-        timeout: 7d
-        store-type: redis
-        redis:
-            namespace: sbip:session
-    jpa:
-        open-in-view: false
+      namespace: sbip:session
+  jpa:
+    open-in-view: false
 
 management:
   endpoints:
@@ -58,5 +52,5 @@ graphql:
   url: /graphql
 
 file:
-    upload-dir: ${SBIP_FILE_UPLOAD_DIR:/tmp}
-    base-url: ${SBIP_FILE_BASE_URL:http://localhost:8080/files}
+  upload-dir: ${SBIP_FILE_UPLOAD_DIR:/tmp}
+  base-url: ${SBIP_FILE_BASE_URL:http://localhost:8080/files}

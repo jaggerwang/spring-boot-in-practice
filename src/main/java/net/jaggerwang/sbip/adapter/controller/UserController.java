@@ -1,7 +1,6 @@
 package net.jaggerwang.sbip.adapter.controller;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import io.swagger.annotations.Api;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import net.jaggerwang.sbip.adapter.controller.dto.RootDto;
 import net.jaggerwang.sbip.adapter.controller.dto.UserDto;
-import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 
 @RestController
@@ -32,57 +30,6 @@ public class UserController extends AbstractController {
         metricUsecase.increment("registerCount", 1L);
 
         return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity));
-    }
-
-    @PostMapping("/login")
-    @ApiOperation("Login")
-    public RootDto login(@RequestBody UserDto userDto) {
-        Optional<UserEntity> userEntity;
-        if (userDto.getUsername() != null) {
-            userEntity = userUsecase.infoByUsername(userDto.getUsername());
-        } else if (userDto.getMobile() != null) {
-            userEntity = userUsecase.infoByMobile(userDto.getMobile());
-        } else if (userDto.getEmail() != null) {
-            userEntity = userUsecase.infoByEmail(userDto.getEmail());
-        } else {
-            throw new UsecaseException("用户名、手机或邮箱不能都为空");
-        }
-        if (userEntity.isEmpty()) {
-            throw new UsecaseException("用户名或密码错误");
-        }
-
-        var password = userDto.getPassword();
-        if (password == null) {
-            throw new UsecaseException("密码不能为空");
-        }
-
-        loginUser(userEntity.get().getUsername(), password);
-
-        return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity.get()));
-    }
-
-    @GetMapping("/logged")
-    @ApiOperation("Current user")
-    public RootDto logged() {
-        if (loggedUserId() == null) {
-            return new RootDto().addDataEntry("user", null);
-        }
-
-        var userEntity = userUsecase.info(loggedUserId());
-        return new RootDto().addDataEntry("user", userEntity.map(this::fullUserDto).get());
-    }
-
-    @GetMapping("/logout")
-    @ApiOperation("Logout")
-    public RootDto logout() {
-        var userEntity = userUsecase.info(loggedUserId());
-        if (userEntity.isEmpty()) {
-            throw new NotFoundException("用户未找到");
-        }
-
-        logoutUser();
-
-        return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity.get()));
     }
 
     @PostMapping("/modify")

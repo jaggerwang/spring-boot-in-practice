@@ -10,17 +10,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import net.jaggerwang.sbip.entity.UserEntity;
-import net.jaggerwang.sbip.usecase.AuthorityUsecase;
 import net.jaggerwang.sbip.usecase.UserUsecase;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private UserUsecase userUsecase;
-    private AuthorityUsecase authorityUsecase;
 
-    public CustomUserDetailsService(UserUsecase userUsecase, AuthorityUsecase authorityUsecase) {
+    public CustomUserDetailsService(UserUsecase userUsecase) {
         this.userUsecase = userUsecase;
-        this.authorityUsecase = authorityUsecase;
     }
 
     @Override
@@ -37,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("用户未找到");
         }
 
-        List<GrantedAuthority> authorities = authorityUsecase.rolesOfUser(username).stream()
+        List<GrantedAuthority> authorities = userUsecase.roles(username).stream()
                 .map(v -> new SimpleGrantedAuthority("ROLE_" + v.getName()))
                 .collect(Collectors.toList());
 

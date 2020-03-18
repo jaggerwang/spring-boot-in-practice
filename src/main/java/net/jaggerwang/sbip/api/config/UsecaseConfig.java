@@ -3,7 +3,6 @@ package net.jaggerwang.sbip.api.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import net.jaggerwang.sbip.usecase.UserUsecase;
-import net.jaggerwang.sbip.usecase.AuthorityUsecase;
 import net.jaggerwang.sbip.usecase.FileUsecase;
 import net.jaggerwang.sbip.usecase.MetricUsecase;
 import net.jaggerwang.sbip.usecase.PostUsecase;
@@ -22,9 +21,9 @@ import net.jaggerwang.sbip.usecase.port.service.StorageService;
 @Configuration
 public class UsecaseConfig {
 	@Bean
-	public UserUsecase userUsecase(UserRepository userRepository, RandomGenerator randomGenerator,
-								   PasswordEncoder digestEncoder) {
-		return new UserUsecase(userRepository, randomGenerator, digestEncoder);
+	public UserUsecase userUsecase(UserRepository userRepository, RoleRepository roleRepository,
+								   RandomGenerator randomGenerator, PasswordEncoder digestEncoder) {
+		return new UserUsecase(userRepository, roleRepository, randomGenerator, digestEncoder);
 	}
 
 	@Bean
@@ -41,11 +40,6 @@ public class UsecaseConfig {
 	public StatUsecase statUsecase(UserStatRepository userStatRepository,
 								   PostStatRepository postStatRepository) {
 		return new StatUsecase(userStatRepository, postStatRepository);
-	}
-
-	@Bean
-	public AuthorityUsecase authorityUsecase(RoleRepository roleRepository) {
-		return new AuthorityUsecase(roleRepository);
 	}
 
 	@Bean

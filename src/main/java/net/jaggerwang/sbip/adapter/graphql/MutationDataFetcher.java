@@ -8,6 +8,7 @@ import net.jaggerwang.sbip.api.security.annotation.PermitAll;
 import net.jaggerwang.sbip.entity.PostEntity;
 import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -20,7 +21,9 @@ public class MutationDataFetcher extends AbstractDataFetcher {
             public Object get(DataFetchingEnvironment env) {
                 var userInput = objectMapper.convertValue(env.getArgument("user"), UserEntity.class);
                 var userEntity = userUsecase.register(userInput);
+
                 loginUser(userInput.getUsername(), userInput.getPassword());
+
                 return userEntity;
             }
         };
@@ -32,26 +35,25 @@ public class MutationDataFetcher extends AbstractDataFetcher {
             @Override
             public Object get(DataFetchingEnvironment env) {
                 var userInput = objectMapper.convertValue(env.getArgument("user"), UserEntity.class);
-                Optional<UserEntity> userEntity;
-                if (userInput.getUsername() != null) {
-                    userEntity = userUsecase.infoByUsername(userInput.getUsername());
+                String username = null;
+                if (userInput.getUsername() != null)  {
+                    username = userInput.getUsername();
                 } else if (userInput.getMobile() != null) {
-                    userEntity = userUsecase.infoByMobile(userInput.getMobile());
+                    username = userInput.getMobile();
                 } else if (userInput.getEmail() != null) {
-                    userEntity = userUsecase.infoByEmail(userInput.getEmail());
-                } else {
+                    username = userInput.getEmail();
+                }
+                if (StringUtils.isEmpty(username)) {
                     throw new UsecaseException("用户名、手机或邮箱不能都为空");
                 }
-                if (userEntity.isEmpty()) {
-                    throw new UsecaseException("用户名或密码错误");
-                }
                 var password = userInput.getPassword();
-                if (password == null) {
+                if (StringUtils.isEmpty(password)) {
                     throw new UsecaseException("密码不能为空");
                 }
 
-                loginUser(userEntity.get().getUsername(), password);
+                var loggedUser = loginUser(username, password);
 
+                var userEntity = userUsecase.info(loggedUser.getId());
                 return userEntity.get();
             }
         };

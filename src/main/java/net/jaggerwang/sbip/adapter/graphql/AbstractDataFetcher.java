@@ -8,7 +8,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.sbip.api.security.LoggedUser;
-import net.jaggerwang.sbip.usecase.AuthorityUsecase;
 import net.jaggerwang.sbip.usecase.FileUsecase;
 import net.jaggerwang.sbip.usecase.MetricUsecase;
 import net.jaggerwang.sbip.usecase.PostUsecase;
@@ -18,6 +17,7 @@ import net.jaggerwang.sbip.usecase.UserUsecase;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 abstract public class AbstractDataFetcher {
@@ -26,9 +26,6 @@ abstract public class AbstractDataFetcher {
 
     @Autowired
     protected AuthenticationManager authManager;
-
-    @Autowired
-    protected AuthorityUsecase authorityUsecase;
 
     @Autowired
     protected FileUsecase fileUsecase;
@@ -45,25 +42,31 @@ abstract public class AbstractDataFetcher {
     @Autowired
     protected UserUsecase userUsecase;
 
-    protected void loginUser(String username, String password) {
-        var auth = authManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    protected LoggedUser loginUser(String username, String password) {
+        var auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(
+                username, password));
         var sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
+        return (LoggedUser) auth.getPrincipal();
     }
 
-    protected void logoutUser() {
+    protected Optional<LoggedUser> logoutUser() {
+        var loggedUser = loggedUser();
         SecurityContextHolder.getContext().setAuthentication(null);
+        return loggedUser;
+    }
+
+    protected Optional<LoggedUser> loggedUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+            return Optional.empty();
+        }
+        return Optional.of((LoggedUser) auth.getPrincipal());
     }
 
     protected Long loggedUserId() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
-            return null;
-        }
-
-        var loggedUser = (LoggedUser) auth.getPrincipal();
-        return loggedUser.getId();
+        var loggedUser = loggedUser();
+        return loggedUser.isPresent() ? loggedUser.get().getId() : null;
     }
 
     public Map<String, DataFetcher> toMap() {

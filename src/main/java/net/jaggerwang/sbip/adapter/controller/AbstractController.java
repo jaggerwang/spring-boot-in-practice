@@ -2,6 +2,7 @@ package net.jaggerwang.sbip.adapter.controller;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.sbip.adapter.controller.dto.*;
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import net.jaggerwang.sbip.api.security.LoggedUser;
-import net.jaggerwang.sbip.usecase.AuthorityUsecase;
 import net.jaggerwang.sbip.usecase.FileUsecase;
 import net.jaggerwang.sbip.usecase.MetricUsecase;
 import net.jaggerwang.sbip.usecase.PostUsecase;
@@ -33,9 +33,6 @@ abstract public class AbstractController {
     protected AuthenticationManager authManager;
 
     @Autowired
-    protected AuthorityUsecase authorityUsecase;
-
-    @Autowired
     protected FileUsecase fileUsecase;
 
     @Autowired
@@ -50,25 +47,31 @@ abstract public class AbstractController {
     @Autowired
     protected UserUsecase userUsecase;
 
-    protected void loginUser(String username, String password) {
-        var auth = authManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    protected LoggedUser loginUser(String username, String password) {
+        var auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(
+                username, password));
         var sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
+        return (LoggedUser) auth.getPrincipal();
     }
 
-    protected void logoutUser() {
+    protected Optional<LoggedUser> logoutUser() {
+        var loggedUser = loggedUser();
         SecurityContextHolder.getContext().setAuthentication(null);
+        return loggedUser;
+    }
+
+    protected Optional<LoggedUser> loggedUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+            return Optional.empty();
+        }
+        return Optional.of((LoggedUser) auth.getPrincipal());
     }
 
     protected Long loggedUserId() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
-            return null;
-        }
-
-        var loggedUser = (LoggedUser) auth.getPrincipal();
-        return loggedUser.getId();
+        var loggedUser = loggedUser();
+        return loggedUser.isPresent() ? loggedUser.get().getId() : null;
     }
 
     protected UserDto fullUserDto(UserEntity userEntity) {

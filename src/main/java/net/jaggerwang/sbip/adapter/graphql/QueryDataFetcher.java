@@ -22,8 +22,12 @@ public class QueryDataFetcher extends AbstractDataFetcher {
 
     public DataFetcher userLogout() {
         return env -> {
-            var userEntity = userUsecase.info(loggedUserId());
-            logoutUser();
+            var loggedUser = logoutUser();
+            if (loggedUser.isEmpty()) {
+                return null;
+            }
+
+            var userEntity = userUsecase.info(loggedUser.get().getId());
             return userEntity.get();
         };
     }

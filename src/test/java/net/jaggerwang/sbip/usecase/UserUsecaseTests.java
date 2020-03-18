@@ -1,5 +1,6 @@
 package net.jaggerwang.sbip.usecase;
 
+import net.jaggerwang.sbip.usecase.port.repository.RoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -23,6 +24,9 @@ public class UserUsecaseTests {
     private UserRepository userRepository;
 
     @MockBean
+    private RoleRepository roleRepository;
+
+    @MockBean
     private RandomGenerator randomGenerator;
 
     @MockBean
@@ -30,7 +34,8 @@ public class UserUsecaseTests {
 
     @BeforeEach
     void setUp() {
-        userUsecase = new UserUsecase(userRepository, randomGenerator, passwordEncoder);
+        userUsecase = new UserUsecase(userRepository, roleRepository, randomGenerator,
+                passwordEncoder);
     }
 
     @Test
