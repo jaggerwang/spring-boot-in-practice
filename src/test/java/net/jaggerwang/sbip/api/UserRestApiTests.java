@@ -42,7 +42,7 @@ public class UserRestApiTests {
     @Test
     void login() throws Exception {
         var userEntity = UserEntity.builder().username("jaggerwang").password("123456").build();
-        mvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userEntity))).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value("ok"))
@@ -52,7 +52,7 @@ public class UserRestApiTests {
     @WithUserDetails("jaggerwang")
     @Test
     void logout() throws Exception {
-        mvc.perform(get("/user/logout")).andExpect(status().isOk())
+        mvc.perform(get("/auth/logout")).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value("ok"))
                 .andExpect(jsonPath("$.data.user.username").value("jaggerwang"));
@@ -61,7 +61,7 @@ public class UserRestApiTests {
     @WithUserDetails("jaggerwang")
     @Test
     void logged() throws Exception {
-        mvc.perform(get("/user/logged")).andExpect(status().isOk())
+        mvc.perform(get("/auth/logged")).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value("ok"))
                 .andExpect(jsonPath("$.data.user.username").value("jaggerwang"));

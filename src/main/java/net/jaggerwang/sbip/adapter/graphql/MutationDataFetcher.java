@@ -10,26 +10,9 @@ import net.jaggerwang.sbip.entity.UserEntity;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
 import org.springframework.util.StringUtils;
 
-import java.util.Optional;
-
 @Component
 public class MutationDataFetcher extends AbstractDataFetcher {
-    public DataFetcher userRegister() {
-        return new DataFetcher() {
-            @PermitAll
-            @Override
-            public Object get(DataFetchingEnvironment env) {
-                var userInput = objectMapper.convertValue(env.getArgument("user"), UserEntity.class);
-                var userEntity = userUsecase.register(userInput);
-
-                loginUser(userInput.getUsername(), userInput.getPassword());
-
-                return userEntity;
-            }
-        };
-    }
-
-    public DataFetcher userLogin() {
+    public DataFetcher authLogin() {
         return new DataFetcher() {
             @PermitAll
             @Override
@@ -55,6 +38,21 @@ public class MutationDataFetcher extends AbstractDataFetcher {
 
                 var userEntity = userUsecase.info(loggedUser.getId());
                 return userEntity.get();
+            }
+        };
+    }
+
+    public DataFetcher userRegister() {
+        return new DataFetcher() {
+            @PermitAll
+            @Override
+            public Object get(DataFetchingEnvironment env) {
+                var userInput = objectMapper.convertValue(env.getArgument("user"), UserEntity.class);
+                var userEntity = userUsecase.register(userInput);
+
+                loginUser(userInput.getUsername(), userInput.getPassword());
+
+                return userEntity;
             }
         };
     }

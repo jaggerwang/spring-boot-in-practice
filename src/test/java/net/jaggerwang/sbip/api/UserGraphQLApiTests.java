@@ -50,37 +50,37 @@ public class UserGraphQLApiTests {
     void login() throws Exception {
         var userEntity = UserEntity.builder().username("jaggerwang").password("123456").build();
         var content = new ObjectMapper().createObjectNode();
-        content.put("query", "mutation($user: UserInput!) { userLogin(user: $user) { id username } }");
+        content.put("query", "mutation($user: UserInput!) { authLogin(user: $user) { id username } }");
         content.putObject("variables").putObject("user").put("username", userEntity.getUsername()).put("password", userEntity.getPassword());
         mvc.perform(post(graphqlServletMapping).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(content))).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors").doesNotExist())
-                .andExpect(jsonPath("$.data.userLogin.username").value(userEntity.getUsername()));
+                .andExpect(jsonPath("$.data.authLogin.username").value(userEntity.getUsername()));
     }
 
     @WithUserDetails("jaggerwang")
     @Test
     void logout() throws Exception {
         var content = new ObjectMapper().createObjectNode();
-        content.put("query", "query { userLogout { id username } }");
+        content.put("query", "query { authLogout { id username } }");
         mvc.perform(post(graphqlServletMapping).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(content))).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors").doesNotExist())
-                .andExpect(jsonPath("$.data.userLogout.username").value("jaggerwang"));
+                .andExpect(jsonPath("$.data.authLogout.username").value("jaggerwang"));
     }
 
     @WithUserDetails("jaggerwang")
     @Test
     void logged() throws Exception {
         var content = new ObjectMapper().createObjectNode();
-        content.put("query", "query { userLogged { id username } }");
+        content.put("query", "query { authLogged { id username } }");
         mvc.perform(post(graphqlServletMapping).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(content))).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors").doesNotExist())
-                .andExpect(jsonPath("$.data.userLogged.username").value("jaggerwang"));
+                .andExpect(jsonPath("$.data.authLogged.username").value("jaggerwang"));
     }
 
     @WithUserDetails("jaggerwang")

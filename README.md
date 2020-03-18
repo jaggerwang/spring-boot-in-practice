@@ -21,10 +21,10 @@ This project can be used as a starter for spring boot api service development, s
 
 | Path  | Method | Description |
 | ------------- | ------------- | ------------- |
+| /auth/login | POST | Login |
+| /auth/logout | GET | Logout |
+| /auth/logged | GET | Get logged user |
 | /user/register | POST | Register |
-| /user/login | POST | Login |
-| /user/logout | GET | Logout |
-| /user/logged | GET | Get logged user |
 | /user/modify | POST | Modify logged user |
 | /user/info | GET | Get user info |
 | /user/follow | POST | Follow user |
@@ -49,8 +49,8 @@ This project uses [Swagger](https://swagger.io/) to auto generate api documentat
 
 ```graphql
 type Query {
-    userLogout: User!
-    userLogged: User
+    authLogout: User!
+    authLogged: User
     userInfo(id: Int!): User!
     userFollowing(userId: Int, limit: Int, offset: Int): [User!]!
     userFollowingCount(userId: Int): Int!
@@ -69,8 +69,8 @@ type Query {
 }
 
 type Mutation {
+    authLogin(user: UserInput!): User!
     userRegister(user: UserInput!): User!
-    userLogin(user: UserInput!): User!
     userModify(user: UserInput!, code: String): User!
     userSendMobileVerifyCode(type: String!, mobile: String!): String!
     userFollow(userId: Int!): Boolean!

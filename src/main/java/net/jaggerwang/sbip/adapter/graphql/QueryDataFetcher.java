@@ -10,7 +10,7 @@ import net.jaggerwang.sbip.api.security.annotation.PermitAll;
 
 @Component
 public class QueryDataFetcher extends AbstractDataFetcher {
-    public DataFetcher userLogged() {
+    public DataFetcher authLogged() {
         return new DataFetcher() {
             @PermitAll
             @Override
@@ -20,7 +20,7 @@ public class QueryDataFetcher extends AbstractDataFetcher {
         };
     }
 
-    public DataFetcher userLogout() {
+    public DataFetcher authLogout() {
         return env -> {
             var loggedUser = logoutUser();
             if (loggedUser.isEmpty()) {

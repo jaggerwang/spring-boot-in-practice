@@ -1,8 +1,8 @@
 scalar JSON
 
 type Query {
-    userLogged: User
-    userLogout: User!
+    authLogged: User
+    authLogout: User!
     userInfo(id: Int!): User!
     userFollowing(userId: Int, limit: Int, offset: Int): [User!]!
     userFollowingCount(userId: Int): Int!
@@ -21,8 +21,8 @@ type Query {
 }
 
 type Mutation {
+    authLogin(user: UserInput!): User!
     userRegister(user: UserInput!): User!
-    userLogin(user: UserInput!): User!
     userModify(user: UserInput!, code: String): User!
     userSendMobileVerifyCode(type: String!, mobile: String!): String!
     userFollow(userId: Int!): Boolean!
