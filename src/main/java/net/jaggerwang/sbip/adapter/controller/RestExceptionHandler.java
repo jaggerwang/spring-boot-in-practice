@@ -1,6 +1,7 @@
 package net.jaggerwang.sbip.adapter.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import net.jaggerwang.sbip.adapter.controller.dto.RootDto;
 import net.jaggerwang.sbip.usecase.exception.UnauthenticatedException;
@@ -37,7 +38,7 @@ public class RestExceptionHandler {
         return new RootDto("unauthenticated", exception.getMessage());
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler({UnauthorizedException.class, AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public RootDto handle(UnauthorizedException exception) {
         return new RootDto("unauthorized", exception.getMessage());

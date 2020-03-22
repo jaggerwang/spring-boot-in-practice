@@ -30,7 +30,7 @@ abstract public class AbstractController {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    protected AuthenticationManager authManager;
+    protected AuthenticationManager authenticationManager;
 
     @Autowired
     protected FileUsecase fileUsecase;
@@ -48,10 +48,10 @@ abstract public class AbstractController {
     protected UserUsecase userUsecase;
 
     protected LoggedUser loginUser(String username, String password) {
-        var auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(
+        var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 username, password));
-        var sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
+        var securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
         return (LoggedUser) auth.getPrincipal();
     }
 

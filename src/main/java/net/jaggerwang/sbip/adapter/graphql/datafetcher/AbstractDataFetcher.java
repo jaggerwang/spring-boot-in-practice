@@ -1,6 +1,5 @@
-package net.jaggerwang.sbip.adapter.graphql;
+package net.jaggerwang.sbip.adapter.graphql.datafetcher;
 
-import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,9 +13,6 @@ import net.jaggerwang.sbip.usecase.PostUsecase;
 import net.jaggerwang.sbip.usecase.StatUsecase;
 import net.jaggerwang.sbip.usecase.UserUsecase;
 
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -25,7 +21,7 @@ abstract public class AbstractDataFetcher {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    protected AuthenticationManager authManager;
+    protected AuthenticationManager authenticationManager;
 
     @Autowired
     protected FileUsecase fileUsecase;
@@ -43,7 +39,7 @@ abstract public class AbstractDataFetcher {
     protected UserUsecase userUsecase;
 
     protected LoggedUser loginUser(String username, String password) {
-        var auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(
+        var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 username, password));
         var sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
@@ -67,21 +63,5 @@ abstract public class AbstractDataFetcher {
     protected Long loggedUserId() {
         var loggedUser = loggedUser();
         return loggedUser.isPresent() ? loggedUser.get().getId() : null;
-    }
-
-    public Map<String, DataFetcher> toMap() {
-        var dataFetchers = new HashMap<String, DataFetcher>();
-        var methods = this.getClass().getDeclaredMethods();
-        for (var method: methods) {
-            if (Modifier.isPublic(method.getModifiers()) &&
-                    method.getReturnType().equals(DataFetcher.class)) {
-                try {
-                    dataFetchers.put(method.getName(), (DataFetcher) method.invoke(this));
-                } catch (ReflectiveOperationException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return dataFetchers;
     }
 }

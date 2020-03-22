@@ -8,6 +8,7 @@ import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.exception.UnauthenticatedException;
 import net.jaggerwang.sbip.usecase.exception.UnauthorizedException;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -54,7 +55,8 @@ public class CustomDataFetchingError implements GraphQLError {
             code = "not_found";
         } else if (throwable instanceof UnauthenticatedException) {
             code = "unauthenticated";
-        } else if (throwable instanceof UnauthorizedException) {
+        } else if (throwable instanceof UnauthorizedException ||
+                throwable instanceof AccessDeniedException) {
             code = "unauthorized";
         }
         extensions.put("code", code);

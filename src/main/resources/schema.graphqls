@@ -1,8 +1,8 @@
 scalar JSON
 
 type Query {
+    authLogout: User
     authLogged: User
-    authLogout: User!
     userInfo(id: Int!): User!
     userFollowing(userId: Int, limit: Int, offset: Int): [User!]!
     userFollowingCount(userId: Int): Int!
