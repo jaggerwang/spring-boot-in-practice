@@ -24,7 +24,7 @@ import net.jaggerwang.sbip.entity.UserEntity;
 
 abstract public class AbstractController {
     @Value("${file.base-url}")
-    protected String urlBase;
+    protected String baseUrl;
 
     @Autowired
     protected ObjectMapper objectMapper;
@@ -63,7 +63,8 @@ abstract public class AbstractController {
 
     protected Optional<LoggedUser> loggedUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+        if (auth == null || auth instanceof AnonymousAuthenticationToken ||
+                !auth.isAuthenticated()) {
             return Optional.empty();
         }
         return Optional.of((LoggedUser) auth.getPrincipal());
@@ -121,7 +122,7 @@ abstract public class AbstractController {
 
         var url = "";
         if (fileDto.getRegion() == FileEntity.Region.LOCAL) {
-            url = urlBase + Paths.get("/", fileDto.getBucket(), fileDto.getPath()).toString();
+            url = baseUrl + Paths.get("/", fileDto.getBucket(), fileDto.getPath()).toString();
         }
         fileDto.setUrl(url);
 

@@ -51,19 +51,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 responseJson(response, HttpStatus.FORBIDDEN,
                                         new RootDto("unauthorized", "未授权")))
                 )
-                .logout(logout -> logout
-                        .logoutSuccessHandler((request, response, authentication) ->
-                                responseJson(response, HttpStatus.OK, new RootDto()))
-                )
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .antMatchers("/", "/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
-                                "/actuator/**", "/graphql", "/subscriptions", "/graphiql",
-                                "/voyager", "/v2/api-docs", "/swagger-ui.html", "/swagger-resources/**",
-                                "/files/**", "/auth/login", "/auth/logout", "/auth/logged",
-                                "/user/register")
+                        .antMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
+                                "/actuator/**", "/v2/api-docs", "/swagger-ui.html",
+                                "/swagger-resources/**", "/", "/graphql", "/login", "/logout",
+                                "/auth/login", "/auth/logout", "/auth/logged", "/user/register",
+                                "/files/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
-                );
+                )
+                .formLogin(formLogin -> {})
+                .logout(logout -> {});
     }
 }

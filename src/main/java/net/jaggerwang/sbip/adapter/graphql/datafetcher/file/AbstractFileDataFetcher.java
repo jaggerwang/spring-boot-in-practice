@@ -8,11 +8,11 @@ import java.nio.file.Paths;
 
 abstract  public class AbstractFileDataFetcher extends AbstractDataFetcher {
     @Value("${file.base-url}")
-    private String urlBase;
+    private String baseUrl;
 
     protected String generateUrl(FileEntity fileEntity) {
         if (fileEntity.getRegion() == FileEntity.Region.LOCAL) {
-            return urlBase
+            return baseUrl
                     + Paths.get("/", fileEntity.getBucket(), fileEntity.getPath()).toString();
         } else {
             return "";

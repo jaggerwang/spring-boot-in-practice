@@ -14,7 +14,8 @@ public class SecureGraphQLAspect {
     @Before("allDataFetchers() && isInApplication() && !isPermitAll()")
     public void doSecurityCheck() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+        if (auth == null || auth instanceof AnonymousAuthenticationToken ||
+                !auth.isAuthenticated()) {
             throw new UnauthenticatedException("未认证");
         }
     }

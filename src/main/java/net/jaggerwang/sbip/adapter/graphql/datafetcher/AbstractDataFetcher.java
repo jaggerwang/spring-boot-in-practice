@@ -54,7 +54,8 @@ abstract public class AbstractDataFetcher {
 
     protected Optional<LoggedUser> loggedUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+        if (auth == null || auth instanceof AnonymousAuthenticationToken ||
+                !auth.isAuthenticated()) {
             return Optional.empty();
         }
         return Optional.of((LoggedUser) auth.getPrincipal());
