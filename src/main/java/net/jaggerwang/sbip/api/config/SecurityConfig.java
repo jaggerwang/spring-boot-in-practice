@@ -43,14 +43,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint((request, response, authException) ->
-                                responseJson(response, HttpStatus.UNAUTHORIZED,
-                                        new RootDto("unauthenticated", "未认证")))
-                        .accessDeniedHandler((request, response, accessDeniedException) ->
-                                responseJson(response, HttpStatus.FORBIDDEN,
-                                        new RootDto("unauthorized", "未授权")))
-                )
+                // TODO: It will cause '/login' page not found.
+//                .exceptionHandling(exceptionHandling -> exceptionHandling
+//                        .authenticationEntryPoint((request, response, authException) ->
+//                                responseJson(response, HttpStatus.UNAUTHORIZED,
+//                                        new RootDto("unauthenticated", "未认证")))
+//                        .accessDeniedHandler((request, response, accessDeniedException) ->
+//                                responseJson(response, HttpStatus.FORBIDDEN,
+//                                        new RootDto("unauthorized", "未授权")))
+//                )
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .antMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
                                 "/actuator/**", "/v2/api-docs", "/swagger-ui.html",
