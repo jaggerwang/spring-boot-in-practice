@@ -41,7 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 "/files/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(formLogin -> {})
-                .logout(logout -> {});
+                .formLogin(formLogin -> {});
     }
 }
