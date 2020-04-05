@@ -37,8 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
                                 "/actuator/**", "/v2/api-docs", "/swagger-ui.html",
                                 "/swagger-resources/**", "/", "/graphql", "/login", "/logout",
-                                "/auth/login", "/auth/logout", "/auth/logged", "/user/register",
-                                "/files/**").permitAll()
+                                "/auth/**", "/user/register", "/files/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> {});
