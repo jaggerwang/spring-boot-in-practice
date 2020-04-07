@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql(scripts = {"/db/clean-db-test.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @EnabledIfSystemProperty(named = "test.api.enabled", matches = "true")
 @Disabled("The response is always empty in MockMvc, see more on https://github.com/graphql-java/graphql-java-spring/issues/30")
-public class UserGraphQLApiTests {
+public class GraphQLApiTests {
     @Autowired
     private MockMvc mvc;
 
