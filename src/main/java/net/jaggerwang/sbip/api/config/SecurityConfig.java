@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                // TODO: This config will disable form login.
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .defaultAuthenticationEntryPointFor(
                                 new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
@@ -36,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .antMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
                                 "/actuator/**", "/v2/api-docs", "/swagger-ui.html",
-                                "/swagger-resources/**", "/", "/graphql", "/login", "/logout",
+                                "/swagger-resources/**", "/", "/login", "/logout",
                                 "/auth/**", "/user/register", "/files/**").permitAll()
                         .anyRequest().authenticated()
                 )

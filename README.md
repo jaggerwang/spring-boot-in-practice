@@ -1,6 +1,6 @@
 # Spring Boot in Practice
 
-This project can be used as a starter for spring boot api service development, supports both rest and graphql protocol. It is also a reference implementation of [Clean Architecture](https://blog.jaggerwang.net/clean-architecture-in-practice/). This api service can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is also an article [Spring Boot API 服务开发指南](https://blog.jaggerwang.net/spring-boot-api-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring boot api service development, it is also a reference implementation of [Clean Architecture](https://blog.jaggerwang.net/clean-architecture-in-practice/). This api service can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is also an article [Spring Boot API 服务开发指南](https://blog.jaggerwang.net/spring-boot-api-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -10,8 +10,6 @@ This project can be used as a starter for spring boot api service development, s
 1. [Spring Data Redis](https://spring.io/projects/spring-data-redis) Cache data
 1. [Spring Security](https://spring.io/projects/spring-security) Authenticate and authrorize
 1. [Spring Session](https://spring.io/projects/spring-session) Manage session
-1. [GraphQL Java](https://github.com/graphql-java/graphql-java) Graphql for java
-1. [Extended Scalars](https://github.com/graphql-java/graphql-java-extended-scalars) Extended scalars for graphql java
 1. [Flyway](https://flywaydb.org/) Database migration
 1. [Swagger](https://swagger.io/) Api documentation
 
@@ -44,44 +42,6 @@ This project can be used as a starter for spring boot api service development, s
 | /file/info | GET | Get file meta info |
 
 This project uses [Swagger](https://swagger.io/) to auto generate api documentation. After started the api service, you can browse all apis at `http://localhost:8080/swagger-ui.html`.
-
-### GraphQL
-
-```graphql
-type Query {
-    authLogout: User!
-    authLogged: User
-    userInfo(id: Int!): User!
-    userFollowing(userId: Int, limit: Int, offset: Int): [User!]!
-    userFollowingCount(userId: Int): Int!
-    userFollower(userId: Int, limit: Int, offset: Int): [User!]!
-    userFollowerCount(userId: Int): Int!
-
-    postInfo(id: Int!): Post!
-    postPublished(userId: Int, limit: Int, offset: Int): [Post!]!
-    postPublishedCount(userId: Int): Int!
-    postLiked(userId: Int, limit: Int, offset: Int): [Post!]!
-    postLikedCount(userId: Int): Int!
-    postFollowing(limit: Int, beforeId: Int, afterId: Int): [Post!]!
-    postFollowingCount: Int!
-
-    fileInfo(id: Int!): File!
-}
-
-type Mutation {
-    authLogin(user: UserInput!): User!
-    userRegister(user: UserInput!): User!
-    userModify(user: UserInput!, code: String): User!
-    userSendMobileVerifyCode(type: String!, mobile: String!): String!
-    userFollow(userId: Int!): Boolean!
-    userUnfollow(userId: Int!): Boolean!
-
-    postPublish(post: PostInput!): Post!
-    postDelete(id: Int!): Boolean!
-    postLike(postId: Int!): Boolean!
-    postUnlike(postId: Int!): Boolean!
-}
-```
 
 ## How to run
 

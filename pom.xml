@@ -17,11 +17,6 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<!-- This version will download from repository jw-nexus-releases,
-		and it is packaged from repository https://github.com/jaggerwang/graphql-java-spring
-		to fix a few bugs in original repository. -->
-		<graphql-starter.version>2020-03-29T13-52-34-31ab4f9</graphql-starter.version>
-		<graphql-extended-scalars.version>2019-08-31T02-34-04-3decba9</graphql-extended-scalars.version>
 		<guava.version>28.1-jre</guava.version>
 		<swagger.version>2.9.2</swagger.version>
 		<apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
@@ -104,17 +99,6 @@
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-data-redis</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.graphql-java</groupId>
-			<artifactId>graphql-java-spring-boot-starter-webmvc</artifactId>
-			<version>${graphql-starter.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.graphql-java</groupId>
-			<artifactId>graphql-java-extended-scalars</artifactId>
-			<version>${graphql-extended-scalars.version}</version>
 		</dependency>
 
 		<dependency>

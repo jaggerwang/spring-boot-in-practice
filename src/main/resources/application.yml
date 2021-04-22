@@ -47,9 +47,9 @@ management:
     web:
       exposure:
         include: "*"
-
-graphql:
-  url: /graphql
+  health:
+    probes:
+      enabled: true
 
 file:
   upload-dir: ${SBIP_FILE_UPLOAD_DIR:/tmp}
