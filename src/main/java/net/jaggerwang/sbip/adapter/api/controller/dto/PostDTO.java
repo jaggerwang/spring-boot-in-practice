@@ -45,14 +45,14 @@ public class PostDTO {
 
     private Boolean liked;
 
-    public static PostDTO fromEntity(PostBO postBO) {
+    public static PostDTO fromBO(PostBO postBO) {
         return PostDTO.builder().id(postBO.getId()).userId(postBO.getUserId())
                 .type(postBO.getType()).text(postBO.getText())
                 .imageIds(postBO.getImageIds()).videoId(postBO.getVideoId())
                 .createdAt(postBO.getCreatedAt()).updatedAt(postBO.getUpdatedAt()).build();
     }
 
-    public PostBO toEntity() {
+    public PostBO toBO() {
         return PostBO.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds)
                 .videoId(videoId).createdAt(createdAt).updatedAt(updatedAt).build();
     }

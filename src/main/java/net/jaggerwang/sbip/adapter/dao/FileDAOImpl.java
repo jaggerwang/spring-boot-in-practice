@@ -17,26 +17,26 @@ import net.jaggerwang.sbip.usecase.port.dao.FileDAO;
  */
 @Component
 public class FileDAOImpl implements FileDAO {
-    private FileRepository fileJpaRepo;
+    private FileRepository fileRepository;
 
-    public FileDAOImpl(FileRepository fileJpaRepo) {
-        this.fileJpaRepo = fileJpaRepo;
+    public FileDAOImpl(FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
     }
 
     @Override
     public FileBO save(FileBO fileBO) {
-        return fileJpaRepo.save(File.fromEntity(fileBO)).toEntity();
+        return fileRepository.save(File.fromBO(fileBO)).toBO();
     }
 
     @Override
     public Optional<FileBO> findById(Long id) {
-        return fileJpaRepo.findById(id).map(file -> file.toEntity());
+        return fileRepository.findById(id).map(file -> file.toBO());
     }
 
     @Override
     public List<FileBO> findAllById(List<Long> ids) {
-        var fileDos = fileJpaRepo.findAllById(ids).stream()
-                .collect(Collectors.toMap(file -> file.getId(), file -> file.toEntity()));
+        var fileDos = fileRepository.findAllById(ids).stream()
+                .collect(Collectors.toMap(file -> file.getId(), file -> file.toBO()));
 
         var fileEntities = new FileBO[ids.size()];
         IntStream.range(0, ids.size()).forEach(i -> {

@@ -38,9 +38,9 @@ public class UserDAOTests {
 
     @Test
     void save() {
-        var userEntity = UserBO.builder().username("jaggerwang").password("123456").build();
-        var savedUser = userDAO.save(userEntity);
-        assertThat(savedUser).hasFieldOrPropertyWithValue("username", userEntity.getUsername())
-                .hasFieldOrPropertyWithValue("password", userEntity.getPassword());
+        var userBO = UserBO.builder().username("jaggerwang").password("123456").build();
+        var savedUser = userDAO.save(userBO);
+        assertThat(savedUser).hasFieldOrPropertyWithValue("username", userBO.getUsername())
+                .hasFieldOrPropertyWithValue("password", userBO.getPassword());
     }
 }

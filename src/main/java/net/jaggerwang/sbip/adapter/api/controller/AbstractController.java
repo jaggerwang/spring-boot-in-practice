@@ -79,14 +79,14 @@ abstract public class AbstractController {
     }
 
     protected UserDTO fullUserDto(UserBO userBO) {
-        var userDto = UserDTO.fromEntity(userBO);
+        var userDto = UserDTO.fromBO(userBO);
 
         if (userDto.getAvatarId() != null) {
             var avatar = fileUsecase.info(userDto.getAvatarId());
-            avatar.ifPresent(fileEntity -> userDto.setAvatar(fullFileDto(fileEntity)));
+            avatar.ifPresent(file -> userDto.setAvatar(fullFileDto(file)));
         }
 
-        userDto.setStat(UserStatDTO.fromEntity(statUsecase.userStatInfoByUserId(userDto.getId())));
+        userDto.setStat(UserStatDTO.fromBO(statUsecase.userStatInfoByUserId(userDto.getId())));
 
         if (loggedUserId() != null) {
             userDto.setFollowing(userUsecase.isFollowing(loggedUserId(), userDto.getId()));
@@ -96,10 +96,10 @@ abstract public class AbstractController {
     }
 
     protected PostDTO fullPostDto(PostBO postBO) {
-        var postDto = PostDTO.fromEntity(postBO);
+        var postDto = PostDTO.fromBO(postBO);
 
-        var user = userUsecase.info(postDto.getUserId());
-        user.ifPresent(userEntity -> postDto.setUser(fullUserDto(userEntity)));
+        var userBO = userUsecase.info(postDto.getUserId());
+        userBO.ifPresent(user -> postDto.setUser(fullUserDto(user)));
 
         if (postDto.getImageIds().size() > 0) {
             postDto.setImages(fileUsecase.infos(postDto.getImageIds(), false).stream()
@@ -108,10 +108,10 @@ abstract public class AbstractController {
 
         if (postDto.getVideoId() != null) {
             var video = fileUsecase.info(postDto.getVideoId());
-            video.ifPresent(fileEntity -> postDto.setVideo(fullFileDto(fileEntity)));
+            video.ifPresent(file -> postDto.setVideo(fullFileDto(file)));
         }
 
-        postDto.setStat(PostStatDTO.fromEntity(statUsecase.postStatInfoByPostId(postDto.getId())));
+        postDto.setStat(PostStatDTO.fromBO(statUsecase.postStatInfoByPostId(postDto.getId())));
 
         if (loggedUserId() != null) {
             postDto.setLiked(postUsecase.isLiked(loggedUserId(), postDto.getId()));
@@ -121,7 +121,7 @@ abstract public class AbstractController {
     }
 
     protected FileDTO fullFileDto(FileBO fileBO) {
-        var fileDto = FileDTO.fromEntity(fileBO);
+        var fileDto = FileDTO.fromBO(fileBO);
 
         var url = "";
         if (fileDto.getRegion() == FileBO.Region.LOCAL) {

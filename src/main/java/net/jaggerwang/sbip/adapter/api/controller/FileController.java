@@ -40,16 +40,16 @@ public class FileController extends AbstractController {
                     .size(file.getSize())
                     .type(file.getContentType())
                     .build();
-            var fileEntity = FileBO.builder()
+            var fileBO = FileBO.builder()
                     .userId(loggedUserId())
                     .region(region)
                     .bucket(bucket)
                     .meta(meta)
                     .build();
 
-            fileEntity = fileUsecase.upload(path, content, fileEntity);
+            fileBO = fileUsecase.upload(path, content, fileBO);
 
-            fileEntities.add(fileEntity);
+            fileEntities.add(fileBO);
         }
 
         return new RootDTO().addDataEntry("files",
@@ -59,11 +59,11 @@ public class FileController extends AbstractController {
     @GetMapping("/info")
     @ApiOperation("Get file info")
     public RootDTO info(@RequestParam Long id) {
-        var fileEntity = fileUsecase.info(id);
-        if (fileEntity.isEmpty()) {
+        var fileBO = fileUsecase.info(id);
+        if (fileBO.isEmpty()) {
             throw new NotFoundException("文件未找到");
         }
 
-        return new RootDTO().addDataEntry("file", fullFileDto(fileEntity.get()));
+        return new RootDTO().addDataEntry("file", fullFileDto(fileBO.get()));
     }
 }

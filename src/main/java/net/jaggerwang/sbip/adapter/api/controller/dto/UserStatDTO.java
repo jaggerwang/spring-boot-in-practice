@@ -31,7 +31,7 @@ public class UserStatDTO {
 
     private LocalDateTime updatedAt;
 
-    public static UserStatDTO fromEntity(UserStatBO userStatBO) {
+    public static UserStatDTO fromBO(UserStatBO userStatBO) {
         return UserStatDTO.builder().id(userStatBO.getId()).userId(userStatBO.getUserId())
                 .postCount(userStatBO.getPostCount()).likeCount(userStatBO.getLikeCount())
                 .followingCount(userStatBO.getFollowingCount())
@@ -40,7 +40,7 @@ public class UserStatDTO {
                 .build();
     }
 
-    public UserStatBO toEntity() {
+    public UserStatBO toBO() {
         return UserStatBO.builder().id(id).userId(userId).postCount(postCount)
                 .likeCount(likeCount).followingCount(followingCount).followerCount(followerCount)
                 .createdAt(createdAt).updatedAt(updatedAt).build();

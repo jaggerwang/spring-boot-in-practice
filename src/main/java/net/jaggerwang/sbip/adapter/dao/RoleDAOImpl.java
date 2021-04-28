@@ -19,26 +19,26 @@ import net.jaggerwang.sbip.usecase.port.dao.RoleDAO;
 @Component
 public class RoleDAOImpl implements RoleDAO {
     private JPAQueryFactory jpaQueryFactory;
-    private RoleRepository roleJpaRepo;
+    private RoleRepository roleRepository;
 
-    public RoleDAOImpl(JPAQueryFactory jpaQueryFactory, RoleRepository roleJpaRepo) {
+    public RoleDAOImpl(JPAQueryFactory jpaQueryFactory, RoleRepository roleRepository) {
         this.jpaQueryFactory = jpaQueryFactory;
-        this.roleJpaRepo = roleJpaRepo;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public RoleBO save(RoleBO roleBO) {
-        return roleJpaRepo.save(Role.fromEntity(roleBO)).toEntity();
+        return roleRepository.save(Role.fromBO(roleBO)).toBO();
     }
 
     @Override
     public Optional<RoleBO> findById(Long id) {
-        return roleJpaRepo.findById(id).map(role -> role.toEntity());
+        return roleRepository.findById(id).map(role -> role.toBO());
     }
 
     @Override
     public Optional<RoleBO> findByName(String name) {
-        return roleJpaRepo.findByName(name).map(role -> role.toEntity());
+        return roleRepository.findByName(name).map(role -> role.toBO());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class RoleDAOImpl implements RoleDAO {
         var query = jpaQueryFactory.selectFrom(QRole.role)
                 .join(QUserRole.userRole).on(QRole.role.id.eq(QUserRole.userRole.roleId))
                 .where(QUserRole.userRole.userId.eq(userId));
-        return query.fetch().stream().map(role -> role.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(role -> role.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -55,6 +55,6 @@ public class RoleDAOImpl implements RoleDAO {
                 .join(QUserRole.userRole).on(QRole.role.id.eq(QUserRole.userRole.roleId))
                 .join(QUser.user).on(QUser.user.id.eq(QUserRole.userRole.userId))
                 .where(QUser.user.username.eq(username));
-        return query.fetch().stream().map(role -> role.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(role -> role.toBO()).collect(Collectors.toList());
     }
 }

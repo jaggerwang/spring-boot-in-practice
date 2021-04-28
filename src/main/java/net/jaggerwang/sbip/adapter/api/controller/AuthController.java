@@ -36,8 +36,8 @@ public class AuthController extends AbstractController {
 
         var loggedUser = loginUser(username, password);
 
-        var userEntity = userUsecase.info(loggedUser.getId());
-        return new RootDTO().addDataEntry("user", UserDTO.fromEntity(userEntity.get()));
+        var userBO = userUsecase.info(loggedUser.getId());
+        return new RootDTO().addDataEntry("user", UserDTO.fromBO(userBO.get()));
     }
 
     @GetMapping("/logout")
@@ -48,8 +48,8 @@ public class AuthController extends AbstractController {
             return new RootDTO().addDataEntry("user", null);
         }
 
-        var userEntity = userUsecase.info(loggedUser.get().getId());
-        return new RootDTO().addDataEntry("user", UserDTO.fromEntity(userEntity.get()));
+        var userBO = userUsecase.info(loggedUser.get().getId());
+        return new RootDTO().addDataEntry("user", UserDTO.fromBO(userBO.get()));
     }
 
     @GetMapping("/logged")
@@ -59,7 +59,7 @@ public class AuthController extends AbstractController {
             return new RootDTO().addDataEntry("user", null);
         }
 
-        var userEntity = userUsecase.info(loggedUserId());
-        return new RootDTO().addDataEntry("user", userEntity.map(this::fullUserDto).get());
+        var userBO = userUsecase.info(loggedUserId());
+        return new RootDTO().addDataEntry("user", userBO.map(this::fullUserDto).get());
     }
 }

@@ -12,24 +12,24 @@ import net.jaggerwang.sbip.usecase.port.dao.UserStatDAO;
  */
 @Component
 public class UserStatDAOImpl implements UserStatDAO {
-    private UserStatRepository userStatJpaRepo;
+    private UserStatRepository userStatRepository;
 
-    public UserStatDAOImpl(UserStatRepository userStatJpaRepo) {
-        this.userStatJpaRepo = userStatJpaRepo;
+    public UserStatDAOImpl(UserStatRepository userStatRepository) {
+        this.userStatRepository = userStatRepository;
     }
 
     @Override
     public UserStatBO save(UserStatBO userStatBO) {
-        return userStatJpaRepo.save(UserStat.fromEntity(userStatBO)).toEntity();
+        return userStatRepository.save(UserStat.fromBO(userStatBO)).toBO();
     }
 
     @Override
     public Optional<UserStatBO> findById(Long id) {
-        return userStatJpaRepo.findById(id).map(userStat -> userStat.toEntity());
+        return userStatRepository.findById(id).map(userStat -> userStat.toBO());
     }
 
     @Override
     public Optional<UserStatBO> findByUserId(Long userId) {
-        return userStatJpaRepo.findByUserId(userId).map(userStat -> userStat.toEntity());
+        return userStatRepository.findByUserId(userId).map(userStat -> userStat.toBO());
     }
 }

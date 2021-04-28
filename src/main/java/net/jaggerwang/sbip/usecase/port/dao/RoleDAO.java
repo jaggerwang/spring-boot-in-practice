@@ -11,10 +11,10 @@ import net.jaggerwang.sbip.entity.RoleBO;
 public interface RoleDAO {
     /**
      * 保存角色
-     * @param roleEntity 要保存的角色
+     * @param roleBO 要保存的角色
      * @return 已保存的角色
      */
-    RoleBO save(RoleBO roleEntity);
+    RoleBO save(RoleBO roleBO);
 
     /**
      * 查找指定 ID 的角色

@@ -12,24 +12,24 @@ import net.jaggerwang.sbip.usecase.port.dao.PostStatDAO;
  */
 @Component
 public class PostStatDAOImpl implements PostStatDAO {
-    private PostStatRepository postStatJpaRepo;
+    private PostStatRepository postStatRepository;
 
-    public PostStatDAOImpl(PostStatRepository postStatJpaRepo) {
-        this.postStatJpaRepo = postStatJpaRepo;
+    public PostStatDAOImpl(PostStatRepository postStatRepository) {
+        this.postStatRepository = postStatRepository;
     }
 
     @Override
     public PostStatBO save(PostStatBO postStatBO) {
-        return postStatJpaRepo.save(PostStat.fromEntity(postStatBO)).toEntity();
+        return postStatRepository.save(PostStat.fromBO(postStatBO)).toBO();
     }
 
     @Override
     public Optional<PostStatBO> findById(Long id) {
-        return postStatJpaRepo.findById(id).map(postStat -> postStat.toEntity());
+        return postStatRepository.findById(id).map(postStat -> postStat.toBO());
     }
 
     @Override
     public Optional<PostStatBO> findByPostId(Long postId) {
-        return postStatJpaRepo.findByPostId(postId).map(postStat -> postStat.toEntity());
+        return postStatRepository.findByPostId(postId).map(postStat -> postStat.toBO());
     }
 }

@@ -50,13 +50,13 @@ public class File {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static File fromEntity(FileBO fileBO) {
+    public static File fromBO(FileBO fileBO) {
         return File.builder().id(fileBO.getId()).userId(fileBO.getUserId()).region(fileBO.getRegion())
                 .bucket(fileBO.getBucket()).path(fileBO.getPath()).meta(fileBO.getMeta())
                 .createdAt(fileBO.getCreatedAt()).updatedAt(fileBO.getUpdatedAt()).build();
     }
 
-    public FileBO toEntity() {
+    public FileBO toBO() {
         return FileBO.builder().id(id).userId(userId).region(region).bucket(bucket).path(path).meta(meta)
                 .createdAt(createdAt).updatedAt(updatedAt).build();
     }

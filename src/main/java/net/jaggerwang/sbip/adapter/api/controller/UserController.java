@@ -26,13 +26,13 @@ public class UserController extends AbstractController {
     @PostMapping("/register")
     @ApiOperation("Register user")
     public RootDTO register(@RequestBody UserDTO userDto) {
-        var userEntity = userUsecase.register(userDto.toEntity());
+        var userBO = userUsecase.register(userDto.toBO());
 
         loginUser(userDto.getUsername(), userDto.getPassword());
 
         metricUsecase.increment("registerCount", 1L);
 
-        return new RootDTO().addDataEntry("user", UserDTO.fromEntity(userEntity));
+        return new RootDTO().addDataEntry("user", UserDTO.fromBO(userBO));
     }
 
     @PostMapping("/modify")
@@ -48,20 +48,20 @@ public class UserController extends AbstractController {
             throw new UsecaseException("验证码错误");
         }
 
-        var userEntity = userUsecase.modify(loggedUserId(), userDto.toEntity());
+        var userBO = userUsecase.modify(loggedUserId(), userDto.toBO());
 
-        return new RootDTO().addDataEntry("user", UserDTO.fromEntity(userEntity));
+        return new RootDTO().addDataEntry("user", UserDTO.fromBO(userBO));
     }
 
     @GetMapping("/info")
     @ApiOperation("Get user info")
     public RootDTO info(@RequestParam Long id) {
-        var userEntity = userUsecase.info(id);
-        if (userEntity.isEmpty()) {
+        var userBO = userUsecase.info(id);
+        if (userBO.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
 
-        return new RootDTO().addDataEntry("user", fullUserDto(userEntity.get()));
+        return new RootDTO().addDataEntry("user", fullUserDto(userBO.get()));
     }
 
     @PostMapping("/follow")

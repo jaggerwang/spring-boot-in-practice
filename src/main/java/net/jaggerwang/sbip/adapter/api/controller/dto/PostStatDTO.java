@@ -25,13 +25,13 @@ public class PostStatDTO {
 
     private LocalDateTime updatedAt;
 
-    public static PostStatDTO fromEntity(PostStatBO postStatBO) {
+    public static PostStatDTO fromBO(PostStatBO postStatBO) {
         return PostStatDTO.builder().id(postStatBO.getId()).postId(postStatBO.getPostId())
                 .likeCount(postStatBO.getLikeCount()).createdAt(postStatBO.getCreatedAt())
                 .updatedAt(postStatBO.getUpdatedAt()).build();
     }
 
-    public PostStatBO toEntity() {
+    public PostStatBO toBO() {
         return PostStatBO.builder().id(id).postId(postId).likeCount(likeCount)
                 .createdAt(createdAt).updatedAt(updatedAt).build();
     }

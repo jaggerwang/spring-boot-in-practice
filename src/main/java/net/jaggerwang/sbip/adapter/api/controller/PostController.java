@@ -29,9 +29,9 @@ public class PostController extends AbstractController {
     @ApiOperation("Publish post")
     public RootDTO publish(@RequestBody PostBO postInput) {
         postInput.setUserId(loggedUserId());
-        var postEntity = postUsecase.publish(postInput);
+        var postBO = postUsecase.publish(postInput);
 
-        return new RootDTO().addDataEntry("post", PostDTO.fromEntity(postEntity));
+        return new RootDTO().addDataEntry("post", PostDTO.fromBO(postBO));
     }
 
     @PostMapping("/delete")
@@ -39,11 +39,11 @@ public class PostController extends AbstractController {
     public RootDTO delete(@RequestBody Map<String, Object> input) {
         var id = objectMapper.convertValue(input.get("id"), Long.class);
 
-        var postEntity = postUsecase.info(id);
-        if (postEntity.isEmpty()) {
+        var postBO = postUsecase.info(id);
+        if (postBO.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
-        if (!Objects.equals(postEntity.get().getUserId(), loggedUserId())) {
+        if (!Objects.equals(postBO.get().getUserId(), loggedUserId())) {
             throw new UsecaseException("无权删除");
         }
 
@@ -55,12 +55,12 @@ public class PostController extends AbstractController {
     @GetMapping("/info")
     @ApiOperation("Get post info")
     public RootDTO info(@RequestParam Long id) {
-        var postEntity = postUsecase.info(id);
-        if (postEntity.isEmpty()) {
+        var postBO = postUsecase.info(id);
+        if (postBO.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
 
-        return new RootDTO().addDataEntry("post", fullPostDto(postEntity.get()));
+        return new RootDTO().addDataEntry("post", fullPostDto(postBO.get()));
     }
 
     @GetMapping("/published")

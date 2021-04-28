@@ -34,17 +34,17 @@ public class UserUsecaseTests {
     void register() {
         var passwordEncoder = new PasswordEncoder();
 
-        var userEntity = UserBO.builder().username("jaggerwang").password("123456").build();
-        given(userDAO.findByUsername(userEntity.getUsername())).willReturn(Optional.empty());
+        var userBO = UserBO.builder().username("jaggerwang").password("123456").build();
+        given(userDAO.findByUsername(userBO.getUsername())).willReturn(Optional.empty());
 
-        var savedUser = UserBO.builder().username(userEntity.getUsername())
-                .password(passwordEncoder.encode(userEntity.getPassword())).build();
+        var savedUser = UserBO.builder().username(userBO.getUsername())
+                .password(passwordEncoder.encode(userBO.getPassword())).build();
         given(userDAO.save(any(UserBO.class))).willReturn(savedUser);
 
-        var registeredUser = userUsecase.register(userEntity);
-        assertThat(registeredUser).hasFieldOrPropertyWithValue("username", userEntity.getUsername())
+        var registeredUser = userUsecase.register(userBO);
+        assertThat(registeredUser).hasFieldOrPropertyWithValue("username", userBO.getUsername())
                 .hasFieldOrProperty("password");
-        assertThat(registeredUser.getPassword()).isNotEqualTo(userEntity.getPassword());
+        assertThat(registeredUser.getPassword()).isNotEqualTo(userBO.getPassword());
 
     }
 }

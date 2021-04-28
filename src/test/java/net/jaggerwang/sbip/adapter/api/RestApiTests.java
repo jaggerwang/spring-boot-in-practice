@@ -31,12 +31,12 @@ public class RestApiTests {
 
     @Test
     void login() throws Exception {
-        var userEntity = UserBO.builder().username("jaggerwang").password("123456").build();
+        var userBO = UserBO.builder().username("jaggerwang").password("123456").build();
         mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userEntity))).andExpect(status().isOk())
+                .content(objectMapper.writeValueAsString(userBO))).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value("ok"))
-                .andExpect(jsonPath("$.data.user.username").value(userEntity.getUsername()));
+                .andExpect(jsonPath("$.data.user.username").value(userBO.getUsername()));
     }
 
     @WithUserDetails("jaggerwang")
@@ -59,12 +59,12 @@ public class RestApiTests {
 
     @Test
     void register() throws Exception {
-        var userEntity = UserBO.builder().username("jagger001").password("123456").build();
+        var userBO = UserBO.builder().username("jagger001").password("123456").build();
         mvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userEntity))).andExpect(status().isOk())
+                .content(objectMapper.writeValueAsString(userBO))).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value("ok"))
-                .andExpect(jsonPath("$.data.user.username").value(userEntity.getUsername()));
+                .andExpect(jsonPath("$.data.user.username").value(userBO.getUsername()));
     }
 
     @WithUserDetails("jaggerwang")

@@ -22,50 +22,50 @@ import net.jaggerwang.sbip.usecase.port.dao.UserDAO;
 @Component
 public class UserDAOImpl implements UserDAO {
     private JPAQueryFactory jpaQueryFactory;
-    private UserRepository userJpaRepo;
-    private UserFollowRepository userFollowJpaRepo;
+    private UserRepository userRepository;
+    private UserFollowRepository userFollowRepository;
 
-    public UserDAOImpl(JPAQueryFactory jpaQueryFactory, UserRepository userJpaRepo,
-                       UserFollowRepository userFollowJpaRepo) {
+    public UserDAOImpl(JPAQueryFactory jpaQueryFactory, UserRepository userRepository,
+                       UserFollowRepository userFollowRepository) {
         this.jpaQueryFactory = jpaQueryFactory;
-        this.userJpaRepo = userJpaRepo;
-        this.userFollowJpaRepo = userFollowJpaRepo;
+        this.userRepository = userRepository;
+        this.userFollowRepository = userFollowRepository;
     }
 
     @Override
     public UserBO save(UserBO userBO) {
-        return userJpaRepo.save(User.fromEntity(userBO)).toEntity();
+        return userRepository.save(User.fromBO(userBO)).toBO();
     }
 
     @Override
     public Optional<UserBO> findById(Long id) {
-        return userJpaRepo.findById(id).map(user -> user.toEntity());
+        return userRepository.findById(id).map(user -> user.toBO());
     }
 
     @Override
     public Optional<UserBO> findByUsername(String username) {
-        return userJpaRepo.findByUsername(username).map(user -> user.toEntity());
+        return userRepository.findByUsername(username).map(user -> user.toBO());
     }
 
     @Override
     public Optional<UserBO> findByEmail(String email) {
-        return userJpaRepo.findByEmail(email).map(user -> user.toEntity());
+        return userRepository.findByEmail(email).map(user -> user.toBO());
     }
 
     @Override
     public Optional<UserBO> findByMobile(String mobile) {
-        return userJpaRepo.findByMobile(mobile).map(user -> user.toEntity());
+        return userRepository.findByMobile(mobile).map(user -> user.toBO());
     }
 
     @Override
     public void follow(Long followerId, Long followingId) {
-        userFollowJpaRepo.save(
+        userFollowRepository.save(
                 UserFollow.builder().followerId(followerId).followingId(followingId).build());
     }
 
     @Override
     public void unfollow(Long followerId, Long followingId) {
-        userFollowJpaRepo.deleteByFollowerIdAndFollowingId(followerId, followingId);
+        userFollowRepository.deleteByFollowerIdAndFollowingId(followerId, followingId);
     }
 
     private JPAQuery<User> followingQuery(Long followerId) {
@@ -89,7 +89,7 @@ public class UserDAOImpl implements UserDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(user -> user.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(user -> user.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -118,7 +118,7 @@ public class UserDAOImpl implements UserDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(user -> user.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(user -> user.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -128,6 +128,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public Boolean isFollowing(Long followerId, Long followingId) {
-        return userFollowJpaRepo.existsByFollowerIdAndFollowingId(followerId, followingId);
+        return userFollowRepository.existsByFollowerIdAndFollowingId(followerId, followingId);
     }
 }

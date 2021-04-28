@@ -53,13 +53,13 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static Post fromEntity(PostBO userEntity) {
-        return Post.builder().id(userEntity.getId()).userId(userEntity.getUserId()).type(userEntity.getType())
-                .text(userEntity.getText()).imageIds(userEntity.getImageIds()).videoId(userEntity.getVideoId())
-                .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt()).build();
+    public static Post fromBO(PostBO postBO) {
+        return Post.builder().id(postBO.getId()).userId(postBO.getUserId()).type(postBO.getType())
+                .text(postBO.getText()).imageIds(postBO.getImageIds()).videoId(postBO.getVideoId())
+                .createdAt(postBO.getCreatedAt()).updatedAt(postBO.getUpdatedAt()).build();
     }
 
-    public PostBO toEntity() {
+    public PostBO toBO() {
         return PostBO.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds).videoId(videoId)
                 .createdAt(createdAt).updatedAt(updatedAt).build();
     }

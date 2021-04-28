@@ -16,11 +16,11 @@ import net.jaggerwang.sbip.entity.MetricBO;
 public class MetricDTO {
     private Long registerCount;
 
-    public static MetricDTO fromEntity(MetricBO userEntity) {
-        return MetricDTO.builder().registerCount(userEntity.getRegisterCount()).build();
+    public static MetricDTO fromBO(MetricBO metricBO) {
+        return MetricDTO.builder().registerCount(metricBO.getRegisterCount()).build();
     }
 
-    public MetricBO toEntity() {
+    public MetricBO toBO() {
         return MetricBO.builder().registerCount(registerCount).build();
     }
 }

@@ -35,12 +35,12 @@ public class Role {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static Role fromEntity(RoleBO roleBO) {
+    public static Role fromBO(RoleBO roleBO) {
         return Role.builder().id(roleBO.getId()).name(roleBO.getName()).createdAt(roleBO.getCreatedAt())
                 .updatedAt(roleBO.getUpdatedAt()).build();
     }
 
-    public RoleBO toEntity() {
+    public RoleBO toBO() {
         return RoleBO.builder().id(id).name(name).createdAt(createdAt).updatedAt(updatedAt).build();
     }
 

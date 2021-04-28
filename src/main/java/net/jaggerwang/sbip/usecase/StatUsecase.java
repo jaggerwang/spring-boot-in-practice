@@ -22,22 +22,22 @@ public class StatUsecase {
     }
 
     public UserStatBO userStatInfoByUserId(Long userId) {
-        var userStatEntity = userStatDAO.findByUserId(userId);
-        if (userStatEntity.isEmpty()) {
+        var userStatBO = userStatDAO.findByUserId(userId);
+        if (userStatBO.isEmpty()) {
             return UserStatBO.builder().id(0L).userId(userId).createdAt(LocalDateTime.now())
                     .build();
         }
 
-        return userStatEntity.get();
+        return userStatBO.get();
     }
 
     public PostStatBO postStatInfoByPostId(Long postId) {
-        var postStatEntity = postStatDAO.findByPostId(postId);
-        if (postStatEntity.isEmpty()) {
+        var postStatBO = postStatDAO.findByPostId(postId);
+        if (postStatBO.isEmpty()) {
             return PostStatBO.builder().id(0L).postId(postId).createdAt(LocalDateTime.now())
                     .build();
         }
 
-        return postStatEntity.get();
+        return postStatBO.get();
     }
 }

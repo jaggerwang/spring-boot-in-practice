@@ -25,15 +25,15 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserBO> userEntity;
+        Optional<UserBO> userBO;
         if (username.matches("[0-9]+")) {
-            userEntity = userUsecase.infoByMobile(username);
+            userBO = userUsecase.infoByMobile(username);
         } else if (username.matches("[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+")) {
-            userEntity = userUsecase.infoByEmail(username);
+            userBO = userUsecase.infoByEmail(username);
         } else {
-            userEntity = userUsecase.infoByUsername(username);
+            userBO = userUsecase.infoByUsername(username);
         }
-        if (userEntity.isEmpty()) {
+        if (userBO.isEmpty()) {
             throw new UsernameNotFoundException("用户未找到");
         }
 
@@ -41,7 +41,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
                 .map(v -> new SimpleGrantedAuthority("ROLE_" + v.getName()))
                 .collect(Collectors.toList());
 
-        return new LoggedUser(userEntity.get().getId(), userEntity.get().getUsername(),
-                userEntity.get().getPassword(), authorities);
+        return new LoggedUser(userBO.get().getId(), userBO.get().getUsername(),
+                userBO.get().getPassword(), authorities);
     }
 }

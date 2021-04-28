@@ -20,6 +20,6 @@ public class MetricController extends AbstractController {
     public RootDTO info() {
         var metric = metricUsecase.info();
 
-        return new RootDTO().addDataEntry("metric", MetricDTO.fromEntity(metric));
+        return new RootDTO().addDataEntry("metric", MetricDTO.fromBO(metric));
     }
 }

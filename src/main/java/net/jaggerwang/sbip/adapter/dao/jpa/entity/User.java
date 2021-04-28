@@ -46,14 +46,14 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static User fromEntity(UserBO userBO) {
+    public static User fromBO(UserBO userBO) {
         return User.builder().id(userBO.getId()).username(userBO.getUsername())
                 .password(userBO.getPassword()).mobile(userBO.getMobile()).email(userBO.getEmail())
                 .avatarId(userBO.getAvatarId()).intro(userBO.getIntro()).createdAt(userBO.getCreatedAt())
                 .updatedAt(userBO.getUpdatedAt()).build();
     }
 
-    public UserBO toEntity() {
+    public UserBO toBO() {
         return UserBO.builder().id(id).username(username).password(password).mobile(mobile).email(email)
                 .avatarId(avatarId).intro(intro).createdAt(createdAt).updatedAt(updatedAt).build();
     }

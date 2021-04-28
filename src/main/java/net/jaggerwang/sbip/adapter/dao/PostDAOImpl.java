@@ -23,29 +23,29 @@ import net.jaggerwang.sbip.usecase.port.dao.PostDAO;
 @Component
 public class PostDAOImpl implements PostDAO {
     private JPAQueryFactory jpaQueryFactory;
-    private PostRepository postJpaRepo;
-    private PostLikeRepository postLikeJpaRepo;
+    private PostRepository postRepository;
+    private PostLikeRepository postLikeRepository;
 
-    public PostDAOImpl(JPAQueryFactory jpaQueryFactory, PostRepository postJpaRepo,
-                       PostLikeRepository postLikeJpaRepo) {
+    public PostDAOImpl(JPAQueryFactory jpaQueryFactory, PostRepository postRepository,
+                       PostLikeRepository postLikeRepository) {
         this.jpaQueryFactory = jpaQueryFactory;
-        this.postJpaRepo = postJpaRepo;
-        this.postLikeJpaRepo = postLikeJpaRepo;
+        this.postRepository = postRepository;
+        this.postLikeRepository = postLikeRepository;
     }
 
     @Override
     public PostBO save(PostBO postBO) {
-        return postJpaRepo.save(Post.fromEntity(postBO)).toEntity();
+        return postRepository.save(Post.fromBO(postBO)).toBO();
     }
 
     @Override
     public void delete(Long id) {
-        postJpaRepo.deleteById(id);
+        postRepository.deleteById(id);
     }
 
     @Override
     public Optional<PostBO> findById(Long id) {
-        return postJpaRepo.findById(id).map(post -> post.toEntity());
+        return postRepository.findById(id).map(post -> post.toBO());
     }
 
     private JPAQuery<Post> publishedQuery(Long userId) {
@@ -67,7 +67,7 @@ public class PostDAOImpl implements PostDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(post -> post.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(post -> post.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -77,12 +77,12 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public void like(Long userId, Long postId) {
-        postLikeJpaRepo.save(PostLike.builder().userId(userId).postId(postId).build());
+        postLikeRepository.save(PostLike.builder().userId(userId).postId(postId).build());
     }
 
     @Override
     public void unlike(Long userId, Long postId) {
-        postLikeJpaRepo.deleteByUserIdAndPostId(userId, postId);
+        postLikeRepository.deleteByUserIdAndPostId(userId, postId);
     }
 
     private JPAQuery<Post> likedQuery(Long userId) {
@@ -105,7 +105,7 @@ public class PostDAOImpl implements PostDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(post -> post.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(post -> post.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -134,7 +134,7 @@ public class PostDAOImpl implements PostDAO {
             query.where(QPost.post.id.gt(afterId));
         }
 
-        return query.fetch().stream().map(post -> post.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(post -> post.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -144,6 +144,6 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public Boolean isLiked(Long userId, Long postId) {
-        return postLikeJpaRepo.existsByUserIdAndPostId(userId, postId);
+        return postLikeRepository.existsByUserIdAndPostId(userId, postId);
     }
 }
