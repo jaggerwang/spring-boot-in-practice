@@ -1,20 +1,25 @@
 package net.jaggerwang.sbip.usecase;
 
-import net.jaggerwang.sbip.entity.MetricEntity;
-import net.jaggerwang.sbip.usecase.port.repository.MetricRepository;
+import net.jaggerwang.sbip.entity.MetricBO;
+import net.jaggerwang.sbip.usecase.port.dao.MetricDAO;
+import org.springframework.stereotype.Component;
 
+/**
+ * @author Jagger Wang
+ */
+@Component
 public class MetricUsecase {
-    private final MetricRepository metricRepository;
+    private final MetricDAO metricDAO;
 
-    public MetricUsecase(MetricRepository metricRepository) {
-        this.metricRepository = metricRepository;
+    public MetricUsecase(MetricDAO metricDAO) {
+        this.metricDAO = metricDAO;
     }
 
     public Long increment(String name, Long amount) {
-        return metricRepository.increment(name, amount);
+        return metricDAO.increment(name, amount);
     }
 
-    public MetricEntity info() {
-        return metricRepository.get();
+    public MetricBO info() {
+        return metricDAO.get();
     }
 }

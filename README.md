@@ -75,7 +75,7 @@ Change configs in `src/main/resources/application.yml` as your need, especially 
 ./mvnw spring-boot:run
 ```
 
-The running main class is `net.jaggerwang.sbip.api.Application`. When first start server, it will auto create tables, we use flyway to migrate database changes.
+The running main class is `net.jaggerwang.sbip.adapter.api.Application`. When first start server, it will auto create tables, we use flyway to migrate database changes.
 
 After started, the api service's endpoint is `http://localhost:8080/`.
 
@@ -103,6 +103,12 @@ By default it will not run any tests when run maven `test` or `package` task. Yo
 
 ### By local environment
 
+#### Test repositories
+
+```bash
+./mvnw -Dtest.dao.enabled=true test
+```
+
 #### Test usecases
 
 ```bash
@@ -110,12 +116,6 @@ By default it will not run any tests when run maven `test` or `package` task. Yo
 ```
 
 Usecase tests are unit tests, it not dependent on outside mysql or redis service.
-
-#### Test repositories
-
-```bash
-./mvnw -Dtest.repository.enabled=true test
-```
 
 Repository tests are integration tests, but it use an embedded H2 database, so there is no need to start a mysql service.
 

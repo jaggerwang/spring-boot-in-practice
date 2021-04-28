@@ -3,64 +3,69 @@ package net.jaggerwang.sbip.usecase;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.sbip.entity.PostEntity;
-import net.jaggerwang.sbip.usecase.port.repository.PostRepository;
+import net.jaggerwang.sbip.entity.PostBO;
+import net.jaggerwang.sbip.usecase.port.dao.PostDAO;
+import org.springframework.stereotype.Component;
 
+/**
+ * @author Jagger Wang
+ */
+@Component
 public class PostUsecase {
-    private final PostRepository postRepository;
+    private final PostDAO postDAO;
 
-    public PostUsecase(PostRepository postRepository) {
-        this.postRepository = postRepository;
+    public PostUsecase(PostDAO postDAO) {
+        this.postDAO = postDAO;
     }
 
-    public PostEntity publish(PostEntity postEntity) {
-        var post = PostEntity.builder().userId(postEntity.getUserId()).type(postEntity.getType())
-                .text(postEntity.getText()).imageIds(postEntity.getImageIds())
-                .videoId(postEntity.getVideoId()).build();
-        return postRepository.save(post);
+    public PostBO publish(PostBO postBO) {
+        var post = PostBO.builder().userId(postBO.getUserId()).type(postBO.getType())
+                .text(postBO.getText()).imageIds(postBO.getImageIds())
+                .videoId(postBO.getVideoId()).build();
+        return postDAO.save(post);
     }
 
     public void delete(Long id) {
-        postRepository.delete(id);
+        postDAO.delete(id);
     }
 
-    public Optional<PostEntity> info(Long id) {
-        return postRepository.findById(id);
+    public Optional<PostBO> info(Long id) {
+        return postDAO.findById(id);
     }
 
-    public List<PostEntity> published(Long userId, Long limit, Long offset) {
-        return postRepository.published(userId, limit, offset);
+    public List<PostBO> published(Long userId, Long limit, Long offset) {
+        return postDAO.published(userId, limit, offset);
     }
 
     public Long publishedCount(Long userId) {
-        return postRepository.publishedCount(userId);
+        return postDAO.publishedCount(userId);
     }
 
     public void like(Long userId, Long postId) {
-        postRepository.like(userId, postId);
+        postDAO.like(userId, postId);
     }
 
     public void unlike(Long userId, Long postId) {
-        postRepository.unlike(userId, postId);
+        postDAO.unlike(userId, postId);
     }
 
     public Boolean isLiked(Long userId, Long postId) {
-        return postRepository.isLiked(userId, postId);
+        return postDAO.isLiked(userId, postId);
     }
 
-    public List<PostEntity> liked(Long userId, Long limit, Long offset) {
-        return postRepository.liked(userId, limit, offset);
+    public List<PostBO> liked(Long userId, Long limit, Long offset) {
+        return postDAO.liked(userId, limit, offset);
     }
 
     public Long likedCount(Long userId) {
-        return postRepository.likedCount(userId);
+        return postDAO.likedCount(userId);
     }
 
-    public List<PostEntity> following(Long userId, Long limit, Long beforeId, Long afterId) {
-        return postRepository.following(userId, limit, beforeId, afterId);
+    public List<PostBO> following(Long userId, Long limit, Long beforeId, Long afterId) {
+        return postDAO.following(userId, limit, beforeId, afterId);
     }
 
     public Long followingCount(Long userId) {
-        return postRepository.followingCount(userId);
+        return postDAO.followingCount(userId);
     }
 }

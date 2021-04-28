@@ -1,35 +1,40 @@
 package net.jaggerwang.sbip.usecase;
 
 import java.time.LocalDateTime;
-import net.jaggerwang.sbip.entity.PostStatEntity;
-import net.jaggerwang.sbip.entity.UserStatEntity;
-import net.jaggerwang.sbip.usecase.port.repository.PostStatRepository;
-import net.jaggerwang.sbip.usecase.port.repository.UserStatRepository;
+import net.jaggerwang.sbip.entity.PostStatBO;
+import net.jaggerwang.sbip.entity.UserStatBO;
+import net.jaggerwang.sbip.usecase.port.dao.PostStatDAO;
+import net.jaggerwang.sbip.usecase.port.dao.UserStatDAO;
+import org.springframework.stereotype.Component;
 
+/**
+ * @author Jagger Wang
+ */
+@Component
 public class StatUsecase {
-    private final UserStatRepository userStatRepository;
-    private final PostStatRepository postStatRepository;
+    private final UserStatDAO userStatDAO;
+    private final PostStatDAO postStatDAO;
 
-    public StatUsecase(UserStatRepository userStatRepository,
-                       PostStatRepository postStatRepository) {
-        this.userStatRepository = userStatRepository;
-        this.postStatRepository = postStatRepository;
+    public StatUsecase(UserStatDAO userStatDAO,
+                       PostStatDAO postStatDAO) {
+        this.userStatDAO = userStatDAO;
+        this.postStatDAO = postStatDAO;
     }
 
-    public UserStatEntity userStatInfoByUserId(Long userId) {
-        var userStatEntity = userStatRepository.findByUserId(userId);
+    public UserStatBO userStatInfoByUserId(Long userId) {
+        var userStatEntity = userStatDAO.findByUserId(userId);
         if (userStatEntity.isEmpty()) {
-            return UserStatEntity.builder().id(0L).userId(userId).createdAt(LocalDateTime.now())
+            return UserStatBO.builder().id(0L).userId(userId).createdAt(LocalDateTime.now())
                     .build();
         }
 
         return userStatEntity.get();
     }
 
-    public PostStatEntity postStatInfoByPostId(Long postId) {
-        var postStatEntity = postStatRepository.findByPostId(postId);
+    public PostStatBO postStatInfoByPostId(Long postId) {
+        var postStatEntity = postStatDAO.findByPostId(postId);
         if (postStatEntity.isEmpty()) {
-            return PostStatEntity.builder().id(0L).postId(postId).createdAt(LocalDateTime.now())
+            return PostStatBO.builder().id(0L).postId(postId).createdAt(LocalDateTime.now())
                     .build();
         }
 

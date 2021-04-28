@@ -5,40 +5,45 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import net.jaggerwang.sbip.entity.FileEntity;
+import net.jaggerwang.sbip.entity.FileBO;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
-import net.jaggerwang.sbip.usecase.port.repository.FileRepository;
+import net.jaggerwang.sbip.usecase.port.dao.FileDAO;
 import net.jaggerwang.sbip.usecase.port.service.StorageService;
+import org.springframework.stereotype.Component;
 
+/**
+ * @author Jagger Wang
+ */
+@Component
 public class FileUsecase {
-    private final FileRepository fileRepository;
+    private final FileDAO fileDAO;
     private final StorageService storageService;
 
-    public FileUsecase(FileRepository fileRepository, StorageService storageService) {
-        this.fileRepository = fileRepository;
+    public FileUsecase(FileDAO fileDAO, StorageService storageService) {
+        this.fileDAO = fileDAO;
         this.storageService = storageService;
     }
 
-    public FileEntity upload(String path, byte[] content, FileEntity fileEntity) {
+    public FileBO upload(String path, byte[] content, FileBO fileBO) {
         String savedPath;
         try {
-            savedPath = storageService.store(path, content, fileEntity.getMeta());
+            savedPath = storageService.store(path, content, fileBO.getMeta());
         } catch (IOException e) {
             throw new UsecaseException("存储文件出错");
         }
 
-        var file = FileEntity.builder().userId(fileEntity.getUserId())
-                .region(fileEntity.getRegion()).bucket(fileEntity.getBucket()).path(savedPath)
-                .meta(fileEntity.getMeta()).build();
-        return fileRepository.save(file);
+        var file = FileBO.builder().userId(fileBO.getUserId())
+                .region(fileBO.getRegion()).bucket(fileBO.getBucket()).path(savedPath)
+                .meta(fileBO.getMeta()).build();
+        return fileDAO.save(file);
     }
 
-    public Optional<FileEntity> info(Long id) {
-        return fileRepository.findById(id);
+    public Optional<FileBO> info(Long id) {
+        return fileDAO.findById(id);
     }
 
-    public List<FileEntity> infos(List<Long> ids, Boolean keepNull) {
-        var fileEntities = fileRepository.findAllById(ids);
+    public List<FileBO> infos(List<Long> ids, Boolean keepNull) {
+        var fileEntities = fileDAO.findAllById(ids);
 
         if (!keepNull) {
             fileEntities.removeIf(Objects::isNull);

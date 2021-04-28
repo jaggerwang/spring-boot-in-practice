@@ -1,6 +1,7 @@
 package net.jaggerwang.sbip.usecase;
 
-import net.jaggerwang.sbip.usecase.port.repository.RoleRepository;
+import net.jaggerwang.sbip.usecase.port.dao.RoleDAO;
+import net.jaggerwang.sbip.util.encoder.PasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -10,10 +11,8 @@ import static org.mockito.BDDMockito.*;
 import java.util.Optional;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import net.jaggerwang.sbip.entity.UserEntity;
-import net.jaggerwang.sbip.usecase.port.encoder.PasswordEncoder;
-import net.jaggerwang.sbip.usecase.port.generator.RandomGenerator;
-import net.jaggerwang.sbip.usecase.port.repository.UserRepository;
+import net.jaggerwang.sbip.entity.UserBO;
+import net.jaggerwang.sbip.usecase.port.dao.UserDAO;
 
 @ExtendWith(SpringExtension.class)
 @EnabledIfSystemProperty(named = "test.usecase.enabled", matches = "true")
@@ -21,37 +20,31 @@ public class UserUsecaseTests {
     private UserUsecase userUsecase;
 
     @MockBean
-    private UserRepository userRepository;
+    private UserDAO userDAO;
 
     @MockBean
-    private RoleRepository roleRepository;
-
-    @MockBean
-    private RandomGenerator randomGenerator;
-
-    @MockBean
-    private PasswordEncoder passwordEncoder;
+    private RoleDAO roleDAO;
 
     @BeforeEach
     void setUp() {
-        userUsecase = new UserUsecase(userRepository, roleRepository, randomGenerator,
-                passwordEncoder);
+        userUsecase = new UserUsecase(userDAO, roleDAO);
     }
 
     @Test
     void register() {
-        given(passwordEncoder.encode(anyString())).will((invocation) -> invocation.getArgument(0));
+        var passwordEncoder = new PasswordEncoder();
 
-        var userEntity = UserEntity.builder().username("jaggerwang").password("123456").build();
-        given(userRepository.findByUsername(userEntity.getUsername())).willReturn(Optional.empty());
+        var userEntity = UserBO.builder().username("jaggerwang").password("123456").build();
+        given(userDAO.findByUsername(userEntity.getUsername())).willReturn(Optional.empty());
 
-        var savedUser = UserEntity.builder().username(userEntity.getUsername())
+        var savedUser = UserBO.builder().username(userEntity.getUsername())
                 .password(passwordEncoder.encode(userEntity.getPassword())).build();
-        given(userRepository.save(any(UserEntity.class))).willReturn(savedUser);
+        given(userDAO.save(any(UserBO.class))).willReturn(savedUser);
 
         var registeredUser = userUsecase.register(userEntity);
         assertThat(registeredUser).hasFieldOrPropertyWithValue("username", userEntity.getUsername())
-                .hasFieldOrPropertyWithValue("password",
-                        passwordEncoder.encode(userEntity.getPassword()));
+                .hasFieldOrProperty("password");
+        assertThat(registeredUser.getPassword()).isNotEqualTo(userEntity.getPassword());
+
     }
 }
