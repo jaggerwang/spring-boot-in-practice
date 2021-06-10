@@ -1,7 +1,7 @@
 package net.jaggerwang.sbip.usecase;
 
 import net.jaggerwang.sbip.entity.MetricBO;
-import net.jaggerwang.sbip.usecase.port.dao.MetricDAO;
+import net.jaggerwang.sbip.usecase.port.dao.MetricDao;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MetricUsecase {
-    private final MetricDAO metricDAO;
+    private final MetricDao metricDAO;
 
-    public MetricUsecase(MetricDAO metricDAO) {
+    public MetricUsecase(MetricDao metricDAO) {
         this.metricDAO = metricDAO;
     }
 

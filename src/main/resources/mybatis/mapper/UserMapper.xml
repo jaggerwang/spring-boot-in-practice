@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.jaggerwang.sbip.adapter.dao.mybatis.mapper.UserMapper" >
+    <resultMap id="userResultMap" type="user" >
+        <id property="id" column="id" />
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, password, mobile, email, avatar_id, intro)
+        VALUES (#{username}, #{password}, #{mobile}, #{email}, #{avatarId}, #{intro})
+    </insert>
+
+    <update id="update">
+        UPDATE user
+        <set>
+            <if test="username != null">username=#{username}</if>
+            <if test="password != null">password=#{password}</if>
+            <if test="mobile != null">mobile=#{mobile}</if>
+            <if test="email != null">email=#{email}</if>
+            <if test="avatarId != null">avatar_id=#{avatarId}</if>
+            <if test="intro != null">intro=#{intro}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
+
+    <select id="select" resultMap="userResultMap">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <select id="selectByUsername" resultMap="userResultMap">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <select id="selectByMobile" resultMap="userResultMap">
+        SELECT * FROM user WHERE mobile = #{mobile}
+    </select>
+
+    <select id="selectByEmail" resultMap="userResultMap">
+        SELECT * FROM user WHERE email = #{email}
+    </select>
+
+    <select id="selectFollowing" resultMap="userResultMap">
+        SELECT u.* FROM user u JOIN user_follow uf ON u.id = uf.following_id
+        WHERE uf.follower_id = #{followerId}
+        LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="selectFollowingCount" resultMap="long">
+        SELECT COUNT(*) FROM user_follow WHERE follower_id = #{followerId}
+    </select>
+
+    <select id="selectFollower" resultMap="userResultMap">
+        SELECT u.* FROM user u JOIN user_follow uf ON u.id = uf.follower_id
+        WHERE uf.following_id = #{followingId}
+        LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="selectFollowerCount" resultMap="long">
+        SELECT COUNT(*) FROM user_follow WHERE following_id = #{followingId}
+    </select>
+</mapper>

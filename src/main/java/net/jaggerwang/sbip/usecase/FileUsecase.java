@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import net.jaggerwang.sbip.entity.FileBO;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
-import net.jaggerwang.sbip.usecase.port.dao.FileDAO;
+import net.jaggerwang.sbip.usecase.port.dao.FileDao;
 import net.jaggerwang.sbip.usecase.port.service.StorageService;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FileUsecase {
-    private final FileDAO fileDAO;
+    private final FileDao fileDAO;
     private final StorageService storageService;
 
-    public FileUsecase(FileDAO fileDAO, StorageService storageService) {
+    public FileUsecase(FileDao fileDAO, StorageService storageService) {
         this.fileDAO = fileDAO;
         this.storageService = storageService;
     }

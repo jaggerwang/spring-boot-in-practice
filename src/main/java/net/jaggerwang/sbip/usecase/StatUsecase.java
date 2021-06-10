@@ -3,8 +3,8 @@ package net.jaggerwang.sbip.usecase;
 import java.time.LocalDateTime;
 import net.jaggerwang.sbip.entity.PostStatBO;
 import net.jaggerwang.sbip.entity.UserStatBO;
-import net.jaggerwang.sbip.usecase.port.dao.PostStatDAO;
-import net.jaggerwang.sbip.usecase.port.dao.UserStatDAO;
+import net.jaggerwang.sbip.usecase.port.dao.PostStatDao;
+import net.jaggerwang.sbip.usecase.port.dao.UserStatDao;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class StatUsecase {
-    private final UserStatDAO userStatDAO;
-    private final PostStatDAO postStatDAO;
+    private final UserStatDao userStatDAO;
+    private final PostStatDao postStatDAO;
 
-    public StatUsecase(UserStatDAO userStatDAO,
-                       PostStatDAO postStatDAO) {
+    public StatUsecase(UserStatDao userStatDAO,
+                       PostStatDao postStatDAO) {
         this.userStatDAO = userStatDAO;
         this.postStatDAO = postStatDAO;
     }

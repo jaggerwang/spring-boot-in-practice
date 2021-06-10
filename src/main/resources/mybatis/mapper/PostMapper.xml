@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.jaggerwang.sbip.adapter.dao.mybatis.mapper.PostMapper" >
+    <resultMap id="postResultMap" type="post" >
+        <id property="id" column="id" />
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO post (user_id, type, text, image_ids, video_id)
+        VALUES (#{userId}, #{type}, #{text}, #{imageIds}, #{videoId})
+    </insert>
+
+    <update id="update">
+        UPDATE post
+        <set>
+            <if test="userId != null">user_id=#{userId}</if>
+            <if test="type != null">type=#{type}</if>
+            <if test="text != null">text=#{text}</if>
+            <if test="imageIds != null">image_ids=#{imageIds}</if>
+            <if test="videoId != null">video_id=#{videoId}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM post WHERE id=#{id}
+    </delete>
+
+    <select id="select" resultMap="postResultMap">
+        SELECT * FROM post WHERE id = #{id}
+    </select>
+
+    <select id="selectPublished" resultMap="postResultMap">
+        SELECT * FROM post WHERE user_id = #{userId} Limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectPublishedCount" resultMap="long">
+        SELECT COUNT(*) FROM post WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectLiked" resultMap="postResultMap">
+        SELECT p.* FROM post p JOIN post_like pl ON p.id = pl.post_id
+        WHERE pl.user_id = #{userId}
+        LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="selectLikedCount" resultMap="long">
+        SELECT COUNT(*) FROM post_like WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectFollowing" resultMap="postResultMap">
+        SELECT p.* FROM post p JOIN user_follow uf ON p.user_id = uf.following_id
+        WHERE uf.follower_id = #{userId}
+        <if test="beforeId != null">
+            AND p.id &lt; #{beforeId}
+        </if>
+        <if test="afterId != null">
+            AND p.id > #{afterId}
+        </if>
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+        ORDER BY p.id DESC
+    </select>
+
+    <select id="selectFollowingCount" resultMap="long">
+        SELECT COUNT(*) FROM post p JOIN user_follow uf ON p.user_id = uf.following_id
+        WHERE uf.follower_id = #{userId}
+    </select>
+</mapper>

@@ -8,6 +8,12 @@ server:
   address: 0.0.0.0
   port: 8080
 
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: net.jaggerwang.sbip.adapter.dao.mybatis.model
+  configuration:
+    map-underscore-to-camel-case: true
+
 spring:
   application:
     name: spring-boot-in-practice

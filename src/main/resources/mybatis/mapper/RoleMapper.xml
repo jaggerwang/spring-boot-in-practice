@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.jaggerwang.sbip.adapter.dao.mybatis.mapper.RoleMapper" >
+    <resultMap id="roleResultMap" type="role" >
+        <id property="id" column="id" />
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO role (name)
+        VALUES (#{name})
+    </insert>
+
+    <update id="update">
+        UPDATE role
+        <set>
+            <if test="name != null">name=#{name}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM role WHERE id=#{id}
+    </delete>
+
+    <select id="select" resultMap="roleResultMap">
+        SELECT * FROM role WHERE id = #{id}
+    </select>
+
+    <select id="selectByName" resultMap="roleResultMap">
+        SELECT * FROM role WHERE name = #{name}
+    </select>
+
+    <select id="selectRolesOfUser" resultMap="roleResultMap">
+        SELECT r.* FROM role r JOIN user_role ur on r.id = ur.role_id WHERE ur.user_id = #{userId}
+    </select>
+
+    <select id="selectRolesOfUserByUsername" resultMap="roleResultMap">
+        SELECT r.* FROM role r
+            JOIN user_role ur on r.id = ur.role_id
+            JOIN user u on ur.user_id = u.id
+        WHERE u.username = #{username}
+    </select>
+</mapper>

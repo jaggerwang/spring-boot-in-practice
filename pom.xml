@@ -19,7 +19,9 @@
 		<java.version>11</java.version>
 		<guava.version>28.1-jre</guava.version>
 		<swagger.version>2.9.2</swagger.version>
+		<mybatis-starter.version>2.1.4</mybatis-starter.version>
 		<querydsl.version>4.4.0</querydsl.version>
+		<mybatis-test.version>2.1.4</mybatis-test.version>
 		<jshell-maven-plugin.version>1.2</jshell-maven-plugin.version>
 		<apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
 	</properties>
@@ -48,16 +50,39 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>${mybatis-starter.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>bson</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,30 +111,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-pool2</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-			<version>${querydsl.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>bson</artifactId>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -131,8 +135,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter-test</artifactId>
+			<version>${mybatis-test.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -152,30 +157,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>apt-maven-plugin</artifactId>
-				<version>${apt-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>com.querydsl</groupId>
-						<artifactId>querydsl-apt</artifactId>
-						<version>${querydsl.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

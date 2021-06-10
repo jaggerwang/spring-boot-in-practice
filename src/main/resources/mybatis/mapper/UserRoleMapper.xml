@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.jaggerwang.sbip.adapter.dao.mybatis.mapper.UserRoleMapper" >
+    <resultMap id="userRoleResultMap" type="userRole" >
+        <id property="id" column="id" />
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_role (user_id, role_id)
+        VALUES (#{userId}, #{roleId})
+    </insert>
+
+    <update id="update">
+        UPDATE user_role
+        <set>
+            <if test="userId != null">user_id=#{userId}</if>
+            <if test="roleId != null">role_id=#{roleId}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM user_role WHERE id=#{id}
+    </delete>
+
+    <select id="select" resultMap="userRoleResultMap">
+        SELECT * FROM user_role WHERE id = #{id}
+    </select>
+</mapper>

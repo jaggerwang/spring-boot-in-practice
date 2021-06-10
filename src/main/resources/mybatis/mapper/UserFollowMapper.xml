@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.jaggerwang.sbip.adapter.dao.mybatis.mapper.UserFollowMapper" >
+    <resultMap id="userFollowResultMap" type="userFollow" >
+        <id property="id" column="id" />
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_follow (following_id, follower_id)
+        VALUES (#{followingId}, #{followerId})
+    </insert>
+
+    <update id="update">
+        UPDATE user_follow
+        <set>
+            <if test="followingId != null">following_id=#{followingId}</if>
+            <if test="followerId != null">follower_id=#{followerId}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM user_follow WHERE id=#{id}
+    </delete>
+
+    <delete id="deleteByFollowerIdAndFollowingId">
+        DELETE FROM user_follow WHERE following_id=#{followingId} AND follower_id=#{followerId}
+    </delete>
+
+    <select id="select" resultMap="userFollowResultMap">
+        SELECT * FROM user_follow WHERE id = #{id}
+    </select>
+
+    <select id="selectByFollowerIdAndFollowingId" resultMap="userFollowResultMap">
+        SELECT * FROM user_follow WHERE following_id=#{followingId} AND follower_id=#{followerId}
+    </select>
+</mapper>
