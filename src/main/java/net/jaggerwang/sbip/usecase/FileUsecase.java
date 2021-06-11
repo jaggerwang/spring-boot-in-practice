@@ -43,12 +43,12 @@ public class FileUsecase {
     }
 
     public List<FileBO> infos(List<Long> ids, Boolean keepNull) {
-        var fileEntities = fileDAO.findAllById(ids);
+        var fileBOs = fileDAO.findAllById(ids);
 
         if (!keepNull) {
-            fileEntities.removeIf(Objects::isNull);
+            fileBOs.removeIf(Objects::isNull);
         }
 
-        return fileEntities;
+        return fileBOs;
     }
 }

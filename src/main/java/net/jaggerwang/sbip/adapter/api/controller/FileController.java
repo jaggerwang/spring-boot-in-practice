@@ -31,7 +31,7 @@ public class FileController extends AbstractController {
                           @RequestParam(defaultValue = "") String bucket,
                           @RequestParam(defaultValue = "") String path,
                           @RequestParam("file") List<MultipartFile> files) throws IOException {
-        var fileEntities = new ArrayList<FileBO>();
+        var fileBOs = new ArrayList<FileBO>();
         for (var file : files) {
             var content = file.getBytes();
 
@@ -49,11 +49,11 @@ public class FileController extends AbstractController {
 
             fileBO = fileUsecase.upload(path, content, fileBO);
 
-            fileEntities.add(fileBO);
+            fileBOs.add(fileBO);
         }
 
         return new RootDTO().addDataEntry("files",
-                fileEntities.stream().map(this::fullFileDto).collect(Collectors.toList()));
+                fileBOs.stream().map(this::fullFileDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/info")

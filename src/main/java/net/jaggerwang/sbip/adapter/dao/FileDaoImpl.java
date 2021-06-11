@@ -42,17 +42,17 @@ public class FileDaoImpl extends AbstractDao implements FileDao {
 
     @Override
     public List<FileBO> findAllById(List<Long> ids) {
-        var fileDos = fileMapper.selectByIds(ids).stream()
+        var files = fileMapper.selectByIds(ids).stream()
                 .collect(Collectors.toMap(File::getId, File::toBO));
 
-        var fileEntities = new FileBO[ids.size()];
+        var fileBOs = new FileBO[ids.size()];
         IntStream.range(0, ids.size()).forEach(i -> {
             var id = ids.get(i);
-            if (fileDos.containsKey(id)) {
-                fileEntities[i] = fileDos.get(id);
+            if (files.containsKey(id)) {
+                fileBOs[i] = files.get(id);
             }
         });
 
-        return Arrays.asList(fileEntities);
+        return Arrays.asList(fileBOs);
     }
 }
