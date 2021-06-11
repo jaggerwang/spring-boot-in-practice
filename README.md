@@ -2,11 +2,18 @@
 
 This project can be used as a starter for spring boot api service development, it is also a reference implementation of [Clean Architecture](https://blog.jaggerwang.net/clean-architecture-in-practice/). This api service can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is also an article [Spring Boot API 服务开发指南](https://blog.jaggerwang.net/spring-boot-api-service-develop-tour/) for learning this project.
 
+## Branches
+
+1. `mybatis` Using MyBatis to implement DAO(Data Access Object)
+1. `mybatis-plus` Using MyBatis-Plus to implement DAO(Data Access Object) (TODO)
+
 ## Dependent frameworks and packages
 
 1. [Spring Boot](https://spring.io/projects/spring-boot) Web framework and server
 1. [Spring Data JPA](https://spring.io/projects/spring-data-jpa) Access database
 1. [Querydsl JPA](https://github.com/querydsl/querydsl/tree/master/querydsl-jpa) Type safe dynamic sql builder
+1. [MyBatis](https://mybatis.org/) SQL Mapping Framework
+1. [MyBatis-Plus](https://baomidou.com/) An powerful enhanced toolkit of MyBatis for simplify development
 1. [Spring Data Redis](https://spring.io/projects/spring-data-redis) Cache data
 1. [Spring Security](https://spring.io/projects/spring-security) Authenticate and authrorize
 1. [Spring Session](https://spring.io/projects/spring-session) Manage session
