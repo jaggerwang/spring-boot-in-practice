@@ -68,10 +68,10 @@ public class PostController extends AbstractController {
     public RootDTO published(@RequestParam(required = false) Long userId,
                              @RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(defaultValue = "0") Long offset) {
-        var postEntities = postUsecase.published(userId, limit, offset);
+        var postBOs = postUsecase.published(userId, limit, offset);
 
         return new RootDTO().addDataEntry("posts",
-                postEntities.stream().map(this::fullPostDto).collect(Collectors.toList()));
+                postBOs.stream().map(this::fullPostDto).collect(Collectors.toList()));
     }
 
     @PostMapping("/like")
@@ -99,10 +99,10 @@ public class PostController extends AbstractController {
     public RootDTO liked(@RequestParam(required = false) Long userId,
                          @RequestParam(defaultValue = "10") Long limit,
                          @RequestParam(defaultValue = "0") Long offset) {
-        var postEntities = postUsecase.liked(userId, limit, offset);
+        var postBOs = postUsecase.liked(userId, limit, offset);
 
         return new RootDTO().addDataEntry("posts",
-                postEntities.stream().map(this::fullPostDto).collect(Collectors.toList()));
+                postBOs.stream().map(this::fullPostDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/following")
@@ -110,9 +110,9 @@ public class PostController extends AbstractController {
     public RootDTO following(@RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(required = false) Long beforeId,
                              @RequestParam(required = false) Long afterId) {
-        var postEntities = postUsecase.following(loggedUserId(), limit, beforeId, afterId);
+        var postBOs = postUsecase.following(loggedUserId(), limit, beforeId, afterId);
 
         return new RootDTO().addDataEntry("posts",
-                postEntities.stream().map(this::fullPostDto).collect(Collectors.toList()));
+                postBOs.stream().map(this::fullPostDto).collect(Collectors.toList()));
     }
 }

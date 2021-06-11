@@ -5,19 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.entity.MetricBO;
-import net.jaggerwang.sbip.usecase.port.dao.MetricDAO;
+import net.jaggerwang.sbip.usecase.port.dao.MetricDao;
 
 /**
  * @author Jagger Wang
  */
 @Component
-public class MetricDAOImpl implements MetricDAO {
+public class MetricDaoImpl implements MetricDao {
     private static final String KEY = "sbip:metric";
 
     private RedisTemplate<String, Serializable> redisTemplate;
     private ObjectMapper objectMapper;
 
-    public MetricDAOImpl(RedisTemplate<String, Serializable> redisTemplate,
+    public MetricDaoImpl(RedisTemplate<String, Serializable> redisTemplate,
                          ObjectMapper objectMapper) {
         this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper;

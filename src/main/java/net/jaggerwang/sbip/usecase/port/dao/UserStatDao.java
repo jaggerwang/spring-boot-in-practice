@@ -7,7 +7,7 @@ import net.jaggerwang.sbip.entity.UserStatBO;
 /**
  * @author Jagger Wang
  */
-public interface UserStatDAO {
+public interface UserStatDao {
     /**
      * 保存用户统计
      * @param userStatBO 要保存的用户统计

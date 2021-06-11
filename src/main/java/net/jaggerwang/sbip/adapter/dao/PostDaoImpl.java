@@ -15,18 +15,18 @@ import net.jaggerwang.sbip.adapter.dao.jpa.entity.QPostLike;
 import net.jaggerwang.sbip.adapter.dao.jpa.entity.QUserFollow;
 import net.jaggerwang.sbip.adapter.dao.jpa.repository.PostLikeRepository;
 import net.jaggerwang.sbip.entity.PostBO;
-import net.jaggerwang.sbip.usecase.port.dao.PostDAO;
+import net.jaggerwang.sbip.usecase.port.dao.PostDao;
 
 /**
  * @author Jagger Wang
  */
 @Component
-public class PostDAOImpl implements PostDAO {
+public class PostDaoImpl implements PostDao {
     private JPAQueryFactory jpaQueryFactory;
     private PostRepository postRepository;
     private PostLikeRepository postLikeRepository;
 
-    public PostDAOImpl(JPAQueryFactory jpaQueryFactory, PostRepository postRepository,
+    public PostDaoImpl(JPAQueryFactory jpaQueryFactory, PostRepository postRepository,
                        PostLikeRepository postLikeRepository) {
         this.jpaQueryFactory = jpaQueryFactory;
         this.postRepository = postRepository;

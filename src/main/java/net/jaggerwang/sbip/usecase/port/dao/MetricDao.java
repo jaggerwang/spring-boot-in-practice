@@ -5,7 +5,7 @@ import net.jaggerwang.sbip.entity.MetricBO;
 /**
  * @author Jagger Wang
  */
-public interface MetricDAO {
+public interface MetricDao {
     /**
      * 更新某个指标的值
      * @param name 指标名

@@ -8,7 +8,7 @@ import net.jaggerwang.sbip.entity.PostBO;
 /**
  * @author Jagger Wang
  */
-public interface PostDAO {
+public interface PostDao {
     /**
      * 保存帖子
      * @param postBO 要保存的帖子对象

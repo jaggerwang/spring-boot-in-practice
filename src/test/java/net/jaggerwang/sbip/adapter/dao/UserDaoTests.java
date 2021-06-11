@@ -13,12 +13,12 @@ import net.jaggerwang.sbip.adapter.dao.jpa.repository.UserRepository;
 import net.jaggerwang.sbip.adapter.api.config.CommonConfig;
 import net.jaggerwang.sbip.adapter.api.config.JpaConfig;
 import net.jaggerwang.sbip.entity.UserBO;
-import net.jaggerwang.sbip.usecase.port.dao.UserDAO;
+import net.jaggerwang.sbip.usecase.port.dao.UserDao;
 
 @DataJpaTest
 @ContextConfiguration(classes = {CommonConfig.class, JpaConfig.class})
 @EnabledIfSystemProperty(named = "test.dao.enabled", matches = "true")
-public class UserDAOTests {
+public class UserDaoTests {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
 
@@ -28,12 +28,12 @@ public class UserDAOTests {
     @Autowired
     private UserFollowRepository userFollowRepository;
 
-    private UserDAO userDAO;
+    private UserDao userDAO;
 
     @BeforeEach
     void setUp() {
         userDAO =
-                new UserDAOImpl(jpaQueryFactory, userRepository, userFollowRepository);
+                new UserDaoImpl(jpaQueryFactory, userRepository, userFollowRepository);
     }
 
     @Test

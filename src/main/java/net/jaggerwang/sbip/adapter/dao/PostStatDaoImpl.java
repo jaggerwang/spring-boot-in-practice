@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.adapter.dao.jpa.repository.PostStatRepository;
 import net.jaggerwang.sbip.adapter.dao.jpa.entity.PostStat;
 import net.jaggerwang.sbip.entity.PostStatBO;
-import net.jaggerwang.sbip.usecase.port.dao.PostStatDAO;
+import net.jaggerwang.sbip.usecase.port.dao.PostStatDao;
 
 /**
  * @author Jagger Wang
  */
 @Component
-public class PostStatDAOImpl implements PostStatDAO {
+public class PostStatDaoImpl implements PostStatDao {
     private PostStatRepository postStatRepository;
 
-    public PostStatDAOImpl(PostStatRepository postStatRepository) {
+    public PostStatDaoImpl(PostStatRepository postStatRepository) {
         this.postStatRepository = postStatRepository;
     }
 

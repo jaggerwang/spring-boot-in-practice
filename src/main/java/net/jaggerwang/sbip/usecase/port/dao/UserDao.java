@@ -8,7 +8,7 @@ import net.jaggerwang.sbip.entity.UserBO;
 /**
  * @author Jagger Wang
  */
-public interface UserDAO {
+public interface UserDao {
     /**
      * 保存用户
      * @param userBO 要保存的用户

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.jaggerwang.sbip.entity.PostBO;
-import net.jaggerwang.sbip.usecase.port.dao.PostDAO;
+import net.jaggerwang.sbip.usecase.port.dao.PostDao;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PostUsecase {
-    private final PostDAO postDAO;
+    private final PostDao postDAO;
 
-    public PostUsecase(PostDAO postDAO) {
+    public PostUsecase(PostDao postDAO) {
         this.postDAO = postDAO;
     }
 

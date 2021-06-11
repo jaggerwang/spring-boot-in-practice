@@ -8,7 +8,7 @@ import net.jaggerwang.sbip.entity.RoleBO;
 /**
  * @author Jagger Wang
  */
-public interface RoleDAO {
+public interface RoleDao {
     /**
      * 保存角色
      * @param roleBO 要保存的角色

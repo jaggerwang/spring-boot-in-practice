@@ -14,18 +14,18 @@ import net.jaggerwang.sbip.adapter.dao.jpa.entity.QUserFollow;
 import net.jaggerwang.sbip.adapter.dao.jpa.entity.UserFollow;
 import net.jaggerwang.sbip.adapter.dao.jpa.repository.UserFollowRepository;
 import net.jaggerwang.sbip.entity.UserBO;
-import net.jaggerwang.sbip.usecase.port.dao.UserDAO;
+import net.jaggerwang.sbip.usecase.port.dao.UserDao;
 
 /**
  * @author Jagger Wang
  */
 @Component
-public class UserDAOImpl implements UserDAO {
+public class UserDaoImpl implements UserDao {
     private JPAQueryFactory jpaQueryFactory;
     private UserRepository userRepository;
     private UserFollowRepository userFollowRepository;
 
-    public UserDAOImpl(JPAQueryFactory jpaQueryFactory, UserRepository userRepository,
+    public UserDaoImpl(JPAQueryFactory jpaQueryFactory, UserRepository userRepository,
                        UserFollowRepository userFollowRepository) {
         this.jpaQueryFactory = jpaQueryFactory;
         this.userRepository = userRepository;

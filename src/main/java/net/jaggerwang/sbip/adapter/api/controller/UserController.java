@@ -89,10 +89,10 @@ public class UserController extends AbstractController {
     public RootDTO following(@RequestParam(required = false) Long userId,
                              @RequestParam(defaultValue = "20") Long limit,
                              @RequestParam(defaultValue = "0") Long offset) {
-        var userEntities = userUsecase.following(userId, limit, offset);
+        var userBOs = userUsecase.following(userId, limit, offset);
 
         return new RootDTO().addDataEntry("users",
-                userEntities.stream().map(this::fullUserDto).collect(Collectors.toList()));
+                userBOs.stream().map(this::fullUserDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/follower")
@@ -100,10 +100,10 @@ public class UserController extends AbstractController {
     public RootDTO follower(@RequestParam(required = false) Long userId,
                             @RequestParam(defaultValue = "20") Long limit,
                             @RequestParam(defaultValue = "0") Long offset) {
-        var userEntities = userUsecase.follower(userId, limit, offset);
+        var userBOs = userUsecase.follower(userId, limit, offset);
 
         return new RootDTO().addDataEntry("users",
-                userEntities.stream().map(this::fullUserDto).collect(Collectors.toList()));
+                userBOs.stream().map(this::fullUserDto).collect(Collectors.toList()));
     }
 
     @PostMapping("/sendMobileVerifyCode")

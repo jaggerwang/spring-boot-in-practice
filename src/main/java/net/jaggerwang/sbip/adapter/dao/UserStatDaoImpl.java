@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.adapter.dao.jpa.repository.UserStatRepository;
 import net.jaggerwang.sbip.adapter.dao.jpa.entity.UserStat;
 import net.jaggerwang.sbip.entity.UserStatBO;
-import net.jaggerwang.sbip.usecase.port.dao.UserStatDAO;
+import net.jaggerwang.sbip.usecase.port.dao.UserStatDao;
 
 /**
  * @author Jagger Wang
  */
 @Component
-public class UserStatDAOImpl implements UserStatDAO {
+public class UserStatDaoImpl implements UserStatDao {
     private UserStatRepository userStatRepository;
 
-    public UserStatDAOImpl(UserStatRepository userStatRepository) {
+    public UserStatDaoImpl(UserStatRepository userStatRepository) {
         this.userStatRepository = userStatRepository;
     }
 

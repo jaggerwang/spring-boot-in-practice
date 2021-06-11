@@ -8,7 +8,7 @@ import net.jaggerwang.sbip.entity.FileBO;
 /**
  * @author Jagger Wang
  */
-public interface FileDAO {
+public interface FileDao {
     /**
      * 保存文件
      * @param fileBO 要保存的文件

@@ -10,16 +10,16 @@ import net.jaggerwang.sbip.adapter.dao.jpa.entity.File;
 import net.jaggerwang.sbip.entity.FileBO;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.sbip.adapter.dao.jpa.repository.FileRepository;
-import net.jaggerwang.sbip.usecase.port.dao.FileDAO;
+import net.jaggerwang.sbip.usecase.port.dao.FileDao;
 
 /**
  * @author Jagger Wang
  */
 @Component
-public class FileDAOImpl implements FileDAO {
+public class FileDaoImpl implements FileDao {
     private FileRepository fileRepository;
 
-    public FileDAOImpl(FileRepository fileRepository) {
+    public FileDaoImpl(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
 
@@ -35,17 +35,17 @@ public class FileDAOImpl implements FileDAO {
 
     @Override
     public List<FileBO> findAllById(List<Long> ids) {
-        var fileDos = fileRepository.findAllById(ids).stream()
+        var files = fileRepository.findAllById(ids).stream()
                 .collect(Collectors.toMap(file -> file.getId(), file -> file.toBO()));
 
-        var fileEntities = new FileBO[ids.size()];
+        var fileBOs = new FileBO[ids.size()];
         IntStream.range(0, ids.size()).forEach(i -> {
             var id = ids.get(i);
-            if (fileDos.containsKey(id)) {
-                fileEntities[i] = fileDos.get(id);
+            if (files.containsKey(id)) {
+                fileBOs[i] = files.get(id);
             }
         });
 
-        return Arrays.asList(fileEntities);
+        return Arrays.asList(fileBOs);
     }
 }

@@ -8,8 +8,8 @@ import net.jaggerwang.sbip.entity.RoleBO;
 import net.jaggerwang.sbip.entity.UserBO;
 import net.jaggerwang.sbip.usecase.exception.NotFoundException;
 import net.jaggerwang.sbip.usecase.exception.UsecaseException;
-import net.jaggerwang.sbip.usecase.port.dao.RoleDAO;
-import net.jaggerwang.sbip.usecase.port.dao.UserDAO;
+import net.jaggerwang.sbip.usecase.port.dao.RoleDao;
+import net.jaggerwang.sbip.usecase.port.dao.UserDao;
 import net.jaggerwang.sbip.util.encoder.PasswordEncoder;
 import net.jaggerwang.sbip.util.generator.RandomGenerator;
 import org.springframework.stereotype.Component;
@@ -22,10 +22,10 @@ public class UserUsecase {
     private final static HashMap<String, String> MOBILE_VERIFY_CODES = new HashMap<>();
     private final static HashMap<String, String> EMAIL_VERIFY_CODES = new HashMap<>();
 
-    private final UserDAO userDAO;
-    private final RoleDAO roleDAO;
+    private final UserDao userDAO;
+    private final RoleDao roleDAO;
 
-    public UserUsecase(UserDAO userDAO, RoleDAO roleDAO) {
+    public UserUsecase(UserDao userDAO, RoleDao roleDAO) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
     }

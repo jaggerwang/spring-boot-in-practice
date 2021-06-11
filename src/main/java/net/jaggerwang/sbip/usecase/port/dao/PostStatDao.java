@@ -7,7 +7,7 @@ import net.jaggerwang.sbip.entity.PostStatBO;
 /**
  * @author Jagger Wang
  */
-public interface PostStatDAO {
+public interface PostStatDao {
     /**
      * 保存帖子统计
      * @param postStatBO 要保存的帖子统计

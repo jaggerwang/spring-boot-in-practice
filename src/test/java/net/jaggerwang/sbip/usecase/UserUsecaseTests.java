@@ -1,6 +1,6 @@
 package net.jaggerwang.sbip.usecase;
 
-import net.jaggerwang.sbip.usecase.port.dao.RoleDAO;
+import net.jaggerwang.sbip.usecase.port.dao.RoleDao;
 import net.jaggerwang.sbip.util.encoder.PasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import net.jaggerwang.sbip.entity.UserBO;
-import net.jaggerwang.sbip.usecase.port.dao.UserDAO;
+import net.jaggerwang.sbip.usecase.port.dao.UserDao;
 
 @ExtendWith(SpringExtension.class)
 @EnabledIfSystemProperty(named = "test.usecase.enabled", matches = "true")
@@ -20,10 +20,10 @@ public class UserUsecaseTests {
     private UserUsecase userUsecase;
 
     @MockBean
-    private UserDAO userDAO;
+    private UserDao userDAO;
 
     @MockBean
-    private RoleDAO roleDAO;
+    private RoleDao roleDAO;
 
     @BeforeEach
     void setUp() {

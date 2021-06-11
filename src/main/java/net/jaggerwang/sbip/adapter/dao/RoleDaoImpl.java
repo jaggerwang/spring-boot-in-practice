@@ -11,17 +11,17 @@ import net.jaggerwang.sbip.adapter.dao.jpa.entity.QUser;
 import net.jaggerwang.sbip.adapter.dao.jpa.entity.QUserRole;
 import net.jaggerwang.sbip.adapter.dao.jpa.entity.Role;
 import net.jaggerwang.sbip.entity.RoleBO;
-import net.jaggerwang.sbip.usecase.port.dao.RoleDAO;
+import net.jaggerwang.sbip.usecase.port.dao.RoleDao;
 
 /**
  * @author Jagger Wang
  */
 @Component
-public class RoleDAOImpl implements RoleDAO {
+public class RoleDaoImpl implements RoleDao {
     private JPAQueryFactory jpaQueryFactory;
     private RoleRepository roleRepository;
 
-    public RoleDAOImpl(JPAQueryFactory jpaQueryFactory, RoleRepository roleRepository) {
+    public RoleDaoImpl(JPAQueryFactory jpaQueryFactory, RoleRepository roleRepository) {
         this.jpaQueryFactory = jpaQueryFactory;
         this.roleRepository = roleRepository;
     }
