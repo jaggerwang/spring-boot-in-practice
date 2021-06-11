@@ -25,12 +25,19 @@ public class RoleDTO {
     private LocalDateTime updatedAt;
 
     public static RoleDTO fromBO(RoleBO roleBO) {
-        return RoleDTO.builder().id(roleBO.getId()).name(roleBO.getName())
-                .createdAt(roleBO.getCreatedAt()).updatedAt(roleBO.getUpdatedAt()).build();
+        return RoleDTO.builder()
+                .id(roleBO.getId())
+                .name(roleBO.getName())
+                .createdAt(roleBO.getCreatedAt())
+                .updatedAt(roleBO.getUpdatedAt())
+                .build();
     }
 
     public RoleBO toBO() {
-        return RoleBO.builder().id(id).name(name).createdAt(createdAt).updatedAt(updatedAt)
+        return RoleBO.builder()
+                .id(id).name(name)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
                 .build();
     }
 }

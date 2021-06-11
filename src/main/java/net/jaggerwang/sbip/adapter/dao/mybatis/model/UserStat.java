@@ -33,11 +33,16 @@ public class UserStat {
     private LocalDateTime updatedAt;
 
     public static UserStat fromBO(UserStatBO userStatBO) {
-        return UserStat.builder().id(userStatBO.getId()).userId(userStatBO.getUserId())
-                .postCount(userStatBO.getPostCount()).likeCount(userStatBO.getLikeCount())
+        return UserStat.builder()
+                .id(userStatBO.getId())
+                .userId(userStatBO.getUserId())
+                .postCount(userStatBO.getPostCount())
+                .likeCount(userStatBO.getLikeCount())
                 .followingCount(userStatBO.getFollowingCount())
-                .followerCount(userStatBO.getFollowerCount()).createdAt(userStatBO.getCreatedAt())
-                .updatedAt(userStatBO.getUpdatedAt()).build();
+                .followerCount(userStatBO.getFollowerCount())
+                .createdAt(userStatBO.getCreatedAt())
+                .updatedAt(userStatBO.getUpdatedAt())
+                .build();
     }
 
     public UserStatBO toBO() {

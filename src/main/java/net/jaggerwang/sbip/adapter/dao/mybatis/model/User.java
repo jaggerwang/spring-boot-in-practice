@@ -38,14 +38,35 @@ public class User implements Serializable {
     private LocalDateTime updatedAt;
 
     public static User fromBO(UserBO userBO) {
-        return User.builder().id(userBO.getId()).username(userBO.getUsername())
-                .password(userBO.getPassword()).mobile(userBO.getMobile()).email(userBO.getEmail())
-                .avatarId(userBO.getAvatarId()).intro(userBO.getIntro()).createdAt(userBO.getCreatedAt())
-                .updatedAt(userBO.getUpdatedAt()).build();
+        var intro = userBO.getIntro();
+        if (intro == null) {
+            intro = "";
+        }
+
+        return User.builder()
+                .id(userBO.getId())
+                .username(userBO.getUsername())
+                .password(userBO.getPassword())
+                .mobile(userBO.getMobile())
+                .email(userBO.getEmail())
+                .avatarId(userBO.getAvatarId())
+                .intro(intro)
+                .createdAt(userBO.getCreatedAt())
+                .updatedAt(userBO.getUpdatedAt())
+                .build();
     }
 
     public UserBO toBO() {
-        return UserBO.builder().id(id).username(username).password(password).mobile(mobile).email(email)
-                .avatarId(avatarId).intro(intro).createdAt(createdAt).updatedAt(updatedAt).build();
+        return UserBO.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .mobile(mobile)
+                .email(email)
+                .avatarId(avatarId)
+                .intro(intro)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

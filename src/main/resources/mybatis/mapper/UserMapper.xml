@@ -51,7 +51,7 @@
         LIMIT #{offset},#{limit}
     </select>
 
-    <select id="selectFollowingCount" resultMap="long">
+    <select id="selectFollowingCount" resultType="long">
         SELECT COUNT(*) FROM user_follow WHERE follower_id = #{followerId}
     </select>
 
@@ -61,7 +61,7 @@
         LIMIT #{offset},#{limit}
     </select>
 
-    <select id="selectFollowerCount" resultMap="long">
+    <select id="selectFollowerCount" resultType="long">
         SELECT COUNT(*) FROM user_follow WHERE following_id = #{followingId}
     </select>
 </mapper>

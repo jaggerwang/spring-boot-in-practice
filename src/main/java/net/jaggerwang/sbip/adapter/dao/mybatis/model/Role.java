@@ -25,11 +25,20 @@ public class Role {
     private LocalDateTime updatedAt;
 
     public static Role fromBO(RoleBO roleBO) {
-        return Role.builder().id(roleBO.getId()).name(roleBO.getName()).createdAt(roleBO.getCreatedAt())
-                .updatedAt(roleBO.getUpdatedAt()).build();
+        return Role.builder()
+                .id(roleBO.getId())
+                .name(roleBO.getName())
+                .createdAt(roleBO.getCreatedAt())
+                .updatedAt(roleBO.getUpdatedAt())
+                .build();
     }
 
     public RoleBO toBO() {
-        return RoleBO.builder().id(id).name(name).createdAt(createdAt).updatedAt(updatedAt).build();
+        return RoleBO.builder()
+                .id(id)
+                .name(name)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

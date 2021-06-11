@@ -34,13 +34,28 @@ public class Post {
     private LocalDateTime updatedAt;
 
     public static Post fromBO(PostBO postBO) {
-        return Post.builder().id(postBO.getId()).userId(postBO.getUserId()).type(postBO.getType())
-                .text(postBO.getText()).imageIds(postBO.getImageIds()).videoId(postBO.getVideoId())
-                .createdAt(postBO.getCreatedAt()).updatedAt(postBO.getUpdatedAt()).build();
+        return Post.builder()
+                .id(postBO.getId())
+                .userId(postBO.getUserId())
+                .type(postBO.getType())
+                .text(postBO.getText())
+                .imageIds(postBO.getImageIds())
+                .videoId(postBO.getVideoId())
+                .createdAt(postBO.getCreatedAt())
+                .updatedAt(postBO.getUpdatedAt())
+                .build();
     }
 
     public PostBO toBO() {
-        return PostBO.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds).videoId(videoId)
-                .createdAt(createdAt).updatedAt(updatedAt).build();
+        return PostBO.builder()
+                .id(id)
+                .userId(userId)
+                .type(type)
+                .text(text)
+                .imageIds(imageIds)
+                .videoId(videoId)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

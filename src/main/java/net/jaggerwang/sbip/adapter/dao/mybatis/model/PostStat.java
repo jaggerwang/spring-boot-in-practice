@@ -27,13 +27,21 @@ public class PostStat {
     private LocalDateTime updatedAt;
 
     public static PostStat fromBO(PostStatBO postStatBO) {
-        return PostStat.builder().id(postStatBO.getId()).postId(postStatBO.getPostId())
-                .likeCount(postStatBO.getLikeCount()).createdAt(postStatBO.getCreatedAt())
-                .updatedAt(postStatBO.getUpdatedAt()).build();
+        return PostStat.builder()
+                .id(postStatBO.getId())
+                .postId(postStatBO.getPostId())
+                .likeCount(postStatBO.getLikeCount())
+                .createdAt(postStatBO.getCreatedAt())
+                .updatedAt(postStatBO.getUpdatedAt())
+                .build();
     }
 
     public PostStatBO toBO() {
-        return PostStatBO.builder().id(id).postId(postId).likeCount(likeCount)
-                .createdAt(createdAt).updatedAt(updatedAt).build();
+        return PostStatBO.builder()
+                .id(id).postId(postId)
+                .likeCount(likeCount)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

@@ -37,13 +37,27 @@ public class FileDTO {
     private Map<FileBO.ThumbType, String> thumbs;
 
     public static FileDTO fromBO(FileBO fileBO) {
-        return FileDTO.builder().id(fileBO.getId()).userId(fileBO.getUserId()).region(fileBO.getRegion())
-                .bucket(fileBO.getBucket()).path(fileBO.getPath()).meta(fileBO.getMeta())
-                .createdAt(fileBO.getCreatedAt()).updatedAt(fileBO.getUpdatedAt()).build();
+        return FileDTO.builder()
+                .id(fileBO.getId())
+                .userId(fileBO.getUserId())
+                .region(fileBO.getRegion())
+                .bucket(fileBO.getBucket())
+                .path(fileBO.getPath())
+                .meta(fileBO.getMeta())
+                .createdAt(fileBO.getCreatedAt())
+                .updatedAt(fileBO.getUpdatedAt())
+                .build();
     }
 
     public FileBO toBO() {
-        return FileBO.builder().id(id).userId(userId).region(region).bucket(bucket).path(path).meta(meta)
-                .createdAt(createdAt).updatedAt(updatedAt).build();
+        return FileBO.builder()
+                .id(id).userId(userId)
+                .region(region)
+                .bucket(bucket)
+                .path(path)
+                .meta(meta)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

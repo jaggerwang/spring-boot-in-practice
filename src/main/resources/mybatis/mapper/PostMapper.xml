@@ -36,7 +36,7 @@
         SELECT * FROM post WHERE user_id = #{userId} Limit #{offset}, #{limit}
     </select>
 
-    <select id="selectPublishedCount" resultMap="long">
+    <select id="selectPublishedCount" resultType="long">
         SELECT COUNT(*) FROM post WHERE user_id = #{userId}
     </select>
 
@@ -46,7 +46,7 @@
         LIMIT #{offset},#{limit}
     </select>
 
-    <select id="selectLikedCount" resultMap="long">
+    <select id="selectLikedCount" resultType="long">
         SELECT COUNT(*) FROM post_like WHERE user_id = #{userId}
     </select>
 
@@ -65,7 +65,7 @@
         ORDER BY p.id DESC
     </select>
 
-    <select id="selectFollowingCount" resultMap="long">
+    <select id="selectFollowingCount" resultType="long">
         SELECT COUNT(*) FROM post p JOIN user_follow uf ON p.user_id = uf.following_id
         WHERE uf.follower_id = #{userId}
     </select>
