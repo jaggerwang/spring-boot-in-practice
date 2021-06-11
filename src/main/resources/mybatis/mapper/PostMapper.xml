@@ -59,10 +59,10 @@
         <if test="afterId != null">
             AND p.id > #{afterId}
         </if>
+        ORDER BY p.id DESC
         <if test="limit != null">
             LIMIT #{limit}
         </if>
-        ORDER BY p.id DESC
     </select>
 
     <select id="selectFollowingCount" resultType="long">

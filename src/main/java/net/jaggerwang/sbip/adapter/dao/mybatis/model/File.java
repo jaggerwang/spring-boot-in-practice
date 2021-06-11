@@ -52,7 +52,7 @@ public class File {
                 .region(region)
                 .bucket(bucket)
                 .path(path)
-                .meta(meta)
+                .meta(meta != null ? meta : FileBO.Meta.builder().type("").build())
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();

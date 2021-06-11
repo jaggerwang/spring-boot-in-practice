@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import net.jaggerwang.sbip.entity.PostBO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,11 +36,16 @@ public class Post {
     private LocalDateTime updatedAt;
 
     public static Post fromBO(PostBO postBO) {
+        var text = postBO.getText();
+        if (text == null) {
+            text = "";
+        }
+
         return Post.builder()
                 .id(postBO.getId())
                 .userId(postBO.getUserId())
                 .type(postBO.getType())
-                .text(postBO.getText())
+                .text(text)
                 .imageIds(postBO.getImageIds())
                 .videoId(postBO.getVideoId())
                 .createdAt(postBO.getCreatedAt())
@@ -52,7 +59,7 @@ public class Post {
                 .userId(userId)
                 .type(type)
                 .text(text)
-                .imageIds(imageIds)
+                .imageIds(imageIds != null ? imageIds : Collections.emptyList())
                 .videoId(videoId)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)

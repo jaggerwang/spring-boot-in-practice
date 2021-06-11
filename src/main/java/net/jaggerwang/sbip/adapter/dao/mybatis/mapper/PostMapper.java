@@ -71,7 +71,8 @@ public interface PostMapper {
      * 查询某个用户关注的用户发布的动态
      * @param userId
      * @param limit
-     * @param offset
+     * @param beforeId
+     * @param afterId
      * @return
      */
     List<Post> selectFollowing(Long userId, Long limit, Long beforeId, Long afterId);
