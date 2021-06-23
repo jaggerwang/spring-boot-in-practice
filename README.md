@@ -5,7 +5,7 @@ This project can be used as a starter for spring boot api service development, i
 ## Branches
 
 1. `mybatis` Using MyBatis to implement DAO(Data Access Object)
-1. `mybatis-plus` Using MyBatis-Plus to implement DAO(Data Access Object) (TODO)
+1. `mybatis-plus` Using MyBatis-Plus to implement DAO(Data Access Object)
 
 ## Dependent frameworks and packages
 
