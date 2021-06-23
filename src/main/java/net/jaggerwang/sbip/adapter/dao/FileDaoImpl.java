@@ -25,24 +25,24 @@ public class FileDaoImpl extends AbstractDao implements FileDao {
 
     @Override
     public FileBO save(FileBO fileBO) {
-        var file = fileMapper.select(fileBO.getId());
+        var file = fileMapper.selectById(fileBO.getId());
         if (file == null) {
             file  = File.fromBO(fileBO);
             fileMapper.insert(file);
         } else {
-            fileMapper.update(file);
+            fileMapper.updateById(file);
         }
         return file.toBO();
     }
 
     @Override
     public Optional<FileBO> findById(Long id) {
-        return Optional.ofNullable(fileMapper.select(id)).map(File::toBO);
+        return Optional.ofNullable(fileMapper.selectById(id)).map(File::toBO);
     }
 
     @Override
     public List<FileBO> findAllById(List<Long> ids) {
-        var files = fileMapper.selectByIds(ids).stream()
+        var files = fileMapper.selectBatchIds(ids).stream()
                 .collect(Collectors.toMap(File::getId, File::toBO));
 
         var fileBOs = new FileBO[ids.size()];

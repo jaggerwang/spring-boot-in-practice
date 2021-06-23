@@ -1,9 +1,11 @@
 package net.jaggerwang.sbip.adapter.dao;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.mapper.UserFollowMapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.mapper.UserMapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.model.User;
@@ -27,37 +29,43 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public UserBO save(UserBO userBO) {
-        var user = userMapper.select(userBO.getId());
+        var user = userMapper.selectById(userBO.getId());
         if (user == null) {
             user  = User.fromBO(userBO);
             userMapper.insert(user);
         } else {
-            userMapper.update(user);
+            userMapper.updateById(user);
         }
         return user.toBO();
     }
 
     @Override
     public Optional<UserBO> findById(Long id) {
-        return Optional.ofNullable(userMapper.select(id))
+        return Optional.ofNullable(userMapper.selectById(id))
                 .map(User::toBO);
     }
 
     @Override
     public Optional<UserBO> findByUsername(String username) {
-        return Optional.ofNullable(userMapper.selectByUsername(username))
+        var queryWrapper = new QueryWrapper<User>();
+        queryWrapper.eq("username", username);
+        return Optional.ofNullable(userMapper.selectOne(queryWrapper))
                 .map(User::toBO);
     }
 
     @Override
     public Optional<UserBO> findByEmail(String email) {
-        return Optional.ofNullable(userMapper.selectByEmail(email))
+        var queryWrapper = new QueryWrapper<User>();
+        queryWrapper.eq("email", email);
+        return Optional.ofNullable(userMapper.selectOne(queryWrapper))
                 .map(User::toBO);
     }
 
     @Override
     public Optional<UserBO> findByMobile(String mobile) {
-        return Optional.ofNullable(userMapper.selectByMobile(mobile))
+        var queryWrapper = new QueryWrapper<User>();
+        queryWrapper.eq("mobile", mobile);
+        return Optional.ofNullable(userMapper.selectOne(queryWrapper))
                 .map(User::toBO);
     }
 
@@ -72,7 +80,10 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public void unfollow(Long followerId, Long followingId) {
-        userFollowMapper.deleteByFollowerIdAndFollowingId(followerId, followingId);
+        userFollowMapper.deleteByMap(Map.of(
+                "follower_id", followerId,
+                "following_id", followingId
+        ));
     }
 
     @Override
@@ -83,7 +94,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public Long followingCount(Long followerId) {
-        return userMapper.selectFollowingCount(followerId);
+        var queryWrapper = new QueryWrapper<UserFollow>();
+        queryWrapper.eq("follower_id", followerId);
+        return Long.valueOf(userFollowMapper.selectCount(queryWrapper));
     }
 
     @Override
@@ -94,11 +107,18 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public Long followerCount(Long followingId) {
-        return userMapper.selectFollowerCount(followingId);
+        var queryWrapper = new QueryWrapper<UserFollow>();
+        queryWrapper.eq("following_id", followingId);
+        return Long.valueOf(userFollowMapper.selectCount(queryWrapper));
     }
 
     @Override
     public Boolean isFollowing(Long followerId, Long followingId) {
-        return userFollowMapper.selectByFollowerIdAndFollowingId(followerId, followingId) != null;
+        var queryWrapper = new QueryWrapper<UserFollow>();
+        queryWrapper.allEq(Map.of(
+                "follower_id", followerId,
+                "following_id", followingId
+        ));
+        return userFollowMapper.selectOne(queryWrapper) != null;
     }
 }

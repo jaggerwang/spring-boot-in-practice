@@ -2,6 +2,7 @@ package net.jaggerwang.sbip.adapter.dao;
 
 import java.util.Optional;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.mapper.UserStatMapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.model.UserStat;
 import org.springframework.stereotype.Component;
@@ -21,23 +22,25 @@ public class UserStatDaoImpl extends AbstractDao implements UserStatDao {
 
     @Override
     public UserStatBO save(UserStatBO userStatBO) {
-        var userStat = userStatMapper.select(userStatBO.getId());
+        var userStat = userStatMapper.selectById(userStatBO.getId());
         if (userStat == null) {
             userStat  = UserStat.fromBO(userStatBO);
             userStatMapper.insert(userStat);
         } else {
-            userStatMapper.update(userStat);
+            userStatMapper.updateById(userStat);
         }
         return userStat.toBO();
     }
 
     @Override
     public Optional<UserStatBO> findById(Long id) {
-        return Optional.ofNullable(userStatMapper.select(id)).map(UserStat::toBO);
+        return Optional.ofNullable(userStatMapper.selectById(id)).map(UserStat::toBO);
     }
 
     @Override
     public Optional<UserStatBO> findByUserId(Long userId) {
-        return Optional.ofNullable(userStatMapper.selectByUserId(userId)).map(UserStat::toBO);
+        var queryWrapper = new QueryWrapper<UserStat>();
+        queryWrapper.eq("user_id", userId);
+        return Optional.ofNullable(userStatMapper.selectOne(queryWrapper)).map(UserStat::toBO);
     }
 }

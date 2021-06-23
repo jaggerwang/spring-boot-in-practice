@@ -2,6 +2,7 @@ package net.jaggerwang.sbip.adapter.dao;
 
 import java.util.Optional;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.mapper.PostStatMapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.model.PostStat;
 import org.springframework.stereotype.Component;
@@ -21,23 +22,25 @@ public class PostStatDaoImpl extends AbstractDao implements PostStatDao {
 
     @Override
     public PostStatBO save(PostStatBO postStatBO) {
-        var postStat = postStatMapper.select(postStatBO.getId());
+        var postStat = postStatMapper.selectById(postStatBO.getId());
         if (postStat == null) {
             postStat  = PostStat.fromBO(postStatBO);
             postStatMapper.insert(postStat);
         } else {
-            postStatMapper.update(postStat);
+            postStatMapper.updateById(postStat);
         }
         return postStat.toBO();
     }
 
     @Override
     public Optional<PostStatBO> findById(Long id) {
-        return Optional.ofNullable(postStatMapper.select(id)).map(PostStat::toBO);
+        return Optional.ofNullable(postStatMapper.selectById(id)).map(PostStat::toBO);
     }
 
     @Override
     public Optional<PostStatBO> findByPostId(Long postId) {
-        return Optional.ofNullable(postStatMapper.selectByPostId(postId)).map(PostStat::toBO);
+        var queryWrapper = new QueryWrapper<PostStat>();
+        queryWrapper.eq("post_id", postId);
+        return Optional.ofNullable(postStatMapper.selectOne(queryWrapper)).map(PostStat::toBO);
     }
 }

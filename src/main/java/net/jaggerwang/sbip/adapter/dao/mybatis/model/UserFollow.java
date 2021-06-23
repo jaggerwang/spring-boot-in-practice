@@ -1,5 +1,8 @@
 package net.jaggerwang.sbip.adapter.dao.mybatis.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +17,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName(autoResultMap = true)
 public class UserFollow {
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     private Long followingId;

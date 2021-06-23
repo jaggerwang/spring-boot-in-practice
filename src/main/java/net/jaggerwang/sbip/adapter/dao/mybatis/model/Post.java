@@ -1,13 +1,18 @@
 package net.jaggerwang.sbip.adapter.dao.mybatis.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.jaggerwang.sbip.adapter.dao.mybatis.type.LongListJsonTypeHandler;
 import net.jaggerwang.sbip.entity.PostBO;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +23,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName(autoResultMap = true)
 public class Post {
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     private Long userId;
@@ -27,6 +34,7 @@ public class Post {
 
     private String text;
 
+    @TableField(typeHandler = LongListJsonTypeHandler.class)
     private List<Long> imageIds;
 
     private Long videoId;

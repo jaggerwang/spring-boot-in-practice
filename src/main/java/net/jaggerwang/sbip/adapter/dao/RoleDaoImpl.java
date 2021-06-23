@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.mapper.RoleMapper;
 import net.jaggerwang.sbip.adapter.dao.mybatis.model.Role;
 import org.springframework.stereotype.Component;
@@ -23,24 +24,26 @@ public class RoleDaoImpl extends AbstractDao implements RoleDao {
 
     @Override
     public RoleBO save(RoleBO roleBO) {
-        var role = roleMapper.select(roleBO.getId());
+        var role = roleMapper.selectById(roleBO.getId());
         if (role == null) {
             role  = Role.fromBO(roleBO);
             roleMapper.insert(role);
         } else {
-            roleMapper.update(role);
+            roleMapper.updateById(role);
         }
         return role.toBO();
     }
 
     @Override
     public Optional<RoleBO> findById(Long id) {
-        return Optional.ofNullable(roleMapper.select(id)).map(Role::toBO);
+        return Optional.ofNullable(roleMapper.selectById(id)).map(Role::toBO);
     }
 
     @Override
     public Optional<RoleBO> findByName(String name) {
-        return Optional.ofNullable(roleMapper.selectByName(name)).map(Role::toBO);
+        var queryMapper = new QueryWrapper<Role>();
+        queryMapper.eq("name", name);
+        return Optional.ofNullable(roleMapper.selectOne(queryMapper)).map(Role::toBO);
     }
 
     @Override
