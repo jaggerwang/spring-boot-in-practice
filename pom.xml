@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.2.RELEASE</version>
+		<version>2.5.2</version>
 		<relativePath />
 	</parent>
 
@@ -17,13 +17,10 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<guava.version>28.1-jre</guava.version>
-		<swagger.version>2.9.2</swagger.version>
-		<mybatis-starter.version>2.1.4</mybatis-starter.version>
-		<querydsl.version>4.4.0</querydsl.version>
-		<mybatis-test.version>2.1.4</mybatis-test.version>
-		<jshell-maven-plugin.version>1.2</jshell-maven-plugin.version>
-		<apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
+		<guava.version>30.1.1-jre</guava.version>
+		<swagger.version>3.0.0</swagger.version>
+		<mybatis.version>2.1.4</mybatis.version>
+		<jshell-plugin.version>1.2</jshell-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -63,7 +60,7 @@
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>${mybatis-starter.version}</version>
+			<version>${mybatis.version}</version>
 		</dependency>
 
 		<dependency>
@@ -120,12 +117,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -137,7 +128,7 @@
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter-test</artifactId>
-			<version>${mybatis-test.version}</version>
+			<version>${mybatis.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -148,7 +139,7 @@
 				<plugin>
 					<groupId>com.github.johnpoth</groupId>
 					<artifactId>jshell-maven-plugin</artifactId>
-					<version>${jshell-maven-plugin.version}</version>
+					<version>${jshell-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
