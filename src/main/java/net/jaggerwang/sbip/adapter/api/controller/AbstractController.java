@@ -58,24 +58,24 @@ abstract public class AbstractController {
         return (LoggedUser) auth.getPrincipal();
     }
 
-    protected Optional<LoggedUser> logoutUser() {
+    protected LoggedUser logoutUser() {
         var loggedUser = loggedUser();
         SecurityContextHolder.getContext().setAuthentication(null);
         return loggedUser;
     }
 
-    protected Optional<LoggedUser> loggedUser() {
+    protected LoggedUser loggedUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth instanceof AnonymousAuthenticationToken ||
                 !auth.isAuthenticated()) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of((LoggedUser) auth.getPrincipal());
+        return (LoggedUser) auth.getPrincipal();
     }
 
     protected Long loggedUserId() {
         var loggedUser = loggedUser();
-        return loggedUser.isPresent() ? loggedUser.get().getId() : null;
+        return loggedUser != null ? loggedUser.getId() : null;
     }
 
     protected UserDTO fullUserDto(UserBO userBO) {

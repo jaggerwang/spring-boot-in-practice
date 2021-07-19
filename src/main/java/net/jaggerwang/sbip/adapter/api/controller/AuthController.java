@@ -44,11 +44,11 @@ public class AuthController extends AbstractController {
     @ApiOperation("Logout")
     public RootDTO logout() {
         var loggedUser = logoutUser();
-        if (loggedUser.isEmpty()) {
+        if (loggedUser == null) {
             return new RootDTO().addDataEntry("user", null);
         }
 
-        var userBO = userUsecase.info(loggedUser.get().getId());
+        var userBO = userUsecase.info(loggedUser.getId());
         return new RootDTO().addDataEntry("user", UserDTO.fromBO(userBO.get()));
     }
 

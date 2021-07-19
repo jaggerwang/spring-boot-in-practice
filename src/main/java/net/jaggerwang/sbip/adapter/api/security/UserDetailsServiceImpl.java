@@ -16,10 +16,10 @@ import net.jaggerwang.sbip.usecase.UserUsecase;
  * @author Jagger Wang
  */
 @Service
-public class CustomUserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private UserUsecase userUsecase;
 
-    public CustomUserDetailsServiceImpl(UserUsecase userUsecase) {
+    public UserDetailsServiceImpl(UserUsecase userUsecase) {
         this.userUsecase = userUsecase;
     }
 
